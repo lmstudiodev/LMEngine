@@ -5,14 +5,8 @@
 class VertexShader
 {
 public:
-	VertexShader(RenderSystem* system);
+	VertexShader(const void* shader_byte_code, size_t byte_code_size, RenderSystem* system);
 	~VertexShader();
-
-public:
-	bool Release();
-
-private:
-	bool Init(const void* shader_byte_code, size_t byte_code_size);
 
 private:
 	ID3D11VertexShader* m_vs;
