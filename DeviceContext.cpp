@@ -6,7 +6,7 @@
 #include "VertexShader.h"
 #include "PixelShader.h"
 
-DeviceContext::DeviceContext(ID3D11DeviceContext* deviceContext) : m_deviceContext(deviceContext)
+DeviceContext::DeviceContext(ID3D11DeviceContext* deviceContext, RenderSystem* system) : m_deviceContext(deviceContext), m_system(system)
 {
 }
 
