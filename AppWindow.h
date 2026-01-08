@@ -37,12 +37,12 @@ private:
 	void UpdateDeltaTime();
 
 private:
-	SwapChain* m_swapChain;
-	VertexBuffer* m_vertexBuffer;
-	VertexShader* m_vertexShader;
-	PixelShader* m_pixelShader;
-	ConstantBuffer* m_constantBuffer;
-	IndexBuffer* m_indexBuffer;
+	SwapChainPtr m_swapChain;
+	VertexBufferPtr m_vertexBuffer;
+	VertexShaderPtr m_vertexShader;
+	PixelShaderPtr m_pixelShader;
+	ConstantBufferPtr m_constantBuffer;
+	IndexBufferPtr m_indexBuffer;
 
 private:
 	long m_old_delta;

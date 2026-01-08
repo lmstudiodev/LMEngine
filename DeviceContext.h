@@ -10,18 +10,18 @@ public:
 	~DeviceContext();
 
 public:
-	void ClearRenderTarget(SwapChain* swapChain, Vec4 color);
+	void ClearRenderTarget(SwapChainPtr swapChain, Vec4 color);
 
-	void SetVertexBuffer(VertexBuffer* vertex_buffer);
-	void SetIndexBuffer(IndexBuffer* index_buffer);
+	void SetVertexBuffer(VertexBufferPtr vertex_buffer);
+	void SetIndexBuffer(IndexBufferPtr index_buffer);
 
 	void SetViewPortSize(UINT width, UINT height);
 
-	void SetVertexShader(VertexShader* vertex_shader);
-	void SetPixelShader(PixelShader* pixel_shader);
+	void SetVertexShader(VertexShaderPtr vertex_shader);
+	void SetPixelShader(PixelShaderPtr pixel_shader);
 
-	void SetConstantBuffer(VertexShader* vertex_shader, ConstantBuffer* constant_buffer);
-	void SetConstantBuffer(PixelShader* pixel_shader, ConstantBuffer* constant_buffer);
+	void SetConstantBuffer(VertexShaderPtr vertex_shader, ConstantBufferPtr constant_buffer);
+	void SetConstantBuffer(PixelShaderPtr pixel_shader, ConstantBufferPtr constant_buffer);
 
 	void DrawTriangleList(UINT vertex_count, UINT start_vertex_index);
 	void DrawIndexedTriangleList(UINT index_count, UINT start_vertex_index, UINT start_index_location);
