@@ -122,16 +122,13 @@ void AppWindow::OnCreate()
 	InputSystem::Get()->ShowMouseCursor(false);
 	
 	GraphicEngine::Get()->Init();
-	m_swapChain = GraphicEngine::Get()->GetRenderSystem()->CreateSwapChain();
 
 	RECT rc = this->GetClientWindowRect();
 
 	auto width = rc.right - rc.left;
 	auto height = rc.bottom - rc.top;
 
-	m_swapChain->Init(this->m_hwnd, UINT(width), UINT(height));
-	m_vertexBuffer = GraphicEngine::Get()->GetRenderSystem()->CreateVertexBuffer();
-	m_indexBuffer = GraphicEngine::Get()->GetRenderSystem()->CreateIndexBuffer();
+	m_swapChain = GraphicEngine::Get()->GetRenderSystem()->CreateSwapChain(this->m_hwnd, UINT(width), UINT(height));
 
 	m_world_camera.SetTranslation(Vector3D(0.0f, 0.0f, -2.0f));
 
@@ -168,14 +165,15 @@ void AppWindow::OnCreate()
 
 	UINT sizeIndexList = ARRAYSIZE(index_list);
 
-	m_indexBuffer->Load(index_list, sizeIndexList);
+	m_indexBuffer = GraphicEngine::Get()->GetRenderSystem()->CreateIndexBuffer(index_list, sizeIndexList);
 
 	void* shader_byte_code = nullptr;
 	size_t size_shader = 0;
 
 	GraphicEngine::Get()->GetRenderSystem()->CompileVertexShader(L"Resources/Shader/VertexShader.hlsl", "vsmain", &shader_byte_code, &size_shader);
 	m_vertexShader = GraphicEngine::Get()->GetRenderSystem()->CreateVertexShader(shader_byte_code, size_shader);
-	m_vertexBuffer->Load(vertex_list, sizeof(Vertex), sizeList, shader_byte_code, size_shader);
+	m_vertexBuffer = GraphicEngine::Get()->GetRenderSystem()->CreateVertexBuffer(vertex_list, sizeof(Vertex), sizeList, shader_byte_code, size_shader);
+
 	GraphicEngine::Get()->GetRenderSystem()->ReleaseCompiledShader();
 
 	GraphicEngine::Get()->GetRenderSystem()->CompilePixelShader(L"Resources/Shader/PixelShader.hlsl", "psmain", &shader_byte_code, &size_shader);
@@ -184,8 +182,7 @@ void AppWindow::OnCreate()
 
 	Constant cc{};
 
-	m_constantBuffer = GraphicEngine::Get()->GetRenderSystem()->CreateConstantBuffer();
-	m_constantBuffer->Load(&cc, sizeof(Constant));
+	m_constantBuffer = GraphicEngine::Get()->GetRenderSystem()->CreateConstantBuffer(&cc, sizeof(Constant));
 }
 
 void AppWindow::OnFocus()
@@ -203,13 +200,6 @@ void AppWindow::OnDestroy()
 	InputSystem::Get()->ShowMouseCursor(true);
 	
 	MainWindow::OnDestroy();
-
-	m_vertexShader->Release();
-	m_pixelShader->Release();
-	m_vertexBuffer->Release();
-	m_indexBuffer->Release();
-	m_constantBuffer->Release();
-	m_swapChain->Release();
 
 	GraphicEngine::Get()->Release();
 }

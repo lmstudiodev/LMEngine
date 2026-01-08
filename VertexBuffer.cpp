@@ -1,22 +1,14 @@
 #include "VertexBuffer.h"
 #include "RenderSystem.h"
+#include <exception>
 
-VertexBuffer::VertexBuffer(RenderSystem* system) : m_buffer(0), m_size_vertex(0), m_size_list(0), m_layout(0), m_system(system)
+VertexBuffer::VertexBuffer(void* list_vertices, 
+	UINT size_vertex, 
+	UINT size_list, 
+	void* shader_byte_code, 
+	UINT size_byte_shader, 
+	RenderSystem* system) : m_buffer(0), m_size_vertex(0), m_size_list(0), m_layout(0), m_system(system)
 {
-}
-
-VertexBuffer::~VertexBuffer()
-{
-}
-
-bool VertexBuffer::Load(void* list_vertices, UINT size_vertex, UINT size_list, void* shader_byte_code, UINT size_byte_shader)
-{
-	if (m_buffer)
-		m_buffer->Release();
-
-	if (m_layout)
-		m_layout->Release();
-	
 	D3D11_BUFFER_DESC bufferDesc{};
 	bufferDesc.Usage = D3D11_USAGE_DEFAULT;
 	bufferDesc.ByteWidth = size_vertex * size_list;
@@ -29,9 +21,9 @@ bool VertexBuffer::Load(void* list_vertices, UINT size_vertex, UINT size_list, v
 
 	m_size_vertex = size_vertex;
 	m_size_list = size_list;
-	
-	if(FAILED(m_system->m_d3d_device->CreateBuffer(&bufferDesc, &initData, &m_buffer)))
-		return false;
+
+	if (FAILED(m_system->m_d3d_device->CreateBuffer(&bufferDesc, &initData, &m_buffer)))
+		throw std::exception("[D3D11 Error] VertexBuffer creation failed.");
 
 	D3D11_INPUT_ELEMENT_DESC elementDesc[] =
 	{
@@ -42,22 +34,19 @@ bool VertexBuffer::Load(void* list_vertices, UINT size_vertex, UINT size_list, v
 	UINT size_layout = ARRAYSIZE(elementDesc);
 
 	if (FAILED(m_system->m_d3d_device->CreateInputLayout(elementDesc, size_layout, shader_byte_code, size_byte_shader, &m_layout)))
-		return false;
-	
-	return true;
+		throw std::exception("[D3D11 Error] InputLayout creation failed.");
+}
+
+VertexBuffer::~VertexBuffer()
+{
+	if(m_layout)
+		m_layout->Release();
+
+	if(m_buffer)
+		m_buffer->Release();
 }
 
 UINT VertexBuffer::GetSizeVertexList()
 {
 	return this->m_size_list;
-}
-
-bool VertexBuffer::Release()
-{
-	m_layout->Release();
-	m_buffer->Release();
-
-	delete this;
-
-	return true;
 }

@@ -5,14 +5,8 @@
 class PixelShader
 {
 public:
-	PixelShader(RenderSystem* system);
+	PixelShader(const void* shader_byte_code, size_t byte_code_size, RenderSystem* system);
 	~PixelShader();
-
-public:
-	bool Release();
-
-private:
-	bool Init(const void* shader_byte_code, size_t byte_code_size);
 
 private:
 	ID3D11PixelShader* m_ps;

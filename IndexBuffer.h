@@ -5,13 +5,11 @@
 class IndexBuffer
 {
 public:
-	IndexBuffer(RenderSystem* system);
+	IndexBuffer(void* list_indices, UINT size_list, RenderSystem* system);
 	~IndexBuffer();
 
 public:
-	bool Load(void* list_indices, UINT size_list);
 	UINT GetSizeIndexList();
-	bool Release();
 
 private:
 	UINT m_size_list;

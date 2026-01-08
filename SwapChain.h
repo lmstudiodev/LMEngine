@@ -5,13 +5,11 @@
 class SwapChain
 {
 public:
-	SwapChain(RenderSystem* system);
+	SwapChain(HWND hwnd, UINT width, UINT height, RenderSystem* system);
 	~SwapChain();
 
 public:
-	bool Init(HWND hwnd, UINT width, UINT height);
 	void Present(bool vsync);
-	bool Release();
 
 private:
 	IDXGISwapChain* m_swapChain;

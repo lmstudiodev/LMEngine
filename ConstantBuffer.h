@@ -5,13 +5,11 @@
 class ConstantBuffer
 {
 public:
-	ConstantBuffer(RenderSystem* system);
+	ConstantBuffer(void* buffer, UINT size_buffer, RenderSystem* system);
 	~ConstantBuffer();
 
 public:
-	bool Load(void* buffer, UINT size_buffer);
 	void Update(DeviceContext* context, void* buffer);
-	bool Release();
 
 private:
 	ID3D11Buffer* m_buffer;
