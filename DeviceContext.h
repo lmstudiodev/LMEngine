@@ -1,19 +1,12 @@
 #pragma once
 #include <d3d11.h>
 #include "Vec4.h"
-
-class SwapChain;
-class VertexBuffer;
-class IndexBuffer;
-class GraphicEngine;
-class VertexShader;
-class PixelShader;
-class ConstantBuffer;
+#include "Prerequisites.h"
 
 class DeviceContext
 {
 public:
-	DeviceContext(ID3D11DeviceContext* deviceContext);
+	DeviceContext(ID3D11DeviceContext* deviceContext, RenderSystem* system);
 	~DeviceContext();
 
 public:
@@ -38,6 +31,8 @@ public:
 
 private:
 	ID3D11DeviceContext* m_deviceContext;
+
+	RenderSystem* m_system = nullptr;
 
 private:
 	friend class GraphicEngine;

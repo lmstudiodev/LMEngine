@@ -1,8 +1,8 @@
 #include "ConstantBuffer.h"
-#include "GraphicEngine.h"
+#include "RenderSystem.h"
 #include "DeviceContext.h"
 
-ConstantBuffer::ConstantBuffer() : m_buffer(nullptr)
+ConstantBuffer::ConstantBuffer(RenderSystem* system) : m_buffer(nullptr), m_system(system)
 {
 }
 
@@ -25,7 +25,7 @@ bool ConstantBuffer::Load(void* buffer, UINT size_buffer)
 	D3D11_SUBRESOURCE_DATA initData{};
 	initData.pSysMem = buffer;
 
-	if (FAILED(GraphicEngine::Get()->m_d3d_device->CreateBuffer(&bufferDesc, &initData, &m_buffer)))
+	if (FAILED(m_system->m_d3d_device->CreateBuffer(&bufferDesc, &initData, &m_buffer)))
 		return false;
 
 	return true;

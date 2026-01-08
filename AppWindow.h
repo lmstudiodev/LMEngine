@@ -17,8 +17,6 @@ public:
 	AppWindow();
 	~AppWindow();
 
-	//void UpdateMatrix();
-
 	void OnUpdate() override;
 	void OnCreate() override;
 	void OnDestroy() override;
@@ -50,8 +48,6 @@ private:
 	long m_old_delta;
 	long m_new_delta;
 	float m_delta_time;
-	//float m_delta_pos;
-	//float m_delta_scale;
 
 	float m_rot_x;
 	float m_rot_y;

@@ -1,13 +1,11 @@
 #pragma once
 #include <d3d11.h>
-
-class GraphicEngine;
-class DeviceContext;
+#include "Prerequisites.h"
 
 class PixelShader
 {
 public:
-	PixelShader();
+	PixelShader(RenderSystem* system);
 	~PixelShader();
 
 public:
@@ -19,8 +17,10 @@ private:
 private:
 	ID3D11PixelShader* m_ps;
 
+	RenderSystem* m_system = nullptr;
+
 private:
-	friend class GraphicEngine;
+	friend class RenderSystem;
 	friend class DeviceContext;
 };
 
