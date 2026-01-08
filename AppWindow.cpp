@@ -1,0 +1,289 @@
+#include <Windows.h>
+#include "AppWindow.h"
+#include "Vertex.h"
+#include "Matrix4x4.h"
+#include "InputSystem.h"
+
+__declspec(align(16))
+struct Constant
+{
+	Matrix4x4 m_worldMatrix;
+	Matrix4x4 m_viewMatrix;
+	Matrix4x4 m_projectionMatrix;
+	//ULONGLONG m_time;
+};
+
+AppWindow::AppWindow(): m_swapChain(nullptr), 
+m_vertexShader(nullptr), 
+m_pixelShader(nullptr), 
+m_vertexBuffer(nullptr), 
+m_constantBuffer(nullptr),
+m_indexBuffer(nullptr),
+m_old_delta(0),
+m_new_delta(0),
+m_delta_time(0),
+//m_delta_pos(0),
+//m_delta_scale(0),
+m_rot_x(0),
+m_rot_y(0),
+m_scale_cube(1.0f),
+m_forward(0),
+m_rightward(0)
+{
+}
+
+AppWindow::~AppWindow()
+{
+}
+
+void AppWindow::UpdateMatrix()
+{
+	Constant cc{};
+	//cc.m_time = GetTickCount64();
+
+	//m_delta_pos += m_delta_time / 4.0f;
+
+	//if (m_delta_pos > 1.0f)
+	//	m_delta_pos = 0.0f;
+
+	//m_delta_scale += m_delta_time / 0.55f;
+
+	Matrix4x4 tempMatrix;
+
+	cc.m_worldMatrix.SetIdentity();
+
+	Matrix4x4 worldCam;
+	worldCam.SetIdentity();
+
+	tempMatrix.SetIdentity();
+	tempMatrix.SetRotationX(m_rot_x);
+	worldCam *= tempMatrix;
+
+	tempMatrix.SetIdentity();
+	tempMatrix.SetRotationY(m_rot_y);
+	worldCam *= tempMatrix;
+
+	Vector3D newPos = m_world_camera.GetTranslation() + worldCam.GetZDirection() * (m_forward * 0.3f);
+	newPos = newPos + worldCam.GetXDirection() * (m_rightward * 0.3f);
+
+	worldCam.SetTranslation(newPos);
+
+	m_world_camera = worldCam;
+
+	worldCam.inverse();
+
+	cc.m_viewMatrix = worldCam;
+
+	RECT rc = this->GetClientWindowRect();
+
+	int width = rc.right - rc.left;
+	int height = rc.bottom - rc.top;
+
+	cc.m_projectionMatrix.SetPerspectiveFovLH(1.57f, ((float)width / (float)height), 0.1f, 100.0f);
+
+	m_constantBuffer->Update(GraphicEngine::Get()->GetDeviceContext(), &cc);
+}
+
+void AppWindow::UpdateDeltaTime()
+{
+	m_old_delta = m_new_delta;
+	m_new_delta = GetTickCount64();
+	m_delta_time = (m_old_delta) ? ((m_new_delta - m_old_delta) / 1000.0f) : 0.0f;
+}
+
+void AppWindow::OnUpdate()
+{
+	MainWindow::OnUpdate();
+
+	InputSystem::Get()->Update();
+	
+	GraphicEngine::Get()->GetDeviceContext()->ClearRenderTarget(this->m_swapChain ,{ 0.0f, 0.3f, 0.4f, 1.0f });
+
+	RECT rc = this->GetClientWindowRect();
+
+	UINT width = rc.right - rc.left;
+	UINT height = rc.bottom - rc.top;
+
+	GraphicEngine::Get()->GetDeviceContext()->SetViewPortSize(width, height);
+
+	UpdateMatrix();
+
+	GraphicEngine::Get()->GetDeviceContext()->SetConstantBuffer(m_vertexShader, m_constantBuffer);
+	GraphicEngine::Get()->GetDeviceContext()->SetConstantBuffer(m_pixelShader, m_constantBuffer);
+
+	GraphicEngine::Get()->GetDeviceContext()->SetVertexShader(m_vertexShader);
+	GraphicEngine::Get()->GetDeviceContext()->SetPixelShader(m_pixelShader);
+
+	GraphicEngine::Get()->GetDeviceContext()->SetVertexBuffer(m_vertexBuffer);
+	GraphicEngine::Get()->GetDeviceContext()->SetIndexBuffer(m_indexBuffer);
+
+	GraphicEngine::Get()->GetDeviceContext()->DrawIndexedTriangleList(m_indexBuffer->GetSizeIndexList(), 0, 0);
+
+	m_swapChain->Present(true);
+
+	UpdateDeltaTime();
+}
+
+void AppWindow::OnCreate()
+{
+	MainWindow::OnCreate();
+
+	InputSystem::Get()->AddListener(this);
+
+	InputSystem::Get()->ShowMouseCursor(false);
+	
+	GraphicEngine::Get()->Init();
+	m_swapChain = GraphicEngine::Get()->CreateSwapChain();
+
+	RECT rc = this->GetClientWindowRect();
+
+	auto width = rc.right - rc.left;
+	auto height = rc.bottom - rc.top;
+
+	m_swapChain->Init(this->m_hwnd, UINT(width), UINT(height));
+	m_vertexBuffer = GraphicEngine::Get()->CreateVertexBuffer();
+	m_indexBuffer = GraphicEngine::Get()->CreateIndexBuffer();
+
+	m_world_camera.SetTranslation(Vector3D(0.0f, 0.0f, -2.0f));
+
+	Vertex vertex_list[]
+	{
+		{Vector3D(-0.5f, -0.5f, -0.5f),   Vector3D(1.0f, 0.0f, 0.0f)},
+		{ Vector3D(-0.5f, 0.5f, -0.5f),     Vector3D(1.0f, 0.0f, 0.0f)},
+		{Vector3D(0.5, 0.5f, -0.5f),      Vector3D(1.0f, 0.0f, 0.0f)},
+		{Vector3D(0.5, -0.5f, -0.5f),       Vector3D(1.0f, 0.0f, 0.0f)},
+
+		{Vector3D(0.5, -0.5f, 0.5f),       Vector3D(1.0f, 0.0f, 0.0f)},
+		{Vector3D(0.5, 0.5f, 0.5f),       Vector3D(1.0f, 0.0f, 0.0f)},
+		{Vector3D(-0.5, 0.5f, 0.5f),       Vector3D(1.0f, 0.0f, 0.0f)},
+		{Vector3D(-0.5, -0.5f, 0.5f),       Vector3D(1.0f, 0.0f, 0.0f)}
+	};
+
+	UINT sizeList = ARRAYSIZE(vertex_list);
+
+	unsigned int index_list[]
+	{
+		0,1,2,
+		2,3,0,
+		4,5,6,
+		6,7,4,
+		1,6,5,
+		5,2,1,
+		7,0,3,
+		3,4,7,
+		3,2,5,
+		5,4,3,
+		7,6,1,
+		1,0,7
+	};
+
+	UINT sizeIndexList = ARRAYSIZE(index_list);
+
+	m_indexBuffer->Load(index_list, sizeIndexList);
+
+	void* shader_byte_code = nullptr;
+	size_t size_shader = 0;
+
+	GraphicEngine::Get()->CompileVertexShader(L"Resources/Shader/VertexShader.hlsl", "vsmain", &shader_byte_code, &size_shader);
+	m_vertexShader = GraphicEngine::Get()->CreateVertexShader(shader_byte_code, size_shader);
+	m_vertexBuffer->Load(vertex_list, sizeof(Vertex), sizeList, shader_byte_code, size_shader);
+	GraphicEngine::Get()->ReleaseCompiledShader();
+
+	GraphicEngine::Get()->CompilePixelShader(L"Resources/Shader/PixelShader.hlsl", "psmain", &shader_byte_code, &size_shader);
+	m_pixelShader = GraphicEngine::Get()->CreatePixelShader(shader_byte_code, size_shader);
+	GraphicEngine::Get()->ReleaseCompiledShader();
+
+	Constant cc{};
+	//cc.m_time = 0;
+
+	m_constantBuffer = GraphicEngine::Get()->CreateConstantBuffer();
+	m_constantBuffer->Load(&cc, sizeof(Constant));
+}
+
+void AppWindow::OnFocus()
+{
+	InputSystem::Get()->AddListener(this);
+}
+
+void AppWindow::OnKillFocus()
+{
+	InputSystem::Get()->RemoveListener(this);
+}
+
+void AppWindow::OnDestroy()
+{
+	InputSystem::Get()->ShowMouseCursor(true);
+	
+	MainWindow::OnDestroy();
+
+	m_vertexShader->Release();
+	m_pixelShader->Release();
+	m_vertexBuffer->Release();
+	m_indexBuffer->Release();
+	m_constantBuffer->Release();
+	m_swapChain->Release();
+
+	GraphicEngine::Get()->Release();
+}
+
+void AppWindow::OnKeyUp(int key)
+{
+	m_forward = 0.0f;
+	m_rightward = 0.0f;
+}
+
+void AppWindow::OnKeyDown(int key)
+{
+	if (key == 'W')
+	{
+		m_forward = 1.0f;
+	}
+	else if (key == 'S')
+	{
+		m_forward = -1.0f;
+	}
+	else if (key == 'A')
+	{
+		m_rightward = -1.0f;
+	}
+	else if (key == 'D')
+	{
+		m_rightward = 1.0f;
+	}
+}
+
+void AppWindow::OnMouseMove(const Point& mouse_pos)
+{
+	RECT rc = this->GetClientWindowRect();
+
+	int width = rc.right - rc.left;
+	int height = rc.bottom - rc.top;
+	
+	m_rot_x += (mouse_pos.m_axis_y - (height / 2.0f)) * m_delta_time;
+	m_rot_y += (mouse_pos.m_axis_x - (width / 2.0f))* m_delta_time;
+
+
+	InputSystem::Get()->SetCursorPosition(Point( (width / 2.0f), (height / 2.0f) ));
+
+
+}
+
+void AppWindow::OnLeftMouseButtonDown(const Point& delta_mouse_pos)
+{
+	m_scale_cube = 0.5f;
+}
+
+void AppWindow::OnLeftMouseButtonUp(const Point& delta_mouse_pos)
+{
+	m_scale_cube = 1.0f;
+}
+
+void AppWindow::OnRightMouseButtonDown(const Point& delta_mouse_pos)
+{
+	m_scale_cube = 2.0f;
+}
+
+void AppWindow::OnRightMouseButtonUp(const Point& delta_mouse_pos)
+{
+	m_scale_cube = 1.0f;
+}

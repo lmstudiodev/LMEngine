@@ -1,0 +1,29 @@
+#pragma once
+#include "Vec4.h"
+
+class Vector4D
+{
+public:
+	Vector4D() : m_x(0.0f), m_y(0.0f), m_z(0.0f), m_w(0) {}
+	Vector4D(float x, float y, float z, float w) : m_x(x), m_y(y), m_z(z), m_w(w) {}
+	Vector4D(Vec4 vec) : m_x(vec.x), m_y(vec.y), m_z(vec.z), m_w(vec.w) {}
+	Vector4D(const Vector4D& vec) : m_x(vec.m_x), m_y(vec.m_y), m_z(vec.m_z), m_w(vec.m_w) {}
+
+	void cross(Vector4D& v1, Vector4D& v2, Vector4D& v3)
+	{
+		this->m_x = v1.m_y * (v2.m_z * v3.m_w - v3.m_z * v2.m_w) - v1.m_z * (v2.m_y * v3.m_w - v3.m_y * v2.m_w) + v1.m_w * (v2.m_y * v3.m_z - v2.m_z * v3.m_y);
+		this->m_y = -(v1.m_x * (v2.m_z * v3.m_w - v3.m_z * v2.m_w) - v1.m_z * (v2.m_x * v3.m_w - v3.m_x * v2.m_w) + v1.m_w * (v2.m_x * v3.m_z - v3.m_x * v2.m_z));
+		this->m_z = v1.m_x * (v2.m_y * v3.m_w - v3.m_y * v2.m_w) - v1.m_y * (v2.m_x * v3.m_w - v3.m_x * v2.m_w) + v1.m_w * (v2.m_x * v3.m_y - v3.m_x * v2.m_y);
+		this->m_w = -(v1.m_x * (v2.m_y * v3.m_z - v3.m_y * v2.m_z) - v1.m_y * (v2.m_x * v3.m_z - v3.m_x * v2.m_z) + v1.m_z * (v2.m_x * v3.m_y - v3.m_x * v2.m_y));
+	}
+
+	~Vector4D()
+	{
+	}
+
+public:
+	float m_x;
+	float m_y;
+	float m_z;
+	float m_w;
+};

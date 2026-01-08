@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.36804.6
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "LMEngine", "LMEngine.vcxproj", "{92AD441F-9573-462B-AD68-57052DD776A9}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x64 = Debug|x64
+		Release|x64 = Release|x64
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{92AD441F-9573-462B-AD68-57052DD776A9}.Debug|x64.ActiveCfg = Debug|x64
+		{92AD441F-9573-462B-AD68-57052DD776A9}.Debug|x64.Build.0 = Debug|x64
+		{92AD441F-9573-462B-AD68-57052DD776A9}.Release|x64.ActiveCfg = Release|x64
+		{92AD441F-9573-462B-AD68-57052DD776A9}.Release|x64.Build.0 = Release|x64
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {D440403E-4C44-47CD-88E6-E76D26FD9408}
+	EndGlobalSection
+EndGlobal
