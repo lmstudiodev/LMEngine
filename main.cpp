@@ -16,14 +16,23 @@ int main()
 	}
 	
 	{
-		AppWindow app;
-
-		if (app.Init())
+		try
 		{
-			while (app.IsRunnig())
-			{
-				app.Broadcast();
-			}
+			AppWindow app;
+
+			while (app.IsRunnig());
+			//{
+			//	app.Broadcast();
+			//}
+		}
+		catch (...)
+		{
+			std::cout << "[LMEngine Error] AppWindow initialization failed." << "\n";
+			
+			InputSystem::Release();
+			GraphicEngine::Release();
+
+			return -1;
 		}
 	}
 

@@ -8,13 +8,9 @@ public:
 	~MainWindow();
 
 public:
-	bool Init();
-	bool Broadcast();
-	bool Release() const;
-	bool IsRunnig() const;
+	bool IsRunnig();
 
 	RECT GetClientWindowRect();
-	void SetWindowHandle(HWND hwnd);
 
 	virtual void OnUpdate();
 	virtual void OnCreate();
@@ -22,9 +18,13 @@ public:
 	virtual void OnFocus() = 0;
 	virtual void OnKillFocus() = 0;
 
+private:
+	void Broadcast();
+
 protected:
 	HWND m_hwnd;
 	bool m_isRunning;
+	bool m_isInitialized;
 	RECT m_wndRect;
 };
 

@@ -1,4 +1,5 @@
 #include "MainWindow.h"
+#include <exception>
 
 static LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
@@ -6,10 +7,6 @@ static LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lPara
 	{
 	case WM_CREATE:
 	{
-		MainWindow* window = (MainWindow*)((LPCREATESTRUCT)lParam)->lpCreateParams;
-		SetWindowLongPtr(hwnd, GWLP_USERDATA, (LONG_PTR)window);
-		window->SetWindowHandle(hwnd);
-		window->OnCreate();
 		break;
 	}
 	case WM_DESTROY:
@@ -22,7 +19,8 @@ static LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lPara
 	case WM_SETFOCUS:
 	{
 		MainWindow* window = (MainWindow*)GetWindowLongPtr(hwnd, GWLP_USERDATA);
-		window->OnFocus();
+		if(window)
+			window->OnFocus();
 		break;
 	}
 	case WM_KILLFOCUS:
@@ -38,16 +36,7 @@ static LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lPara
 	return DefWindowProc(hwnd, msg, wParam, lParam);
 }
 
-MainWindow::MainWindow() : m_hwnd(nullptr), m_isRunning(false), m_wndRect({0,0,0,0})
-{
-
-}
-
-MainWindow::~MainWindow()
-{
-}
-
-bool MainWindow::Init()
+MainWindow::MainWindow() : m_hwnd(nullptr), m_isRunning(false), m_wndRect({0,0,0,0}), m_isInitialized(false)
 {
 	WNDCLASSEX wc{};
 	wc.cbClsExtra = NULL;
@@ -64,36 +53,47 @@ bool MainWindow::Init()
 	wc.lpfnWndProc = WndProc;
 
 	if (!RegisterClassEx(&wc))
-		return false;
+		throw std::exception("[LMEngine Error] Register Window Class failed.");
 
 	m_wndRect = { 0, 0, 1920, 1280 };
 
 	AdjustWindowRect(&m_wndRect, WS_OVERLAPPED | WS_CAPTION | WS_SYSMENU, false);
 
-	m_hwnd = CreateWindowEx(NULL, 
-		L"LMEWindow", 
-		L"D3DX LMEngine", 
+	m_hwnd = CreateWindowEx(NULL,
+		L"LMEWindow",
+		L"D3DX LMEngine",
 		WS_OVERLAPPED | WS_CAPTION | WS_SYSMENU,
-		CW_USEDEFAULT, 
-		CW_USEDEFAULT, 
+		CW_USEDEFAULT,
+		CW_USEDEFAULT,
 		m_wndRect.right - m_wndRect.left,
 		m_wndRect.bottom - m_wndRect.top,
-		NULL, NULL, NULL, this);
+		NULL, NULL, NULL, NULL);
 
 	if (!m_hwnd)
-		return false;
+		throw std::exception("[LMEngine Error] Window creation failed.");
 
 	ShowWindow(m_hwnd, SW_SHOW);
 	UpdateWindow(m_hwnd);
 
 	m_isRunning = true;
-	
-	return true;
 }
 
-bool MainWindow::Broadcast()
+MainWindow::~MainWindow()
+{
+
+}
+
+void MainWindow::Broadcast()
 {
 	MSG msg;
+
+	if (!this->m_isInitialized)
+	{
+		SetWindowLongPtr(m_hwnd, GWLP_USERDATA, (LONG_PTR)this);
+		this->OnCreate();
+		
+		this->m_isInitialized = true;
+	}
 
 	this->OnUpdate();
 
@@ -103,32 +103,20 @@ bool MainWindow::Broadcast()
 		DispatchMessage(&msg);
 	}
 
-	Sleep(0);
-	
-	return false;
+	Sleep(1);
 }
 
-bool MainWindow::Release() const
+bool MainWindow::IsRunnig()
 {
-	if (m_hwnd)
-		DestroyWindow(m_hwnd);
-	
-	return true;
-}
+	if (m_isRunning)
+		Broadcast();
 
-bool MainWindow::IsRunnig() const
-{
 	return m_isRunning;
 }
 
 RECT MainWindow::GetClientWindowRect()
 {
 	return m_wndRect;
-}
-
-void MainWindow::SetWindowHandle(HWND hwnd)
-{
-	this->m_hwnd = hwnd;
 }
 
 void MainWindow::OnDestroy()
