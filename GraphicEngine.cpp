@@ -11,8 +11,11 @@ GraphicEngine::~GraphicEngine()
 
 bool GraphicEngine::Init()
 {
-	m_renderSystem = new RenderSystem();
-	m_renderSystem->Init();
+	try
+	{
+		m_renderSystem = new RenderSystem();
+	}
+	catch (...) {}
 	
 	return true;
 }
@@ -21,7 +24,6 @@ bool GraphicEngine::Release()
 {
 	if (m_renderSystem)
 	{
-		m_renderSystem->Release();
 		delete m_renderSystem;
 	}
 	
