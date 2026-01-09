@@ -71,66 +71,6 @@ RenderSystem::~RenderSystem()
 	m_d3d_device->Release();
 }
 
-//bool RenderSystem::Init()
-//{
-//	D3D_DRIVER_TYPE driverTypes[] =
-//	{
-//		D3D_DRIVER_TYPE_HARDWARE,
-//		D3D_DRIVER_TYPE_WARP,
-//		D3D_DRIVER_TYPE_REFERENCE
-//	};
-//
-//	UINT driverTypesCount = ARRAYSIZE(driverTypes);
-//
-//	D3D_FEATURE_LEVEL featureLevels[] =
-//	{
-//		D3D_FEATURE_LEVEL_11_0
-//	};
-//
-//	UINT featureLevelsCount = ARRAYSIZE(featureLevels);
-//
-//	HRESULT hr = 0;
-//
-//	ID3D11DeviceContext* m_immediateDeviceContext;
-//	D3D_FEATURE_LEVEL m_featureLevel;
-//
-//	for (UINT dtIndex = 0; dtIndex < driverTypesCount;)
-//	{
-//		hr = D3D11CreateDevice(NULL, driverTypes[dtIndex], NULL, NULL, featureLevels, featureLevelsCount, D3D11_SDK_VERSION, &m_d3d_device, &m_featureLevel, &m_immediateDeviceContext);
-//
-//		if (SUCCEEDED(hr))
-//			break;
-//
-//		++dtIndex;
-//	}
-//
-//	if (FAILED(hr))
-//		return false;
-//
-//	m_deviceContext = std::make_shared<DeviceContext>(m_immediateDeviceContext, this);
-//
-//	if (FAILED(m_d3d_device->QueryInterface(__uuidof(IDXGIDevice), (void**)&m_dxgiDevice)))
-//		return false;
-//
-//	if (FAILED(m_dxgiDevice->GetParent(__uuidof(IDXGIAdapter), (void**)&m_dxgiAdapter)))
-//		return false;
-//
-//	if (FAILED(m_dxgiAdapter->GetParent(__uuidof(IDXGIFactory), (void**)&m_dxgiFactory)))
-//		return false;
-//
-//	return true;
-//}
-
-//bool RenderSystem::Release()
-//{
-//	m_dxgiDevice->Release();
-//	m_dxgiAdapter->Release();
-//	m_dxgiFactory->Release();
-//	m_d3d_device->Release();
-//
-//	return true;
-//}
-
 SwapChainPtr RenderSystem::CreateSwapChain(HWND hwnd, UINT width, UINT height)
 {
 	SwapChainPtr sc = nullptr;

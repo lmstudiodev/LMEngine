@@ -121,8 +121,6 @@ void AppWindow::OnCreate()
 
 	InputSystem::Get()->ShowMouseCursor(false);
 	
-	GraphicEngine::Get()->Init();
-
 	RECT rc = this->GetClientWindowRect();
 
 	auto width = rc.right - rc.left;
@@ -200,8 +198,6 @@ void AppWindow::OnDestroy()
 	InputSystem::Get()->ShowMouseCursor(true);
 	
 	MainWindow::OnDestroy();
-
-	GraphicEngine::Get()->Release();
 }
 
 void AppWindow::OnKeyUp(int key)

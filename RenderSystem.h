@@ -8,10 +8,6 @@ public:
 	RenderSystem();
 	~RenderSystem();
 
-//public:
-//	bool Init();
-//	bool Release();
-
 public:
 	SwapChainPtr CreateSwapChain(HWND hwnd, UINT width, UINT height);
 	DeviceContextPtr GetDeviceContext();

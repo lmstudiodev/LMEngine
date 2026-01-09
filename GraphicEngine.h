@@ -5,21 +5,21 @@
 
 class GraphicEngine
 {
-public:
+private:
 	GraphicEngine();
 	~GraphicEngine();
 
 public:
-	bool Init();
-	bool Release();
-
 	RenderSystem* GetRenderSystem();
 
 public:
 	static GraphicEngine* Get();
+	static void Create();
+	static void Release();
 
 private:
 	RenderSystem* m_renderSystem;
+	static GraphicEngine* m_engine;
 };
 
 
