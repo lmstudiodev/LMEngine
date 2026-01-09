@@ -103,6 +103,8 @@ void AppWindow::OnUpdate()
 	GraphicEngine::Get()->GetRenderSystem()->GetDeviceContext()->SetVertexShader(m_vertexShader);
 	GraphicEngine::Get()->GetRenderSystem()->GetDeviceContext()->SetPixelShader(m_pixelShader);
 
+	GraphicEngine::Get()->GetRenderSystem()->GetDeviceContext()->SetTexture(m_pixelShader, m_wood_texture);
+
 	GraphicEngine::Get()->GetRenderSystem()->GetDeviceContext()->SetVertexBuffer(m_vertexBuffer);
 	GraphicEngine::Get()->GetRenderSystem()->GetDeviceContext()->SetIndexBuffer(m_indexBuffer);
 
@@ -120,7 +122,9 @@ void AppWindow::OnCreate()
 	InputSystem::Get()->AddListener(this);
 
 	InputSystem::Get()->ShowMouseCursor(false);
-	
+
+	m_wood_texture = GraphicEngine::Get()->GetTextureManager()->CreateTextureFromFile(L"Assets\\Textures\\wood.jpg");
+
 	RECT rc = this->GetClientWindowRect();
 
 	auto width = rc.right - rc.left;
@@ -130,35 +134,84 @@ void AppWindow::OnCreate()
 
 	m_world_camera.SetTranslation(Vector3D(0.0f, 0.0f, -2.0f));
 
+	Vector3D position_list[]
+	{
+		{Vector3D(-0.5f, -0.5f, -0.5f)},
+		{Vector3D(-0.5f, 0.5f, -0.5f)},
+		{Vector3D(0.5, 0.5f, -0.5f)},
+		{Vector3D(0.5, -0.5f, -0.5f)},
+
+		{Vector3D(0.5, -0.5f, 0.5f)},
+		{Vector3D(0.5, 0.5f, 0.5f)},
+		{Vector3D(-0.5, 0.5f, 0.5f)},
+		{Vector3D(-0.5, -0.5f, 0.5f)}
+	};
+
+	Vector2D textcoord_list[]
+	{
+		{Vector2D(0.0f, 0.0f)},
+		{Vector2D(0.0f, 1.0f)},
+		{Vector2D(1.0f, 0.0f)},
+		{Vector2D(1.0f, 1.0f)}
+	};
+
 	Vertex vertex_list[]
 	{
-		{Vector3D(-0.5f, -0.5f, -0.5f),   Vector3D(1.0f, 0.0f, 0.0f)},
-		{ Vector3D(-0.5f, 0.5f, -0.5f),     Vector3D(1.0f, 0.0f, 0.0f)},
-		{Vector3D(0.5, 0.5f, -0.5f),      Vector3D(1.0f, 0.0f, 0.0f)},
-		{Vector3D(0.5, -0.5f, -0.5f),       Vector3D(1.0f, 0.0f, 0.0f)},
+		//FRONT FACE
+		{position_list[0], textcoord_list[1]},
+		{position_list[1], textcoord_list[0]},
+		{position_list[2], textcoord_list[2]},
+		{position_list[3], textcoord_list[3]},
+		//BACK FACE
+		{position_list[4], textcoord_list[1]},
+		{position_list[5], textcoord_list[0]},
+		{position_list[6], textcoord_list[2]},
+		{position_list[7], textcoord_list[3]},
+		//TOP FACE
+		{position_list[1], textcoord_list[1]},
+		{position_list[6], textcoord_list[0]},
+		{position_list[5], textcoord_list[2]},
+		{position_list[2], textcoord_list[3]},
+		//BOTTOM FACE
+		{position_list[7], textcoord_list[1]},
+		{position_list[0], textcoord_list[0]},
+		{position_list[3], textcoord_list[2]},
+		{position_list[4], textcoord_list[3]},
+		//RIGHT FACE
+		{position_list[3], textcoord_list[1]},
+		{position_list[2], textcoord_list[0]},
+		{position_list[5], textcoord_list[2]},
+		{position_list[4], textcoord_list[3]},
+		//LEFT FACE
+		{position_list[7], textcoord_list[1]},
+		{position_list[6], textcoord_list[0]},
+		{position_list[1], textcoord_list[2]},
+		{position_list[0], textcoord_list[3]}
 
-		{Vector3D(0.5, -0.5f, 0.5f),       Vector3D(1.0f, 0.0f, 0.0f)},
-		{Vector3D(0.5, 0.5f, 0.5f),       Vector3D(1.0f, 0.0f, 0.0f)},
-		{Vector3D(-0.5, 0.5f, 0.5f),       Vector3D(1.0f, 0.0f, 0.0f)},
-		{Vector3D(-0.5, -0.5f, 0.5f),       Vector3D(1.0f, 0.0f, 0.0f)}
 	};
 
 	UINT sizeList = ARRAYSIZE(vertex_list);
 
 	unsigned int index_list[]
 	{
+		//FRONT FACE
 		0,1,2,
 		2,3,0,
+		//BACK FACE
 		4,5,6,
 		6,7,4,
-		1,6,5,
-		5,2,1,
-		7,0,3,
-		3,4,7,
-		3,2,5,
-		5,4,3,
-		7,6,1,
-		1,0,7
+		//TOP FACE
+		8,9,10,
+		10,11,8,
+		//BOTTOM FACE
+		12,13,14,
+		14,15,12,
+		//RIGHT FACE
+		16,17,18,
+		18,19,16,
+		//LEFT FACE
+		20,21,22,
+		22,23,20
 	};
 
 	UINT sizeIndexList = ARRAYSIZE(index_list);

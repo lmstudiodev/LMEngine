@@ -4,7 +4,7 @@
 
 GraphicEngine* GraphicEngine::m_engine = nullptr;
 
-GraphicEngine::GraphicEngine() : m_renderSystem(nullptr)
+GraphicEngine::GraphicEngine() : m_renderSystem(nullptr), m_textureManager(nullptr)
 {
 	try
 	{
@@ -14,11 +14,25 @@ GraphicEngine::GraphicEngine() : m_renderSystem(nullptr)
 	{
 		throw std::exception("[LMEngine Error] RenderSystem creation failed.");
 	}
+
+	try
+	{
+		m_textureManager = new TextureManager();
+	}
+	catch (...)
+	{
+		throw std::exception("[LMEngine Error] TextureManager creation failed.");
+	}
 }
 
 GraphicEngine::~GraphicEngine()
 {
 	GraphicEngine::m_engine = nullptr;
+
+	if (m_textureManager)
+	{
+		delete m_textureManager;
+	}
 	
 	if (m_renderSystem)
 	{
@@ -29,6 +43,11 @@ GraphicEngine::~GraphicEngine()
 RenderSystem* GraphicEngine::GetRenderSystem()
 {
 	return m_renderSystem;
+}
+
+TextureManager* GraphicEngine::GetTextureManager()
+{
+	return m_textureManager;
 }
 
 GraphicEngine* GraphicEngine::Get()
