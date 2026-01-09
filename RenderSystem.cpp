@@ -17,14 +17,6 @@ m_dxgiAdapter(nullptr),
 m_dxgiFactory(nullptr),
 m_blob(nullptr)
 {
-}
-
-RenderSystem::~RenderSystem()
-{
-}
-
-bool RenderSystem::Init()
-{
 	D3D_DRIVER_TYPE driverTypes[] =
 	{
 		D3D_DRIVER_TYPE_HARDWARE,
@@ -57,30 +49,26 @@ bool RenderSystem::Init()
 	}
 
 	if (FAILED(hr))
-		return false;
+		throw std::exception("[D3D11 Error] D3D11CreateDevice creation failed.");
 
 	m_deviceContext = std::make_shared<DeviceContext>(m_immediateDeviceContext, this);
 
 	if (FAILED(m_d3d_device->QueryInterface(__uuidof(IDXGIDevice), (void**)&m_dxgiDevice)))
-		return false;
+		throw std::exception("[D3D11 Error] IDXGIDevice creation failed.");
 
 	if (FAILED(m_dxgiDevice->GetParent(__uuidof(IDXGIAdapter), (void**)&m_dxgiAdapter)))
-		return false;
+		throw std::exception("[D3D11 Error] IDXGIAdapter creation failed.");
 
 	if (FAILED(m_dxgiAdapter->GetParent(__uuidof(IDXGIFactory), (void**)&m_dxgiFactory)))
-		return false;
-
-	return true;
+		throw std::exception("[D3D11 Error] IDXGIFactory creation failed.");
 }
 
-bool RenderSystem::Release()
+RenderSystem::~RenderSystem()
 {
 	m_dxgiDevice->Release();
 	m_dxgiAdapter->Release();
 	m_dxgiFactory->Release();
 	m_d3d_device->Release();
-
-	return true;
 }
 
 SwapChainPtr RenderSystem::CreateSwapChain(HWND hwnd, UINT width, UINT height)

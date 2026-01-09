@@ -5,10 +5,11 @@
 
 class InputSystem
 {
-public:
+private:
 	InputSystem();
 	~InputSystem();
 
+public:
 	void AddListener(InputListener* listener);
 	void RemoveListener(InputListener* listener);
 	void Update();
@@ -18,10 +19,15 @@ public:
 
 public:
 	static InputSystem* Get();
+	static void Create();
+	static void Release();
 
 private:
 	void UpdateKeyboardInput(POINT& p);
 	void UpdateMouseInput(POINT& p);
+
+private:
+	static InputSystem* m_inputSystem;
 
 private:
 	std::unordered_set<InputListener*> m_set_listeners;

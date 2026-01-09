@@ -9,10 +9,6 @@ public:
 	~RenderSystem();
 
 public:
-	bool Init();
-	bool Release();
-
-public:
 	SwapChainPtr CreateSwapChain(HWND hwnd, UINT width, UINT height);
 	DeviceContextPtr GetDeviceContext();
 	VertexBufferPtr CreateVertexBuffer(void* list_vertices, UINT size_vertex, UINT size_list, void* shader_byte_code, UINT size_byte_shader);
