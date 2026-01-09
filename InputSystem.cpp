@@ -1,5 +1,8 @@
 #include "InputSystem.h"
 #include "Windows.h"
+#include <exception>
+
+InputSystem* InputSystem::m_inputSystem = nullptr;
 
 InputSystem::InputSystem()
 {
@@ -7,6 +10,7 @@ InputSystem::InputSystem()
 
 InputSystem::~InputSystem()
 {
+	InputSystem::m_inputSystem = nullptr;
 }
 
 void InputSystem::AddListener(InputListener* listener)
@@ -41,9 +45,23 @@ void InputSystem::ShowMouseCursor(bool show)
 
 InputSystem* InputSystem::Get()
 {
-	static InputSystem is;
+	return m_inputSystem;
+}
 
-	return &is;
+void InputSystem::Create()
+{
+	if(InputSystem::m_inputSystem)
+		throw std::exception("[LMEngine Error] InputSystem already exist.");
+
+	InputSystem::m_inputSystem = new InputSystem();
+}
+
+void InputSystem::Release()
+{
+	if (!InputSystem::m_inputSystem)
+		return;
+
+	delete InputSystem::m_inputSystem;
 }
 
 void InputSystem::UpdateKeyboardInput(POINT& p)

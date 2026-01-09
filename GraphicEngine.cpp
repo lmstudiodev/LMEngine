@@ -18,6 +18,8 @@ GraphicEngine::GraphicEngine() : m_renderSystem(nullptr)
 
 GraphicEngine::~GraphicEngine()
 {
+	GraphicEngine::m_engine = nullptr;
+	
 	if (m_renderSystem)
 	{
 		delete m_renderSystem;

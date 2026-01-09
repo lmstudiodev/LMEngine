@@ -1,4 +1,5 @@
 #include "AppWindow.h"
+#include "InputSystem.h"
 #include <iostream>
 
 int main()
@@ -6,6 +7,7 @@ int main()
 	try
 	{
 		GraphicEngine::Create();
+		InputSystem::Create();
 	}
 	catch(...)
 	{
@@ -25,6 +27,7 @@ int main()
 		}
 	}
 
+	InputSystem::Release();
 	GraphicEngine::Release();
 
 	return 0;
