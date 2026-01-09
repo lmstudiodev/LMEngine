@@ -14,6 +14,7 @@ public:
 private:
 	IDXGISwapChain* m_swapChain;
 	ID3D11RenderTargetView* m_rtv;
+	ID3D11DepthStencilView* m_dsw;
 
 	RenderSystem* m_system = nullptr;
 

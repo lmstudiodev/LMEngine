@@ -23,8 +23,9 @@ void DeviceContext::ClearRenderTarget(const SwapChainPtr& swapChain, Vec4 color)
 	const float colorValues[] = { color.x, color.y, color.z, color.w };
 
 	m_deviceContext->ClearRenderTargetView(swapChain->m_rtv, colorValues);
+	m_deviceContext->ClearDepthStencilView(swapChain->m_dsw, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1, 0);
 
-	m_deviceContext->OMSetRenderTargets(1, &swapChain->m_rtv, NULL);
+	m_deviceContext->OMSetRenderTargets(1, &swapChain->m_rtv, swapChain->m_dsw);
 }
 
 void DeviceContext::SetVertexBuffer(const VertexBufferPtr& vertex_buffer)

@@ -2,7 +2,7 @@
 #include "RenderSystem.h"
 #include <exception>
 
-SwapChain::SwapChain(HWND hwnd, UINT width, UINT height, RenderSystem* system): m_swapChain(nullptr), m_rtv(nullptr), m_system(system)
+SwapChain::SwapChain(HWND hwnd, UINT width, UINT height, RenderSystem* system): m_swapChain(nullptr), m_rtv(nullptr), m_system(system), m_dsw(nullptr)
 {
 	ID3D11Device* device = m_system->m_d3d_device;
 
@@ -35,6 +35,30 @@ SwapChain::SwapChain(HWND hwnd, UINT width, UINT height, RenderSystem* system): 
 
 	if (FAILED(hr))
 		throw std::exception("[D3D11 Error] CreateRenderTargetView creation failed.");
+
+	D3D11_TEXTURE2D_DESC tex_desc{};
+	tex_desc.Width = width;
+	tex_desc.Height = height;
+	tex_desc.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;
+	tex_desc.Usage = D3D11_USAGE_DEFAULT;
+	tex_desc.BindFlags = D3D11_BIND_DEPTH_STENCIL;
+	tex_desc.MipLevels = 1;
+	tex_desc.SampleDesc.Count = 1;
+	tex_desc.SampleDesc.Quality = 0;
+	tex_desc.MiscFlags = 0;
+	tex_desc.ArraySize = 1;
+	tex_desc.CPUAccessFlags = 0;
+
+	hr = device->CreateTexture2D(&tex_desc, nullptr, &buffer);
+
+	if (FAILED(hr))
+		throw std::exception("[D3D11 Error] Depth stencil creation failed.");
+
+	hr = device->CreateDepthStencilView(buffer, NULL, &m_dsw);
+	buffer->Release();
+
+	if (FAILED(hr))
+		throw std::exception("[D3D11 Error] CreateDepthStencilView creation failed.");
 }
 
 SwapChain::~SwapChain()
@@ -44,6 +68,9 @@ SwapChain::~SwapChain()
 
 	if(m_rtv)
 		m_rtv->Release();
+
+	if (m_dsw)
+		m_dsw->Release();
 }
 
 void SwapChain::Present(bool vsync)

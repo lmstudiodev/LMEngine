@@ -3,6 +3,7 @@
 #include "Vertex.h"
 #include "Matrix4x4.h"
 #include "InputSystem.h"
+#include "Mesh.h"
 
 __declspec(align(16))
 struct Constant
@@ -105,10 +106,14 @@ void AppWindow::OnUpdate()
 
 	GraphicEngine::Get()->GetRenderSystem()->GetDeviceContext()->SetTexture(m_pixelShader, m_wood_texture);
 
-	GraphicEngine::Get()->GetRenderSystem()->GetDeviceContext()->SetVertexBuffer(m_vertexBuffer);
-	GraphicEngine::Get()->GetRenderSystem()->GetDeviceContext()->SetIndexBuffer(m_indexBuffer);
+	//GraphicEngine::Get()->GetRenderSystem()->GetDeviceContext()->SetVertexBuffer(m_vertexBuffer);
+	//GraphicEngine::Get()->GetRenderSystem()->GetDeviceContext()->SetIndexBuffer(m_indexBuffer);
+	//GraphicEngine::Get()->GetRenderSystem()->GetDeviceContext()->DrawIndexedTriangleList(m_indexBuffer->GetSizeIndexList(), 0, 0);
 
-	GraphicEngine::Get()->GetRenderSystem()->GetDeviceContext()->DrawIndexedTriangleList(m_indexBuffer->GetSizeIndexList(), 0, 0);
+	GraphicEngine::Get()->GetRenderSystem()->GetDeviceContext()->SetVertexBuffer(m_mesh->GetVertexBuffer());
+	GraphicEngine::Get()->GetRenderSystem()->GetDeviceContext()->SetIndexBuffer(m_mesh->GetIndexBuffer());
+
+	GraphicEngine::Get()->GetRenderSystem()->GetDeviceContext()->DrawIndexedTriangleList(m_mesh->GetIndexBuffer()->GetSizeIndexList(), 0, 0);
 
 	m_swapChain->Present(true);
 
@@ -123,7 +128,8 @@ void AppWindow::OnCreate()
 
 	InputSystem::Get()->ShowMouseCursor(false);
 
-	m_wood_texture = GraphicEngine::Get()->GetTextureManager()->CreateTextureFromFile(L"Assets\\Textures\\wood.jpg");
+	m_wood_texture = GraphicEngine::Get()->GetTextureManager()->CreateTextureFromFile(L"Assets\\Textures\\brick.png");
+	m_mesh = GraphicEngine::Get()->GetMeshManager()->CreateMeshFromFile(L"Assets\\Meshes\\teapot.obj");
 
 	RECT rc = this->GetClientWindowRect();
 
@@ -286,13 +292,10 @@ void AppWindow::OnMouseMove(const Point& mouse_pos)
 	int width = rc.right - rc.left;
 	int height = rc.bottom - rc.top;
 	
-	m_rot_x += (mouse_pos.m_axis_y - (height / 2.0f)) * m_delta_time;
-	m_rot_y += (mouse_pos.m_axis_x - (width / 2.0f))* m_delta_time;
-
+	m_rot_x += (mouse_pos.m_axis_y - (height / 2.0f)) * m_delta_time * 1.0f;
+	m_rot_y += (mouse_pos.m_axis_x - (width / 2.0f)) * m_delta_time * 1.0f;
 
 	InputSystem::Get()->SetCursorPosition(Point( (width / 2.0f), (height / 2.0f) ));
-
-
 }
 
 void AppWindow::OnLeftMouseButtonDown(const Point& delta_mouse_pos)

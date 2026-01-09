@@ -4,7 +4,7 @@
 
 GraphicEngine* GraphicEngine::m_engine = nullptr;
 
-GraphicEngine::GraphicEngine() : m_renderSystem(nullptr), m_textureManager(nullptr)
+GraphicEngine::GraphicEngine() : m_renderSystem(nullptr), m_textureManager(nullptr), m_meshManager(nullptr)
 {
 	try
 	{
@@ -23,11 +23,35 @@ GraphicEngine::GraphicEngine() : m_renderSystem(nullptr), m_textureManager(nullp
 	{
 		throw std::exception("[LMEngine Error] TextureManager creation failed.");
 	}
+
+	try
+	{
+		m_meshManager = new MeshManager();
+	}
+	catch (...)
+	{
+		throw std::exception("[LMEngine Error] MeshManager creation failed.");
+	}
+
+	void* shader_byte_code = nullptr;
+	size_t size_shader = 0;
+
+	m_renderSystem->CompileVertexShader(L"Resources/Shader/VertexMeshLayoutShader.hlsl", "vsmain", &shader_byte_code, &size_shader);
+
+	memcpy(m_mesh_layout_byte_code, shader_byte_code, size_shader);
+	m_mesh_layout_size = size_shader;
+
+	m_renderSystem->ReleaseCompiledShader();
 }
 
 GraphicEngine::~GraphicEngine()
 {
 	GraphicEngine::m_engine = nullptr;
+
+	if (m_meshManager)
+	{
+		delete m_meshManager;
+	}
 
 	if (m_textureManager)
 	{
@@ -48,6 +72,17 @@ RenderSystem* GraphicEngine::GetRenderSystem()
 TextureManager* GraphicEngine::GetTextureManager()
 {
 	return m_textureManager;
+}
+
+MeshManager* GraphicEngine::GetMeshManager()
+{
+	return m_meshManager;
+}
+
+void GraphicEngine::GetVertexMeshLayoutShaderByteCodeAndSize(void** byte_code, size_t* size)
+{
+	*byte_code = m_mesh_layout_byte_code;
+	*size = m_mesh_layout_size;
 }
 
 GraphicEngine* GraphicEngine::Get()
