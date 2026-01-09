@@ -2,6 +2,7 @@
 #include <d3d11.h>
 #include "Prerequisites.h"
 #include "RenderSystem.h"
+#include "TextureManager.h"
 
 class GraphicEngine
 {
@@ -11,6 +12,7 @@ private:
 
 public:
 	RenderSystem* GetRenderSystem();
+	TextureManager* GetTextureManager();
 
 public:
 	static GraphicEngine* Get();
@@ -19,6 +21,7 @@ public:
 
 private:
 	RenderSystem* m_renderSystem;
+	TextureManager* m_textureManager;
 	static GraphicEngine* m_engine;
 };
 

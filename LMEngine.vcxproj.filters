@@ -49,6 +49,12 @@
     <Filter Include="GameEngine\GraphicEngine\RenderSystem\VertexShader">
       <UniqueIdentifier>{44325622-3261-494d-a352-f30c16fa677b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="GameEngine\GraphicEngine\ResourceManager">
+      <UniqueIdentifier>{f99f1ec8-c7dc-40f5-a930-75aa3f65a2ea}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameEngine\GraphicEngine\ResourceManager\TextureManager">
+      <UniqueIdentifier>{9bdf3d68-027c-43ff-a625-50b9d51ae29b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -90,6 +96,19 @@
     <ClCompile Include="RenderSystem.cpp">
       <Filter>GameEngine\GraphicEngine\RenderSystem</Filter>
     </ClCompile>
+    <ClCompile Include="ResourceManager.cpp">
+      <Filter>GameEngine\GraphicEngine\ResourceManager</Filter>
+    </ClCompile>
+    <ClCompile Include="Resource.cpp">
+      <Filter>GameEngine\GraphicEngine\ResourceManager</Filter>
+    </ClCompile>
+    <ClCompile Include="TextureManager.cpp">
+      <Filter>GameEngine\GraphicEngine\ResourceManager\TextureManager</Filter>
+    </ClCompile>
+    <ClCompile Include="Texture.cpp">
+      <Filter>GameEngine\GraphicEngine\ResourceManager\TextureManager</Filter>
+    </ClCompile>
+    <ClCompile Include="Vector2D.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AppWindow.h">
@@ -154,6 +173,22 @@
     </ClInclude>
     <ClInclude Include="Prerequisites.h">
       <Filter>GameEngine\GraphicEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="ResourceManager.h">
+      <Filter>GameEngine\GraphicEngine\ResourceManager</Filter>
+    </ClInclude>
+    <ClInclude Include="Resource.h">
+      <Filter>GameEngine\GraphicEngine\ResourceManager</Filter>
+    </ClInclude>
+    <ClInclude Include="TextureManager.h">
+      <Filter>GameEngine\GraphicEngine\ResourceManager\TextureManager</Filter>
+    </ClInclude>
+    <ClInclude Include="Texture.h">
+      <Filter>GameEngine\GraphicEngine\ResourceManager\TextureManager</Filter>
+    </ClInclude>
+    <ClInclude Include="Vector2D.h" />
+    <ClInclude Include="Vec2.h">
+      <Filter>GameEngine\Math</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
