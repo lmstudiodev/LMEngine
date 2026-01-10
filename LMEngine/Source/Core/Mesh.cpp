@@ -3,10 +3,6 @@
 #define TINYOBJLOADER_IMPLEMENTATION
 #include <tiny_obj_loader.h>
 
-#include <locale>
-#include <filesystem>
-#include <iostream>
-
 #include "GraphicEngine.h"
 #include "VertexMesh.h"
 
@@ -67,7 +63,7 @@ Mesh::Mesh(const wchar_t* full_path) : Resource(full_path), m_vertex_buffer(null
 				VertexMesh vm(Vector3D(vx, vy, vz), Vector2D(tx, ty));
 				list_vertices.push_back(vm);
 
-				list_indices.push_back(indexOffset + v);
+				list_indices.push_back(static_cast<unsigned int>(indexOffset) + v);
 			}
 
 			indexOffset += num_face_verts;

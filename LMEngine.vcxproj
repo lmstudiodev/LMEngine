@@ -101,6 +101,7 @@
     <ClCompile Include="LMEngine\Source\Core\VertexShader.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="LMEngine\Include\Global.h" />
     <ClInclude Include="LMEngine\Include\WindowSystem\AppWindow.h" />
     <ClInclude Include="LMEngine\Include\Core\ConstantBuffer.h" />
     <ClInclude Include="LMEngine\Include\Core\DeviceContext.h" />

@@ -1,6 +1,4 @@
 #include "InputSystem.h"
-#include "Windows.h"
-#include <exception>
 
 InputSystem* InputSystem::m_inputSystem = nullptr;
 

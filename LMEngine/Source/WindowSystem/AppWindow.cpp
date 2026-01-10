@@ -1,4 +1,3 @@
-#include <Windows.h>
 #include "AppWindow.h"
 #include "Vertex.h"
 #include "Matrix4x4.h"
@@ -292,8 +291,8 @@ void AppWindow::OnMouseMove(const Point& mouse_pos)
 	int width = rc.right - rc.left;
 	int height = rc.bottom - rc.top;
 	
-	m_rot_x += (mouse_pos.m_axis_y - (height / 2.0f)) * m_delta_time * 1.0f;
-	m_rot_y += (mouse_pos.m_axis_x - (width / 2.0f)) * m_delta_time * 1.0f;
+	m_rot_x += (mouse_pos.m_axis_y - (height / 2.0f)) * m_delta_time / 5.0f;
+	m_rot_y += (mouse_pos.m_axis_x - (width / 2.0f)) * m_delta_time / 5.0f;
 
 	InputSystem::Get()->SetCursorPosition(Point( (width / 2.0f), (height / 2.0f) ));
 }

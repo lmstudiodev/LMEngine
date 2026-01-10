@@ -1,0 +1,13 @@
+#pragma once
+#include <d3d11.h>
+#include <d3dcompiler.h>
+#include <DirectXTex.h>
+#include <exception>
+#include <Windows.h>
+#include <filesystem>
+#include <unordered_map>
+#include <unordered_set>
+#include <string>
+#include <memory>
+#include <locale>
+#include <iostream>

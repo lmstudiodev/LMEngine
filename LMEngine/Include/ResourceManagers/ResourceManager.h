@@ -1,6 +1,5 @@
 #pragma once
-#include <unordered_map>
-#include <string>
+#include "Global.h"
 #include "Prerequisites.h"
 #include "Resource.h"
 

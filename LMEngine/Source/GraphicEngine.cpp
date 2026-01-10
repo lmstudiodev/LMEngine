@@ -1,6 +1,5 @@
 #include "GraphicEngine.h"
 #include "RenderSystem.h"
-#include <exception>
 
 GraphicEngine* GraphicEngine::m_engine = nullptr;
 

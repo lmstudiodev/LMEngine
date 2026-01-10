@@ -1,4 +1,5 @@
 #pragma once
+#include "Global.h"
 #include "ResourceManager.h"
 
 class TextureManager : public ResourceManager

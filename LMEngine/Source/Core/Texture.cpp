@@ -1,5 +1,4 @@
 #include "Texture.h"
-#include <DirectXTex.h>
 #include "GraphicEngine.h"
 
 Texture::Texture(const wchar_t* full_path) : Resource(full_path), m_texture(nullptr), m_shaderResource(nullptr)
@@ -23,7 +22,7 @@ Texture::Texture(const wchar_t* full_path) : Resource(full_path), m_texture(null
 	D3D11_SHADER_RESOURCE_VIEW_DESC desc{};
 	desc.Format = imageData.GetMetadata().format;
 	desc.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2D;
-	desc.Texture2D.MipLevels = imageData.GetMetadata().mipLevels;
+	desc.Texture2D.MipLevels = static_cast<UINT>(imageData.GetMetadata().mipLevels);
 	desc.Texture2D.MostDetailedMip = 0;
 
 	hr = GraphicEngine::Get()->GetRenderSystem()->m_d3d_device->CreateShaderResourceView(m_texture, &desc, &m_shaderResource);

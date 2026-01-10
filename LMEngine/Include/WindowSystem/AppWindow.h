@@ -1,4 +1,5 @@
 #pragma once
+#include "Global.h"
 #include "MainWindow.h"
 #include "GraphicEngine.h"
 #include "SwapChain.h"
