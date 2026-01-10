@@ -54,6 +54,7 @@
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
+      <AdditionalIncludeDirectories>LMEngine\Include;LMEngine\Include\Math;LMEngine\Include\InputSystem;LMEngine\include\Core;LMengine\include\ResourceManagers;LMEngine\Include\WindowSystem;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -70,6 +71,7 @@
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
+      <AdditionalIncludeDirectories>LMEngine\Include;LMEngine\Include\Math;LMEngine\Include\InputSystem;LMEngine\include\Core;LMengine\include\ResourceManagers;LMEngine\Include\WindowSystem;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -78,57 +80,57 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="AppWindow.cpp" />
-    <ClCompile Include="ConstantBuffer.cpp" />
-    <ClCompile Include="DeviceContext.cpp" />
-    <ClCompile Include="GraphicEngine.cpp" />
-    <ClCompile Include="IndexBuffer.cpp" />
-    <ClCompile Include="InputSystem.cpp" />
+    <ClCompile Include="LMEngine\Source\WindowSystem\AppWindow.cpp" />
+    <ClCompile Include="LMEngine\Source\Core\ConstantBuffer.cpp" />
+    <ClCompile Include="LMEngine\Source\Core\DeviceContext.cpp" />
+    <ClCompile Include="LMEngine\Source\GraphicEngine.cpp" />
+    <ClCompile Include="LMEngine\Source\Core\IndexBuffer.cpp" />
+    <ClCompile Include="LMEngine\Source\InputSystem\InputSystem.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="MainWindow.cpp" />
-    <ClCompile Include="Mesh.cpp" />
-    <ClCompile Include="MeshManager.cpp" />
-    <ClCompile Include="PixelShader.cpp" />
-    <ClCompile Include="RenderSystem.cpp" />
-    <ClCompile Include="Resource.cpp" />
-    <ClCompile Include="ResourceManager.cpp" />
-    <ClCompile Include="SwapChain.cpp" />
-    <ClCompile Include="Texture.cpp" />
-    <ClCompile Include="TextureManager.cpp" />
-    <ClCompile Include="VertexBuffer.cpp" />
-    <ClCompile Include="VertexShader.cpp" />
+    <ClCompile Include="LMEngine\Source\WindowSystem\MainWindow.cpp" />
+    <ClCompile Include="LMEngine\Source\Core\Mesh.cpp" />
+    <ClCompile Include="LMEngine\Source\ResourceManagers\MeshManager.cpp" />
+    <ClCompile Include="LMEngine\Source\Core\PixelShader.cpp" />
+    <ClCompile Include="LMEngine\Source\Core\RenderSystem.cpp" />
+    <ClCompile Include="LMEngine\Source\Core\Resource.cpp" />
+    <ClCompile Include="LMEngine\Source\ResourceManagers\ResourceManager.cpp" />
+    <ClCompile Include="LMEngine\Source\Core\SwapChain.cpp" />
+    <ClCompile Include="LMEngine\Source\Core\Texture.cpp" />
+    <ClCompile Include="LMEngine\Source\ResourceManagers\TextureManager.cpp" />
+    <ClCompile Include="LMEngine\Source\Core\VertexBuffer.cpp" />
+    <ClCompile Include="LMEngine\Source\Core\VertexShader.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="AppWindow.h" />
-    <ClInclude Include="ConstantBuffer.h" />
-    <ClInclude Include="DeviceContext.h" />
-    <ClInclude Include="GraphicEngine.h" />
-    <ClInclude Include="IndexBuffer.h" />
-    <ClInclude Include="InputListener.h" />
-    <ClInclude Include="InputSystem.h" />
-    <ClInclude Include="MainWindow.h" />
-    <ClInclude Include="Matrix4x4.h" />
-    <ClInclude Include="Mesh.h" />
-    <ClInclude Include="MeshManager.h" />
-    <ClInclude Include="PixelShader.h" />
-    <ClInclude Include="Point.h" />
-    <ClInclude Include="Prerequisites.h" />
-    <ClInclude Include="RenderSystem.h" />
-    <ClInclude Include="Resource.h" />
-    <ClInclude Include="ResourceManager.h" />
-    <ClInclude Include="Texture.h" />
-    <ClInclude Include="TextureManager.h" />
-    <ClInclude Include="Vec2.h" />
-    <ClInclude Include="Vector2D.h" />
-    <ClInclude Include="Vector3D.h" />
-    <ClInclude Include="Vector4D.h" />
-    <ClInclude Include="Vertex.h" />
-    <ClInclude Include="Vec3.h" />
-    <ClInclude Include="SwapChain.h" />
-    <ClInclude Include="Vec4.h" />
-    <ClInclude Include="VertexBuffer.h" />
-    <ClInclude Include="VertexMesh.h" />
-    <ClInclude Include="VertexShader.h" />
+    <ClInclude Include="LMEngine\Include\WindowSystem\AppWindow.h" />
+    <ClInclude Include="LMEngine\Include\Core\ConstantBuffer.h" />
+    <ClInclude Include="LMEngine\Include\Core\DeviceContext.h" />
+    <ClInclude Include="LMEngine\Include\GraphicEngine.h" />
+    <ClInclude Include="LMEngine\Include\Core\IndexBuffer.h" />
+    <ClInclude Include="LMEngine\Include\InputSystem\InputListener.h" />
+    <ClInclude Include="LMEngine\Include\InputSystem\InputSystem.h" />
+    <ClInclude Include="LMEngine\Include\WindowSystem\MainWindow.h" />
+    <ClInclude Include="LMEngine\Include\Math\Matrix4x4.h" />
+    <ClInclude Include="LMEngine\Include\Core\Mesh.h" />
+    <ClInclude Include="LMEngine\Include\ResourceManagers\MeshManager.h" />
+    <ClInclude Include="LMEngine\Include\Core\PixelShader.h" />
+    <ClInclude Include="LMEngine\Include\Math\Point.h" />
+    <ClInclude Include="LMEngine\Include\Prerequisites.h" />
+    <ClInclude Include="LMEngine\Include\Core\RenderSystem.h" />
+    <ClInclude Include="LMEngine\Include\Core\Resource.h" />
+    <ClInclude Include="LMEngine\Include\ResourceManagers\ResourceManager.h" />
+    <ClInclude Include="LMEngine\Include\Core\Texture.h" />
+    <ClInclude Include="LMEngine\Include\ResourceManagers\TextureManager.h" />
+    <ClInclude Include="LMEngine\Include\Math\Vec2.h" />
+    <ClInclude Include="LMEngine\Include\Math\Vector2D.h" />
+    <ClInclude Include="LMEngine\Include\Math\Vector3D.h" />
+    <ClInclude Include="LMEngine\Include\Math\Vector4D.h" />
+    <ClInclude Include="LMEngine\Include\Math\Vertex.h" />
+    <ClInclude Include="LMEngine\Include\Math\Vec3.h" />
+    <ClInclude Include="LMEngine\Include\Core\SwapChain.h" />
+    <ClInclude Include="LMEngine\Include\Math\Vec4.h" />
+    <ClInclude Include="LMEngine\Include\Core\VertexBuffer.h" />
+    <ClInclude Include="LMEngine\Include\Core\VertexMesh.h" />
+    <ClInclude Include="LMEngine\Include\Core\VertexShader.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Resources\Shader\PixelShader.hlsl">
