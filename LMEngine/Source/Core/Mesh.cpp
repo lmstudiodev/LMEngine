@@ -61,7 +61,12 @@ Mesh::Mesh(const wchar_t* full_path) : Resource(full_path), m_vertex_buffer(null
 				tinyobj::real_t tx = attributes.texcoords[static_cast<std::vector<tinyobj::real_t, std::allocator<tinyobj::real_t>>::size_type>(index.texcoord_index) * 2 + 0];
 				tinyobj::real_t ty = attributes.texcoords[static_cast<std::vector<tinyobj::real_t, std::allocator<tinyobj::real_t>>::size_type>(index.texcoord_index) * 2 + 1];
 
-				VertexMesh vm(Vector3D(vx, vy, vz), Vector2D(tx, ty));
+				tinyobj::real_t nx = attributes.normals[static_cast<std::vector<tinyobj::real_t, std::allocator<tinyobj::real_t>>::size_type>(index.normal_index) * 3 + 0];
+				tinyobj::real_t ny = attributes.normals[static_cast<std::vector<tinyobj::real_t, std::allocator<tinyobj::real_t>>::size_type>(index.normal_index) * 3 + 1];
+				tinyobj::real_t nz = attributes.normals[static_cast<std::vector<tinyobj::real_t, std::allocator<tinyobj::real_t>>::size_type>(index.normal_index) * 3 + 2];
+
+				VertexMesh vm(Vector3D(vx, vy, vz), Vector2D(tx, ty), Vector3D(nx, ny, nz));
+
 				list_vertices.push_back(vm);
 
 				list_indices.push_back(static_cast<unsigned int>(indexOffset) + v);

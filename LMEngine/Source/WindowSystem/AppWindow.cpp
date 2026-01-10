@@ -11,6 +11,8 @@ struct Constant
 	Matrix4x4 m_worldMatrix;
 	Matrix4x4 m_viewMatrix;
 	Matrix4x4 m_projectionMatrix;
+	Vector4D m_lightDirection;
+	Vector4D m_cameraPosition;
 };
 
 AppWindow::AppWindow(): m_swapChain(nullptr), 
@@ -24,6 +26,7 @@ m_new_delta(0),
 m_delta_time(0),
 m_rot_x(0),
 m_rot_y(0),
+m_light_rot_y(0),
 m_scale_cube(1.0f),
 m_forward(0),
 m_rightward(0)
@@ -39,6 +42,14 @@ void AppWindow::UpdateMatrix()
 	Constant cc{};
 
 	Matrix4x4 tempMatrix;
+	Matrix4x4 light_rotation_matrix;
+
+	light_rotation_matrix.SetIdentity();
+	light_rotation_matrix.SetRotationY(m_light_rot_y);
+
+	m_light_rot_y += 0.707f * m_delta_time;
+
+	cc.m_lightDirection = light_rotation_matrix.GetZDirection();
 
 	cc.m_worldMatrix.SetIdentity();
 
@@ -53,10 +64,12 @@ void AppWindow::UpdateMatrix()
 	tempMatrix.SetRotationY(m_rot_y);
 	worldCam *= tempMatrix;
 
-	Vector3D newPos = m_world_camera.GetTranslation() + worldCam.GetZDirection() * (m_forward * 0.3f);
-	newPos = newPos + worldCam.GetXDirection() * (m_rightward * 0.3f);
+	Vector3D newPos = m_world_camera.GetTranslation() + worldCam.GetZDirection() * (m_forward * 0.01f);
+	newPos = newPos + worldCam.GetXDirection() * (m_rightward * 0.01f);
 
 	worldCam.SetTranslation(newPos);
+
+	cc.m_cameraPosition = newPos;
 
 	m_world_camera = worldCam;
 
@@ -129,7 +142,7 @@ void AppWindow::OnCreate()
 	InputSystem::Get()->ShowMouseCursor(false);
 
 	m_wood_texture = GraphicEngine::Get()->GetTextureManager()->CreateTextureFromFile(L"Assets\\Textures\\brick.png");
-	m_mesh = GraphicEngine::Get()->GetMeshManager()->CreateMeshFromFile(L"Assets\\Meshes\\teapot.obj");
+	m_mesh = GraphicEngine::Get()->GetMeshManager()->CreateMeshFromFile(L"Assets\\Meshes\\statue.obj");
 
 	RECT rc = this->GetClientWindowRect();
 
@@ -138,7 +151,7 @@ void AppWindow::OnCreate()
 
 	m_swapChain = GraphicEngine::Get()->GetRenderSystem()->CreateSwapChain(this->m_hwnd, UINT(width), UINT(height));
 
-	m_world_camera.SetTranslation(Vector3D(0.0f, 0.0f, -2.0f));
+	m_world_camera.SetTranslation(Vector3D(0.0f, 0.0f, -1.0f));
 
 	Vector3D position_list[]
 	{
@@ -292,8 +305,8 @@ void AppWindow::OnMouseMove(const Point& mouse_pos)
 	int width = rc.right - rc.left;
 	int height = rc.bottom - rc.top;
 	
-	m_rot_x += (mouse_pos.m_axis_y - (height / 2.0f)) * m_delta_time / 5.0f;
-	m_rot_y += (mouse_pos.m_axis_x - (width / 2.0f)) * m_delta_time / 5.0f;
+	m_rot_x += (mouse_pos.m_axis_y - (height / 2.0f)) * m_delta_time;
+	m_rot_y += (mouse_pos.m_axis_x - (width / 2.0f)) * m_delta_time;
 
 	InputSystem::Get()->SetCursorPosition(Point( (width / 2.0f), (height / 2.0f) ));
 }
