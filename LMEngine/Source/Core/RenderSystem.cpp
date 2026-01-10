@@ -6,9 +6,7 @@
 #include "IndexBuffer.h"
 #include "VertexShader.h"
 #include "PixelShader.h"
-#include "d3dcompiler.h"
 #include "InputSystem.h"
-#include <exception>
 
 RenderSystem::RenderSystem() : m_d3d_device(nullptr),
 m_deviceContext(nullptr),

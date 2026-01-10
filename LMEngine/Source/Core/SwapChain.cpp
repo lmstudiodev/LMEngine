@@ -1,6 +1,5 @@
 #include "SwapChain.h"
 #include "RenderSystem.h"
-#include <exception>
 
 SwapChain::SwapChain(HWND hwnd, UINT width, UINT height, RenderSystem* system): m_swapChain(nullptr), m_rtv(nullptr), m_system(system), m_dsw(nullptr)
 {

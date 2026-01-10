@@ -209,6 +209,7 @@
     <ClInclude Include="LMEngine\Include\Math\Vector2D.h">
       <Filter>GameEngine\Math</Filter>
     </ClInclude>
+    <ClInclude Include="LMEngine\Include\Global.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Resources\Shader\VertexShader.hlsl" />

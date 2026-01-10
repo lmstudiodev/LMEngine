@@ -1,6 +1,5 @@
 #include "VertexBuffer.h"
 #include "RenderSystem.h"
-#include <exception>
 
 VertexBuffer::VertexBuffer(void* list_vertices, 
 	UINT size_vertex, 

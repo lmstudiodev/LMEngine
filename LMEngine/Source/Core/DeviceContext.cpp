@@ -6,7 +6,6 @@
 #include "VertexShader.h"
 #include "PixelShader.h"
 #include "Texture.h"
-#include <exception>
 
 DeviceContext::DeviceContext(ID3D11DeviceContext* deviceContext, RenderSystem* system) : m_deviceContext(deviceContext), m_system(system)
 {

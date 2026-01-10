@@ -1,5 +1,5 @@
 #pragma once
-#include <d3d11.h>
+#include "Global.h"
 #include "Vec4.h"
 #include "Prerequisites.h"
 
