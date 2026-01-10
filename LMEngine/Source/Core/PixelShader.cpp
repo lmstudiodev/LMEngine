@@ -1,3 +1,4 @@
+#include "stdafx.h"
 #include "PixelShader.h"
 #include "RenderSystem.h"
 

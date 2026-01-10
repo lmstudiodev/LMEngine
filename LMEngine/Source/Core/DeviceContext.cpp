@@ -1,3 +1,4 @@
+#include "stdafx.h"
 #include "DeviceContext.h"
 #include "SwapChain.h"
 #include "VertexBuffer.h"

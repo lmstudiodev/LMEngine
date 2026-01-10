@@ -1,6 +1,6 @@
+#include "stdafx.h"
 #include "AppWindow.h"
 #include "InputSystem.h"
-#include <iostream>
 
 int main()
 {

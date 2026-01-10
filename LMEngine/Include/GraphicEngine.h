@@ -1,5 +1,4 @@
 #pragma once
-#include "Global.h"
 #include "Prerequisites.h"
 #include "RenderSystem.h"
 #include "TextureManager.h"

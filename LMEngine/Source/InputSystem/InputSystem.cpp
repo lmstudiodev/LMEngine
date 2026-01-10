@@ -1,3 +1,4 @@
+#include "stdafx.h"
 #include "InputSystem.h"
 
 InputSystem* InputSystem::m_inputSystem = nullptr;

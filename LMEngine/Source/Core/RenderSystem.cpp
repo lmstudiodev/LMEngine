@@ -1,3 +1,4 @@
+#include "stdafx.h"
 #include "RenderSystem.h"
 #include "SwapChain.h"
 #include "DeviceContext.h"
