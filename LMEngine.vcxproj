@@ -55,6 +55,8 @@
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <AdditionalIncludeDirectories>LMEngine\Include;LMEngine\Include\Math;LMEngine\Include\InputSystem;LMEngine\include\Core;LMengine\include\ResourceManagers;LMEngine\Include\WindowSystem;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -72,6 +74,8 @@
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <AdditionalIncludeDirectories>LMEngine\Include;LMEngine\Include\Math;LMEngine\Include\InputSystem;LMEngine\include\Core;LMengine\include\ResourceManagers;LMEngine\Include\WindowSystem;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -80,6 +84,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="LMEngine\Include\stdafx.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
+    </ClCompile>
     <ClCompile Include="LMEngine\Source\WindowSystem\AppWindow.cpp" />
     <ClCompile Include="LMEngine\Source\Core\ConstantBuffer.cpp" />
     <ClCompile Include="LMEngine\Source\Core\DeviceContext.cpp" />
@@ -101,7 +109,7 @@
     <ClCompile Include="LMEngine\Source\Core\VertexShader.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="LMEngine\Include\Global.h" />
+    <ClInclude Include="LMEngine\Include\stdafx.h" />
     <ClInclude Include="LMEngine\Include\WindowSystem\AppWindow.h" />
     <ClInclude Include="LMEngine\Include\Core\ConstantBuffer.h" />
     <ClInclude Include="LMEngine\Include\Core\DeviceContext.h" />

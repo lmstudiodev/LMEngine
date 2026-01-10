@@ -1,5 +1,4 @@
 #pragma once
-#include "Global.h"
 #include "Vec4.h"
 #include "Prerequisites.h"
 

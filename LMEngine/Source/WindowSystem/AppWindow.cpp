@@ -1,3 +1,4 @@
+#include "stdafx.h"
 #include "AppWindow.h"
 #include "Vertex.h"
 #include "Matrix4x4.h"

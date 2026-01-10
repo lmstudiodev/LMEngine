@@ -1,4 +1,3 @@
-#include "Global.h"
 
 class MainWindow
 {

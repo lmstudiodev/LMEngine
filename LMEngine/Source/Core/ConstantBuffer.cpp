@@ -1,3 +1,4 @@
+#include "stdafx.h"
 #include "ConstantBuffer.h"
 #include "RenderSystem.h"
 #include "DeviceContext.h"

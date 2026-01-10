@@ -1,3 +1,4 @@
+#include "stdafx.h"
 #include "GraphicEngine.h"
 #include "RenderSystem.h"
 
