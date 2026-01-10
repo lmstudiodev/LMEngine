@@ -1,4 +1,5 @@
 #pragma once
+#include "Vector3D.h"
 #include "Vec4.h"
 
 class Vector4D
@@ -7,6 +8,7 @@ public:
 	Vector4D() : m_x(0.0f), m_y(0.0f), m_z(0.0f), m_w(0) {}
 	Vector4D(float x, float y, float z, float w) : m_x(x), m_y(y), m_z(z), m_w(w) {}
 	Vector4D(Vec4 vec) : m_x(vec.x), m_y(vec.y), m_z(vec.z), m_w(vec.w) {}
+	Vector4D(const Vector3D& vec) : m_x(vec.m_x), m_y(vec.m_y), m_z(vec.m_z), m_w(1.0f) {}
 	Vector4D(const Vector4D& vec) : m_x(vec.m_x), m_y(vec.m_y), m_z(vec.m_z), m_w(vec.m_w) {}
 
 	void cross(Vector4D& v1, Vector4D& v2, Vector4D& v3)

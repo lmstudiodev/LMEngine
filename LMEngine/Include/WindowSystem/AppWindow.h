@@ -54,6 +54,8 @@ private:
 	float m_rot_x;
 	float m_rot_y;
 
+	float m_light_rot_y;
+
 	float m_scale_cube;
 
 	float m_forward;
