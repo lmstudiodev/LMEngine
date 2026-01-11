@@ -6,7 +6,7 @@ Texture::Texture(const wchar_t* full_path) : Resource(full_path), m_texture(null
 {
 	DirectX::ScratchImage imageData;
 
-	HRESULT hr = DirectX::LoadFromWICFile(full_path, DIRECTORY_FLAGS_NONE, nullptr, imageData);
+	HRESULT hr = DirectX::LoadFromWICFile(full_path, DirectX::WIC_FLAGS_IGNORE_SRGB, nullptr, imageData);
 
 	if (FAILED(hr))
 		throw std::exception("[D3D11 Error] Load texture failed.");

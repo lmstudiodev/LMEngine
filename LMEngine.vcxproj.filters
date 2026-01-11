@@ -216,5 +216,6 @@
     <FxCompile Include="Resources\Shader\VertexShader.hlsl" />
     <FxCompile Include="Resources\Shader\PixelShader.hlsl" />
     <FxCompile Include="Resources\Shader\VertexMeshLayoutShader.hlsl" />
+    <FxCompile Include="Resources\Shader\SkyBoxShader.hlsl" />
   </ItemGroup>
 </Project>
