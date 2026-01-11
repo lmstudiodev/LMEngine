@@ -32,19 +32,35 @@ public:
 	void OnRightMouseButtonDown(const Point& delta_mouse_pos) override;
 	void OnRightMouseButtonUp(const Point& delta_mouse_pos) override;
 
+public:
+	void DrawMesh(const MeshPtr& mesh, const VertexShaderPtr& vs, const PixelShaderPtr& ps, const ConstantBufferPtr& cb, const TexturePtr& texture);
+
 private:
-	void UpdateMatrix();
+	void Update();
+	void UpdateModel();
+	void UpdateCamera();
+	void UpdateSkyBox();
 	void UpdateDeltaTime();
 
 private:
 	SwapChainPtr m_swapChain;
+
 	VertexBufferPtr m_vertexBuffer;
-	VertexShaderPtr m_vertexShader;
-	PixelShaderPtr m_pixelShader;
-	ConstantBufferPtr m_constantBuffer;
 	IndexBufferPtr m_indexBuffer;
+
+	ConstantBufferPtr m_constantBuffer;
+	ConstantBufferPtr m_skybox_constantBuffer;
+
+	VertexShaderPtr m_vertexShader;
+
+	PixelShaderPtr m_pixelShader;
+	PixelShaderPtr m_skyPixelShader;
+
+	TexturePtr m_sky_texture;
 	TexturePtr m_wood_texture;
+
 	MeshPtr m_mesh;
+	MeshPtr m_sky_mesh;
 
 private:
 	long m_old_delta;
@@ -62,5 +78,7 @@ private:
 	float m_rightward;
 
 	Matrix4x4 m_world_camera;
+	Matrix4x4 m_view_camera;
+	Matrix4x4 m_proj_camera;
 };
 

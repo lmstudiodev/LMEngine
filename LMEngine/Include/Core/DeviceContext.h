@@ -37,5 +37,6 @@ private:
 private:
 	friend class GraphicEngine;
 	friend class ConstantBuffer;
+	friend class RenderSystem;
 };
 

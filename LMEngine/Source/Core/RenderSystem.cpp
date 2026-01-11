@@ -14,7 +14,9 @@ m_deviceContext(nullptr),
 m_dxgiDevice(nullptr),
 m_dxgiAdapter(nullptr),
 m_dxgiFactory(nullptr),
-m_blob(nullptr)
+m_blob(nullptr),
+m_cull_front_state(nullptr),
+m_cull_back_state(nullptr)
 {
 	D3D_DRIVER_TYPE driverTypes[] =
 	{
@@ -60,10 +62,18 @@ m_blob(nullptr)
 
 	if (FAILED(m_dxgiAdapter->GetParent(__uuidof(IDXGIFactory), (void**)&m_dxgiFactory)))
 		throw std::exception("[D3D11 Error] IDXGIFactory creation failed.");
+
+	InitRasterizerState();
 }
 
 RenderSystem::~RenderSystem()
 {
+	if (this->m_cull_front_state)
+		this->m_cull_front_state->Release();
+
+	if (this->m_cull_back_state)
+		this->m_cull_back_state->Release();
+	
 	m_dxgiDevice->Release();
 	m_dxgiAdapter->Release();
 	m_dxgiFactory->Release();
@@ -153,6 +163,26 @@ PixelShaderPtr RenderSystem::CreatePixelShader(const void* shader_byte_code, siz
 	return ps;
 }
 
+void RenderSystem::InitRasterizerState()
+{
+	D3D11_RASTERIZER_DESC desc{};
+	desc.CullMode = D3D11_CULL_FRONT;
+	desc.DepthClipEnable = true;
+	desc.FillMode = D3D11_FILL_SOLID;
+
+	HRESULT hr = m_d3d_device->CreateRasterizerState(&desc, &m_cull_front_state);
+
+	if (FAILED(hr))
+		throw std::exception("[D3D11 Error] Create Cull front state creation failed.");
+
+	desc.CullMode = D3D11_CULL_BACK;
+
+	hr = m_d3d_device->CreateRasterizerState(&desc, &m_cull_back_state);
+
+	if (FAILED(hr))
+		throw std::exception("[D3D11 Error] Create Cull back state creation failed.");
+}
+
 bool RenderSystem::CompileVertexShader(const wchar_t* fileName, const char* entryPointName, void** shader_byte_code, size_t* byte_code_size)
 {
 	ID3DBlob* errblob = nullptr;
@@ -193,4 +223,16 @@ void RenderSystem::ReleaseCompiledShader()
 {
 	if (this->m_blob)
 		this->m_blob->Release();
+}
+
+void RenderSystem::SetRasterizerState(bool cull_front)
+{
+	if (cull_front)
+	{
+		m_deviceContext->m_deviceContext->RSSetState(m_cull_front_state);
+	}
+	else
+	{
+		m_deviceContext->m_deviceContext->RSSetState(m_cull_back_state);
+	}
 }
