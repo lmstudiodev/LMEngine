@@ -21,9 +21,6 @@ int main()
 			AppWindow app;
 
 			while (app.IsRunnig());
-			//{
-			//	app.Broadcast();
-			//}
 		}
 		catch (...)
 		{
