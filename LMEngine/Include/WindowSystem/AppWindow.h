@@ -22,6 +22,7 @@ public:
 	void OnDestroy() override;
 	void OnFocus() override;
 	void OnKillFocus() override;
+	void OnSize() override;
 
 	void OnKeyUp(int key) override;
 	void OnKeyDown(int key) override;
@@ -36,6 +37,7 @@ public:
 	void DrawMesh(const MeshPtr& mesh, const VertexShaderPtr& vs, const PixelShaderPtr& ps, const ConstantBufferPtr& cb, const TexturePtr& texture);
 
 private:
+	void Render();
 	void Update();
 	void UpdateModel();
 	void UpdateCamera();
@@ -80,5 +82,8 @@ private:
 	Matrix4x4 m_world_camera;
 	Matrix4x4 m_view_camera;
 	Matrix4x4 m_proj_camera;
+
+	bool m_play_state;
+	bool m_fullscreen_state;
 };
 

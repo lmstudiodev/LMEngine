@@ -29,12 +29,37 @@ m_rot_y(0),
 m_light_rot_y(0),
 m_scale_cube(1.0f),
 m_forward(0),
-m_rightward(0)
+m_rightward(0),
+m_play_state(false),
+m_fullscreen_state(false)
 {
 }
 
 AppWindow::~AppWindow()
 {
+}
+
+void AppWindow::Render()
+{
+	GraphicEngine::Get()->GetRenderSystem()->GetDeviceContext()->ClearRenderTarget(this->m_swapChain, { 0.0f, 0.3f, 0.4f, 1.0f });
+
+	RECT rc = this->GetClientWindowRect();
+
+	UINT width = rc.right - rc.left;
+	UINT height = rc.bottom - rc.top;
+
+	GraphicEngine::Get()->GetRenderSystem()->GetDeviceContext()->SetViewPortSize(width, height);
+
+	Update();
+
+	GraphicEngine::Get()->GetRenderSystem()->SetRasterizerState(false);
+	DrawMesh(m_mesh, m_vertexShader, m_pixelShader, m_constantBuffer, m_wood_texture);
+	GraphicEngine::Get()->GetRenderSystem()->SetRasterizerState(true);
+	DrawMesh(m_sky_mesh, m_vertexShader, m_skyPixelShader, m_skybox_constantBuffer, m_sky_texture);
+
+	m_swapChain->Present(true);
+
+	UpdateDeltaTime();
 }
 
 void AppWindow::Update()
@@ -138,26 +163,8 @@ void AppWindow::OnUpdate()
 	MainWindow::OnUpdate();
 
 	InputSystem::Get()->Update();
-	
-	GraphicEngine::Get()->GetRenderSystem()->GetDeviceContext()->ClearRenderTarget(this->m_swapChain ,{ 0.0f, 0.3f, 0.4f, 1.0f });
 
-	RECT rc = this->GetClientWindowRect();
-
-	UINT width = rc.right - rc.left;
-	UINT height = rc.bottom - rc.top;
-
-	GraphicEngine::Get()->GetRenderSystem()->GetDeviceContext()->SetViewPortSize(width, height);
-
-	Update();
-
-	GraphicEngine::Get()->GetRenderSystem()->SetRasterizerState(false);
-	DrawMesh(m_mesh, m_vertexShader, m_pixelShader, m_constantBuffer, m_wood_texture);
-	GraphicEngine::Get()->GetRenderSystem()->SetRasterizerState(true);
-	DrawMesh(m_sky_mesh, m_vertexShader, m_skyPixelShader, m_skybox_constantBuffer, m_sky_texture);
-
-	m_swapChain->Present(true);
-
-	UpdateDeltaTime();
+	this->Render();
 }
 
 void AppWindow::OnCreate()
@@ -165,8 +172,6 @@ void AppWindow::OnCreate()
 	MainWindow::OnCreate();
 
 	InputSystem::Get()->AddListener(this);
-
-	InputSystem::Get()->ShowMouseCursor(false);
 
 	m_wood_texture = GraphicEngine::Get()->GetTextureManager()->CreateTextureFromFile(L"Assets\\Textures\\brick.png");
 	m_sky_texture = GraphicEngine::Get()->GetTextureManager()->CreateTextureFromFile(L"Assets\\Textures\\sky.jpg");
@@ -294,17 +299,44 @@ void AppWindow::OnKillFocus()
 	InputSystem::Get()->RemoveListener(this);
 }
 
-void AppWindow::OnDestroy()
+void AppWindow::OnSize()
 {
-	InputSystem::Get()->ShowMouseCursor(true);
-	
+	MainWindow::OnSize();
+
+	RECT rc = this->GetClientWindowRect();
+
+	auto width = rc.right - rc.left;
+	auto height = rc.bottom - rc.top;
+
+	m_swapChain->Resize(width, height);
+
+	this->Render();
+}
+
+void AppWindow::OnDestroy()
+{	
 	MainWindow::OnDestroy();
+	m_swapChain->SetFullscreen(false, 1, 1);
 }
 
 void AppWindow::OnKeyUp(int key)
 {
 	m_forward = 0.0f;
 	m_rightward = 0.0f;
+
+	if (key == 'G')
+	{
+		m_play_state = (m_play_state) ? false : true;
+		InputSystem::Get()->ShowMouseCursor(!m_play_state);
+	}
+	else if (key == 'F')
+	{
+		m_fullscreen_state = (m_fullscreen_state) ? false : true;
+
+		RECT screenSize = GetScreenSize();
+
+		m_swapChain->SetFullscreen(m_fullscreen_state, screenSize.right, screenSize.bottom);
+	}
 }
 
 void AppWindow::OnKeyDown(int key)
@@ -329,15 +361,18 @@ void AppWindow::OnKeyDown(int key)
 
 void AppWindow::OnMouseMove(const Point& mouse_pos)
 {
+	if(!m_play_state)
+		return;
+	
 	RECT rc = this->GetClientWindowRect();
 
 	int width = rc.right - rc.left;
 	int height = rc.bottom - rc.top;
 	
-	m_rot_x += (mouse_pos.m_axis_y - (height / 2.0f)) * m_delta_time;
-	m_rot_y += (mouse_pos.m_axis_x - (width / 2.0f)) * m_delta_time;
+	m_rot_x += (mouse_pos.m_axis_y - (height / 2.0f)) * m_delta_time * 0.1f;
+	m_rot_y += (mouse_pos.m_axis_x - (width / 2.0f)) * m_delta_time * 0.1f;
 
-	InputSystem::Get()->SetCursorPosition(Point( (width / 2.0f), (height / 2.0f) ));
+	InputSystem::Get()->SetCursorPosition(Point( (int)(width / 2.0f), (int)(height / 2.0f) ));
 }
 
 void AppWindow::OnLeftMouseButtonDown(const Point& delta_mouse_pos)

@@ -9,6 +9,11 @@ public:
 
 public:
 	void Present(bool vsync);
+	void Resize(unsigned int width, unsigned int height);
+	void SetFullscreen(bool fullscreen, unsigned int width, unsigned int height);
+
+private:
+	void ReloadBuffers(unsigned int width, unsigned int height);
 
 private:
 	IDXGISwapChain* m_swapChain;

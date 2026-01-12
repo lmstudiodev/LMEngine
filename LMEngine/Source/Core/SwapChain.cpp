@@ -18,11 +18,62 @@ SwapChain::SwapChain(HWND hwnd, UINT width, UINT height, RenderSystem* system): 
 	desc.OutputWindow = hwnd;
 	desc.SampleDesc.Count = 1;
 	desc.SampleDesc.Quality = 0;
+	desc.Flags = DXGI_SWAP_CHAIN_FLAG_ALLOW_MODE_SWITCH;
 	desc.Windowed = true;
 
 	if (FAILED(m_system->m_dxgiFactory->CreateSwapChain(device, &desc, &m_swapChain)))
 		throw std::exception("[D3D11 Error] CreateSwapChain creation failed.");
 
+	ReloadBuffers(width, height);
+}
+
+SwapChain::~SwapChain()
+{
+	if(m_swapChain)
+		m_swapChain->Release();
+
+	if(m_rtv)
+		m_rtv->Release();
+
+	if (m_dsw)
+		m_dsw->Release();
+}
+
+void SwapChain::Present(bool vsync)
+{
+	m_swapChain->Present(vsync, NULL);
+}
+
+void SwapChain::Resize(unsigned int width, unsigned int height)
+{
+	if (m_rtv)
+		m_rtv->Release();
+
+	if (m_dsw)
+		m_dsw->Release();
+	
+	HRESULT hr = m_swapChain->ResizeBuffers(1, width, height, DXGI_FORMAT_R8G8B8A8_UNORM, 0);
+
+	if (FAILED(hr))
+		std::cout << "[D3D11 warning] Unable to resize buffers." << "\n";
+
+	ReloadBuffers(width, height);
+}
+
+void SwapChain::SetFullscreen(bool fullscreen, unsigned int width, unsigned int height)
+{
+	Resize(width, height);
+	
+	HRESULT hr = m_swapChain->SetFullscreenState(fullscreen, nullptr);
+
+	if (FAILED(hr))
+		std::cout << "[D3D11 warning] Unable to switch to full screen mode." << "\n";
+}
+
+void SwapChain::ReloadBuffers(unsigned int width, unsigned int height)
+{
+	ID3D11Device* device = m_system->m_d3d_device;
+	
 	ID3D11Texture2D* buffer = nullptr;
 
 	HRESULT hr = m_swapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), (void**)&buffer);
@@ -59,21 +110,4 @@ SwapChain::SwapChain(HWND hwnd, UINT width, UINT height, RenderSystem* system): 
 
 	if (FAILED(hr))
 		throw std::exception("[D3D11 Error] CreateDepthStencilView creation failed.");
-}
-
-SwapChain::~SwapChain()
-{
-	if(m_swapChain)
-		m_swapChain->Release();
-
-	if(m_rtv)
-		m_rtv->Release();
-
-	if (m_dsw)
-		m_dsw->Release();
-}
-
-void SwapChain::Present(bool vsync)
-{
-	m_swapChain->Present(vsync, NULL);
 }

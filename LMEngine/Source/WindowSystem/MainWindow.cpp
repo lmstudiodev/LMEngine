@@ -9,6 +9,13 @@ static LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lPara
 	{
 		break;
 	}
+	case WM_SIZE:
+	{
+		MainWindow* window = (MainWindow*)GetWindowLongPtr(hwnd, GWLP_USERDATA);
+		if (window)
+			window->OnSize();
+		break;
+	}
 	case WM_DESTROY:
 	{
 		MainWindow* window = (MainWindow*)GetWindowLongPtr(hwnd, GWLP_USERDATA);
@@ -57,12 +64,12 @@ MainWindow::MainWindow() : m_hwnd(nullptr), m_isRunning(false), m_wndRect({0,0,0
 
 	m_wndRect = { 0, 0, 1920, 1280 };
 
-	AdjustWindowRect(&m_wndRect, WS_OVERLAPPED | WS_CAPTION | WS_SYSMENU, false);
+	AdjustWindowRect(&m_wndRect, WS_OVERLAPPEDWINDOW, false);
 
-	m_hwnd = CreateWindowEx(NULL,
+	m_hwnd = CreateWindowEx(WS_EX_OVERLAPPEDWINDOW,
 		L"LMEWindow",
 		L"D3DX LMEngine",
-		WS_OVERLAPPED | WS_CAPTION | WS_SYSMENU,
+		WS_OVERLAPPEDWINDOW,
 		CW_USEDEFAULT,
 		CW_USEDEFAULT,
 		m_wndRect.right - m_wndRect.left,
@@ -116,7 +123,19 @@ bool MainWindow::IsRunnig()
 
 RECT MainWindow::GetClientWindowRect()
 {
-	return m_wndRect;
+	RECT rc;
+
+	GetClientRect(this->m_hwnd, &rc);
+
+	return rc;
+}
+
+RECT MainWindow::GetScreenSize()
+{
+	RECT rc;
+	rc.right = GetSystemMetrics(SM_CXSCREEN);
+	rc.bottom = GetSystemMetrics(SM_CYSCREEN);
+	return rc;
 }
 
 void MainWindow::OnDestroy()
@@ -130,6 +149,12 @@ void MainWindow::OnCreate()
 }
 
 void MainWindow::OnUpdate()
+{
+
+}
+
+
+void MainWindow::OnSize()
 {
 
 }
