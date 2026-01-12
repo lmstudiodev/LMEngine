@@ -63,6 +63,4 @@ float4 psmain(PS_INPUT input) : SV_TARGET
     float3 final_light = ambient_light + diffuse_light + specular_light;
     
     return float4(final_light, 1.0f);
-    
-    //Texture.Sample(TextureSampler, input.texcoord * 0.5f);
 }

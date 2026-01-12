@@ -64,6 +64,7 @@ private:
 	PixelShaderPtr m_skyPixelShader;
 
 	TexturePtr m_sky_texture;
+	TexturePtr m_wall_texture;
 	TexturePtr m_earth_color_texture;
 	TexturePtr m_earth_specular_texture;
 	TexturePtr m_clouds_texture;
@@ -92,6 +93,7 @@ private:
 	Matrix4x4 m_proj_camera;
 
 	float m_time;
+	float m_light_radius;
 
 	bool m_play_state;
 	bool m_fullscreen_state;

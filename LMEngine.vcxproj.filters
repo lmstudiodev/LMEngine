@@ -217,5 +217,7 @@
     <FxCompile Include="Resources\Shader\PixelShader.hlsl" />
     <FxCompile Include="Resources\Shader\VertexMeshLayoutShader.hlsl" />
     <FxCompile Include="Resources\Shader\SkyBoxShader.hlsl" />
+    <FxCompile Include="Resources\Shader\PointLightVertexShader.hlsl" />
+    <FxCompile Include="Resources\Shader\PointLightPixelShader.hlsl" />
   </ItemGroup>
 </Project>
