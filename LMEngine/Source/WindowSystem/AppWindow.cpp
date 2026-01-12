@@ -13,6 +13,8 @@ struct Constant
 	Matrix4x4 m_projectionMatrix;
 	Vector4D m_lightDirection;
 	Vector4D m_cameraPosition;
+	Vector4D m_lightPosition = Vector4D(0.0f, 1.0f, 0.0f, 0.0f);
+	float m_light_radius = 4.0f;
 	float m_time = 0.0f;
 };
 
@@ -33,7 +35,8 @@ m_forward(0),
 m_rightward(0),
 m_play_state(false),
 m_fullscreen_state(false),
-m_time(0)
+m_time(0),
+m_light_radius(4.0f)
 {
 }
 
@@ -56,13 +59,14 @@ void AppWindow::Render()
 
 	GraphicEngine::Get()->GetRenderSystem()->SetRasterizerState(false);
 
-	TexturePtr list_texture[4];
-	list_texture[0] = m_earth_color_texture;
-	list_texture[1] = m_earth_specular_texture;
-	list_texture[2] = m_clouds_texture;
-	list_texture[3] = m_earth_night_texture;
+	TexturePtr list_texture[1];
+	list_texture[0] = m_wall_texture;
+	//list_texture[0] = m_earth_color_texture;
+	//list_texture[1] = m_earth_specular_texture;
+	//list_texture[2] = m_clouds_texture;
+	//list_texture[3] = m_earth_night_texture;
 
-	DrawMesh(m_mesh, m_vertexShader, m_pixelShader, m_constantBuffer, list_texture, 4);
+	DrawMesh(m_mesh, m_vertexShader, m_pixelShader, m_constantBuffer, list_texture, 1);
 
 	GraphicEngine::Get()->GetRenderSystem()->SetRasterizerState(true);
 
@@ -91,12 +95,17 @@ void AppWindow::UpdateModel()
 	light_rotation_matrix.SetIdentity();
 	light_rotation_matrix.SetRotationY(m_light_rot_y);
 
-	m_light_rot_y += 0.307f * m_delta_time;
+	m_light_rot_y += 1.57f * m_delta_time;
 
 	cc.m_worldMatrix.SetIdentity();
 	cc.m_viewMatrix = m_view_camera;
 	cc.m_projectionMatrix = m_proj_camera;
 	cc.m_cameraPosition = m_world_camera.GetTranslation();
+
+	float distance_from_origin = 1.0f;
+
+	cc.m_lightPosition = Vector4D(cos(m_light_rot_y) * distance_from_origin, 1.0f, sin(m_light_rot_y) * distance_from_origin, 1.0f);
+	cc.m_light_radius = m_light_radius;
 	cc.m_lightDirection = light_rotation_matrix.GetZDirection();
 	cc.m_time = m_time;
 
@@ -193,14 +202,14 @@ void AppWindow::OnCreate()
 
 	InputSystem::Get()->AddListener(this);
 
-	m_earth_color_texture = GraphicEngine::Get()->GetTextureManager()->CreateTextureFromFile(L"Assets\\Textures\\earth_color.jpg");
-	m_earth_specular_texture = GraphicEngine::Get()->GetTextureManager()->CreateTextureFromFile(L"Assets\\Textures\\earth_spec.jpg");
-	m_clouds_texture = GraphicEngine::Get()->GetTextureManager()->CreateTextureFromFile(L"Assets\\Textures\\clouds.jpg");
-	m_earth_night_texture = GraphicEngine::Get()->GetTextureManager()->CreateTextureFromFile(L"Assets\\Textures\\earth_night.jpg");
+	m_wall_texture = GraphicEngine::Get()->GetTextureManager()->CreateTextureFromFile(L"Assets\\Textures\\wall.jpg");
+	//m_earth_specular_texture = GraphicEngine::Get()->GetTextureManager()->CreateTextureFromFile(L"Assets\\Textures\\earth_spec.jpg");
+	//m_clouds_texture = GraphicEngine::Get()->GetTextureManager()->CreateTextureFromFile(L"Assets\\Textures\\clouds.jpg");
+	//m_earth_night_texture = GraphicEngine::Get()->GetTextureManager()->CreateTextureFromFile(L"Assets\\Textures\\earth_night.jpg");
 
 	m_sky_texture = GraphicEngine::Get()->GetTextureManager()->CreateTextureFromFile(L"Assets\\Textures\\stars_map.jpg");
 
-	m_mesh = GraphicEngine::Get()->GetMeshManager()->CreateMeshFromFile(L"Assets\\Meshes\\sphere_hq.obj");
+	m_mesh = GraphicEngine::Get()->GetMeshManager()->CreateMeshFromFile(L"Assets\\Meshes\\scene.obj");
 	m_sky_mesh = GraphicEngine::Get()->GetMeshManager()->CreateMeshFromFile(L"Assets\\Meshes\\sphere.obj");
 
 	RECT rc = this->GetClientWindowRect();
@@ -295,11 +304,11 @@ void AppWindow::OnCreate()
 	void* shader_byte_code = nullptr;
 	size_t size_shader = 0;
 
-	GraphicEngine::Get()->GetRenderSystem()->CompileVertexShader(L"Resources/Shader/VertexShader.hlsl", "vsmain", &shader_byte_code, &size_shader);
+	GraphicEngine::Get()->GetRenderSystem()->CompileVertexShader(L"Resources/Shader/PointLightVertexShader.hlsl", "vsmain", &shader_byte_code, &size_shader);
 	m_vertexShader = GraphicEngine::Get()->GetRenderSystem()->CreateVertexShader(shader_byte_code, size_shader);
 	GraphicEngine::Get()->GetRenderSystem()->ReleaseCompiledShader();
 
-	GraphicEngine::Get()->GetRenderSystem()->CompilePixelShader(L"Resources/Shader/PixelShader.hlsl", "psmain", &shader_byte_code, &size_shader);
+	GraphicEngine::Get()->GetRenderSystem()->CompilePixelShader(L"Resources/Shader/PointLightPixelShader.hlsl", "psmain", &shader_byte_code, &size_shader);
 	m_pixelShader = GraphicEngine::Get()->GetRenderSystem()->CreatePixelShader(shader_byte_code, size_shader);
 	GraphicEngine::Get()->GetRenderSystem()->ReleaseCompiledShader();
 
@@ -382,6 +391,14 @@ void AppWindow::OnKeyDown(int key)
 	else if (key == 'D')
 	{
 		m_rightward = 1.0f;
+	}
+	else if (key == 'O')
+	{
+		m_light_radius -= 1.0f * m_delta_time;
+	}
+	else if (key == 'P')
+	{
+		m_light_radius += 1.0f * m_delta_time;
 	}
 }
 
