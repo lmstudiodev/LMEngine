@@ -34,7 +34,12 @@ public:
 	void OnRightMouseButtonUp(const Point& delta_mouse_pos) override;
 
 public:
-	void DrawMesh(const MeshPtr& mesh, const VertexShaderPtr& vs, const PixelShaderPtr& ps, const ConstantBufferPtr& cb, const TexturePtr& texture);
+	void DrawMesh(const MeshPtr& mesh, 
+		const VertexShaderPtr& vs, 
+		const PixelShaderPtr& ps, 
+		const ConstantBufferPtr& cb, 
+		const TexturePtr* list_textures, 
+		unsigned int num_textures);
 
 private:
 	void Render();
@@ -59,7 +64,10 @@ private:
 	PixelShaderPtr m_skyPixelShader;
 
 	TexturePtr m_sky_texture;
-	TexturePtr m_wood_texture;
+	TexturePtr m_earth_color_texture;
+	TexturePtr m_earth_specular_texture;
+	TexturePtr m_clouds_texture;
+	TexturePtr m_earth_night_texture;
 
 	MeshPtr m_mesh;
 	MeshPtr m_sky_mesh;
@@ -82,6 +90,8 @@ private:
 	Matrix4x4 m_world_camera;
 	Matrix4x4 m_view_camera;
 	Matrix4x4 m_proj_camera;
+
+	float m_time;
 
 	bool m_play_state;
 	bool m_fullscreen_state;

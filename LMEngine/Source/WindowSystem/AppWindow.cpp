@@ -13,6 +13,7 @@ struct Constant
 	Matrix4x4 m_projectionMatrix;
 	Vector4D m_lightDirection;
 	Vector4D m_cameraPosition;
+	float m_time = 0.0f;
 };
 
 AppWindow::AppWindow(): m_swapChain(nullptr), 
@@ -31,7 +32,8 @@ m_scale_cube(1.0f),
 m_forward(0),
 m_rightward(0),
 m_play_state(false),
-m_fullscreen_state(false)
+m_fullscreen_state(false),
+m_time(0)
 {
 }
 
@@ -53,9 +55,20 @@ void AppWindow::Render()
 	Update();
 
 	GraphicEngine::Get()->GetRenderSystem()->SetRasterizerState(false);
-	DrawMesh(m_mesh, m_vertexShader, m_pixelShader, m_constantBuffer, m_wood_texture);
+
+	TexturePtr list_texture[4];
+	list_texture[0] = m_earth_color_texture;
+	list_texture[1] = m_earth_specular_texture;
+	list_texture[2] = m_clouds_texture;
+	list_texture[3] = m_earth_night_texture;
+
+	DrawMesh(m_mesh, m_vertexShader, m_pixelShader, m_constantBuffer, list_texture, 4);
+
 	GraphicEngine::Get()->GetRenderSystem()->SetRasterizerState(true);
-	DrawMesh(m_sky_mesh, m_vertexShader, m_skyPixelShader, m_skybox_constantBuffer, m_sky_texture);
+
+	list_texture[0] = m_sky_texture;
+
+	DrawMesh(m_sky_mesh, m_vertexShader, m_skyPixelShader, m_skybox_constantBuffer, list_texture, 1);
 
 	m_swapChain->Present(true);
 
@@ -78,13 +91,14 @@ void AppWindow::UpdateModel()
 	light_rotation_matrix.SetIdentity();
 	light_rotation_matrix.SetRotationY(m_light_rot_y);
 
-	m_light_rot_y += 0.707f * m_delta_time;
+	m_light_rot_y += 0.307f * m_delta_time;
 
 	cc.m_worldMatrix.SetIdentity();
 	cc.m_viewMatrix = m_view_camera;
 	cc.m_projectionMatrix = m_proj_camera;
 	cc.m_cameraPosition = m_world_camera.GetTranslation();
 	cc.m_lightDirection = light_rotation_matrix.GetZDirection();
+	cc.m_time = m_time;
 
 	m_constantBuffer->Update(GraphicEngine::Get()->GetRenderSystem()->GetDeviceContext(), &cc);
 }
@@ -140,9 +154,15 @@ void AppWindow::UpdateDeltaTime()
 	m_old_delta = m_new_delta;
 	m_new_delta = GetTickCount64();
 	m_delta_time = (m_old_delta) ? ((m_new_delta - m_old_delta) / 1000.0f) : 0.0f;
+
+	m_time += m_delta_time;
 }
 
-void AppWindow::DrawMesh(const MeshPtr& mesh, const VertexShaderPtr& vs, const PixelShaderPtr& ps, const ConstantBufferPtr& cb, const TexturePtr& texture)
+void AppWindow::DrawMesh(const MeshPtr& mesh, 
+	const VertexShaderPtr& vs, 
+	const PixelShaderPtr& ps, 
+	const ConstantBufferPtr& cb, 
+	const TexturePtr* list_textures, unsigned int num_textures)
 {
 	GraphicEngine::Get()->GetRenderSystem()->GetDeviceContext()->SetConstantBuffer(vs, cb);
 	GraphicEngine::Get()->GetRenderSystem()->GetDeviceContext()->SetConstantBuffer(ps, cb);
@@ -150,7 +170,7 @@ void AppWindow::DrawMesh(const MeshPtr& mesh, const VertexShaderPtr& vs, const P
 	GraphicEngine::Get()->GetRenderSystem()->GetDeviceContext()->SetVertexShader(vs);
 	GraphicEngine::Get()->GetRenderSystem()->GetDeviceContext()->SetPixelShader(ps);
 
-	GraphicEngine::Get()->GetRenderSystem()->GetDeviceContext()->SetTexture(ps, texture);
+	GraphicEngine::Get()->GetRenderSystem()->GetDeviceContext()->SetTexture(ps, list_textures, num_textures);
 
 	GraphicEngine::Get()->GetRenderSystem()->GetDeviceContext()->SetVertexBuffer(mesh->GetVertexBuffer());
 	GraphicEngine::Get()->GetRenderSystem()->GetDeviceContext()->SetIndexBuffer(mesh->GetIndexBuffer());
@@ -173,10 +193,14 @@ void AppWindow::OnCreate()
 
 	InputSystem::Get()->AddListener(this);
 
-	m_wood_texture = GraphicEngine::Get()->GetTextureManager()->CreateTextureFromFile(L"Assets\\Textures\\brick.png");
-	m_sky_texture = GraphicEngine::Get()->GetTextureManager()->CreateTextureFromFile(L"Assets\\Textures\\sky.jpg");
+	m_earth_color_texture = GraphicEngine::Get()->GetTextureManager()->CreateTextureFromFile(L"Assets\\Textures\\earth_color.jpg");
+	m_earth_specular_texture = GraphicEngine::Get()->GetTextureManager()->CreateTextureFromFile(L"Assets\\Textures\\earth_spec.jpg");
+	m_clouds_texture = GraphicEngine::Get()->GetTextureManager()->CreateTextureFromFile(L"Assets\\Textures\\clouds.jpg");
+	m_earth_night_texture = GraphicEngine::Get()->GetTextureManager()->CreateTextureFromFile(L"Assets\\Textures\\earth_night.jpg");
 
-	m_mesh = GraphicEngine::Get()->GetMeshManager()->CreateMeshFromFile(L"Assets\\Meshes\\suzanne.obj");
+	m_sky_texture = GraphicEngine::Get()->GetTextureManager()->CreateTextureFromFile(L"Assets\\Textures\\stars_map.jpg");
+
+	m_mesh = GraphicEngine::Get()->GetMeshManager()->CreateMeshFromFile(L"Assets\\Meshes\\sphere_hq.obj");
 	m_sky_mesh = GraphicEngine::Get()->GetMeshManager()->CreateMeshFromFile(L"Assets\\Meshes\\sphere.obj");
 
 	RECT rc = this->GetClientWindowRect();
@@ -287,6 +311,8 @@ void AppWindow::OnCreate()
 
 	m_constantBuffer = GraphicEngine::Get()->GetRenderSystem()->CreateConstantBuffer(&cc, sizeof(Constant));
 	m_skybox_constantBuffer = GraphicEngine::Get()->GetRenderSystem()->CreateConstantBuffer(&cc, sizeof(Constant));
+
+	m_world_camera.SetTranslation(Vector3D(0.0f, 0.0f, -2.0f));
 }
 
 void AppWindow::OnFocus()
