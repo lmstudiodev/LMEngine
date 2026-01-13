@@ -34,12 +34,12 @@ public:
 	void OnRightMouseButtonUp(const Point& delta_mouse_pos) override;
 
 public:
-	void DrawMesh(const MeshPtr& mesh, const MaterialPtr& material);
+	void DrawMesh(const MeshPtr& mesh, const std::vector<MaterialPtr>& material_list);
 
 private:
 	void Render();
 	void Update();
-	void UpdateModel(Vector3D position, const MaterialPtr& material);
+	void UpdateModel(Vector3D position, const std::vector<MaterialPtr>& material_list);
 	void UpdateCamera();
 	void UpdateSkyBox();
 	void UpdateLight();
@@ -49,15 +49,22 @@ private:
 	SwapChainPtr m_swapChain;
 
 	TexturePtr m_sky_texture;
-	TexturePtr m_wall_texture;
-	TexturePtr m_brick_texture;
-	TexturePtr m_earth_texture;
-
-	MeshPtr m_mesh;
 	MeshPtr m_sky_mesh;
-
-	MaterialPtr m_mat;
 	MaterialPtr m_sky_mat;
+
+	TexturePtr m_terrain_texture;
+	MeshPtr m_terrain_mesh;
+	MaterialPtr m_terrain_mat;
+
+	TexturePtr m_barrel_texture;
+	TexturePtr m_brick_texture;
+	TexturePtr m_windows_texture;
+	TexturePtr m_woods_texture;
+	MeshPtr m_house_mesh;
+	MaterialPtr m_barrel_mat;
+	MaterialPtr m_brick_mat;
+	MaterialPtr m_windows_mat;
+	MaterialPtr m_woods_mat;
 
 private:
 	long m_old_delta;
@@ -83,6 +90,8 @@ private:
 
 	bool m_play_state;
 	bool m_fullscreen_state;
+
+	std::vector<MaterialPtr> m_material_list;
 
 	Vector4D m_lightPosition;
 };
