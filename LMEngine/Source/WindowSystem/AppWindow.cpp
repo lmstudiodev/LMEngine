@@ -18,12 +18,7 @@ struct Constant
 	float m_time = 0.0f;
 };
 
-AppWindow::AppWindow(): m_swapChain(nullptr), 
-m_vertexShader(nullptr), 
-m_pixelShader(nullptr), 
-m_vertexBuffer(nullptr), 
-m_constantBuffer(nullptr),
-m_indexBuffer(nullptr),
+AppWindow::AppWindow(): m_swapChain(nullptr),
 m_old_delta(0),
 m_new_delta(0),
 m_delta_time(0),
@@ -44,6 +39,16 @@ AppWindow::~AppWindow()
 {
 }
 
+void AppWindow::DrawMesh(const MeshPtr& mesh, const MaterialPtr& material)
+{
+	GraphicEngine::Get()->SetMaterial(material);
+
+	GraphicEngine::Get()->GetRenderSystem()->GetDeviceContext()->SetVertexBuffer(mesh->GetVertexBuffer());
+	GraphicEngine::Get()->GetRenderSystem()->GetDeviceContext()->SetIndexBuffer(mesh->GetIndexBuffer());
+
+	GraphicEngine::Get()->GetRenderSystem()->GetDeviceContext()->DrawIndexedTriangleList(mesh->GetIndexBuffer()->GetSizeIndexList(), 0, 0);
+}
+
 void AppWindow::Render()
 {
 	GraphicEngine::Get()->GetRenderSystem()->GetDeviceContext()->ClearRenderTarget(this->m_swapChain, { 0.0f, 0.3f, 0.4f, 1.0f });
@@ -57,22 +62,10 @@ void AppWindow::Render()
 
 	Update();
 
-	GraphicEngine::Get()->GetRenderSystem()->SetRasterizerState(false);
+	UpdateModel(Vector3D(0,0,0), m_mat);
+	DrawMesh(m_sky_mesh, m_mat);
 
-	TexturePtr list_texture[1];
-	list_texture[0] = m_wall_texture;
-	//list_texture[0] = m_earth_color_texture;
-	//list_texture[1] = m_earth_specular_texture;
-	//list_texture[2] = m_clouds_texture;
-	//list_texture[3] = m_earth_night_texture;
-
-	DrawMesh(m_mesh, m_vertexShader, m_pixelShader, m_constantBuffer, list_texture, 1);
-
-	GraphicEngine::Get()->GetRenderSystem()->SetRasterizerState(true);
-
-	list_texture[0] = m_sky_texture;
-
-	DrawMesh(m_sky_mesh, m_vertexShader, m_skyPixelShader, m_skybox_constantBuffer, list_texture, 1);
+	DrawMesh(m_sky_mesh,m_sky_mat);
 
 	m_swapChain->Present(true);
 
@@ -82,11 +75,11 @@ void AppWindow::Render()
 void AppWindow::Update()
 {
 	UpdateCamera();
-	UpdateModel();
+	UpdateLight();
 	UpdateSkyBox();
 }
 
-void AppWindow::UpdateModel()
+void AppWindow::UpdateModel(Vector3D position, const MaterialPtr& material)
 {
 	Constant cc{};
 
@@ -95,21 +88,17 @@ void AppWindow::UpdateModel()
 	light_rotation_matrix.SetIdentity();
 	light_rotation_matrix.SetRotationY(m_light_rot_y);
 
-	m_light_rot_y += 1.57f * m_delta_time;
-
 	cc.m_worldMatrix.SetIdentity();
+	cc.m_worldMatrix.SetTranslation(position);
 	cc.m_viewMatrix = m_view_camera;
 	cc.m_projectionMatrix = m_proj_camera;
 	cc.m_cameraPosition = m_world_camera.GetTranslation();
-
-	float distance_from_origin = 1.0f;
-
-	cc.m_lightPosition = Vector4D(cos(m_light_rot_y) * distance_from_origin, 1.0f, sin(m_light_rot_y) * distance_from_origin, 1.0f);
+	cc.m_lightPosition = m_lightPosition;
 	cc.m_light_radius = m_light_radius;
 	cc.m_lightDirection = light_rotation_matrix.GetZDirection();
 	cc.m_time = m_time;
 
-	m_constantBuffer->Update(GraphicEngine::Get()->GetRenderSystem()->GetDeviceContext(), &cc);
+	material->SetData(&cc, sizeof(Constant));
 }
 
 void AppWindow::UpdateCamera()
@@ -155,7 +144,16 @@ void AppWindow::UpdateSkyBox()
 	cc.m_viewMatrix = m_view_camera;
 	cc.m_projectionMatrix = m_proj_camera;
 
-	m_skybox_constantBuffer->Update(GraphicEngine::Get()->GetRenderSystem()->GetDeviceContext(), &cc);
+	m_sky_mat->SetData(&cc, sizeof(Constant));
+}
+
+void AppWindow::UpdateLight()
+{
+	m_light_rot_y += 1.57f * m_delta_time;
+
+	float distance_from_origin = 1.0f;
+
+	m_lightPosition = Vector4D(cos(m_light_rot_y) * distance_from_origin, 1.0f, sin(m_light_rot_y) * distance_from_origin, 1.0f);
 }
 
 void AppWindow::UpdateDeltaTime()
@@ -165,26 +163,6 @@ void AppWindow::UpdateDeltaTime()
 	m_delta_time = (m_old_delta) ? ((m_new_delta - m_old_delta) / 1000.0f) : 0.0f;
 
 	m_time += m_delta_time;
-}
-
-void AppWindow::DrawMesh(const MeshPtr& mesh, 
-	const VertexShaderPtr& vs, 
-	const PixelShaderPtr& ps, 
-	const ConstantBufferPtr& cb, 
-	const TexturePtr* list_textures, unsigned int num_textures)
-{
-	GraphicEngine::Get()->GetRenderSystem()->GetDeviceContext()->SetConstantBuffer(vs, cb);
-	GraphicEngine::Get()->GetRenderSystem()->GetDeviceContext()->SetConstantBuffer(ps, cb);
-
-	GraphicEngine::Get()->GetRenderSystem()->GetDeviceContext()->SetVertexShader(vs);
-	GraphicEngine::Get()->GetRenderSystem()->GetDeviceContext()->SetPixelShader(ps);
-
-	GraphicEngine::Get()->GetRenderSystem()->GetDeviceContext()->SetTexture(ps, list_textures, num_textures);
-
-	GraphicEngine::Get()->GetRenderSystem()->GetDeviceContext()->SetVertexBuffer(mesh->GetVertexBuffer());
-	GraphicEngine::Get()->GetRenderSystem()->GetDeviceContext()->SetIndexBuffer(mesh->GetIndexBuffer());
-
-	GraphicEngine::Get()->GetRenderSystem()->GetDeviceContext()->DrawIndexedTriangleList(mesh->GetIndexBuffer()->GetSizeIndexList(), 0, 0);
 }
 
 void AppWindow::OnUpdate()
@@ -203,11 +181,9 @@ void AppWindow::OnCreate()
 	InputSystem::Get()->AddListener(this);
 
 	m_wall_texture = GraphicEngine::Get()->GetTextureManager()->CreateTextureFromFile(L"Assets\\Textures\\wall.jpg");
-	//m_earth_specular_texture = GraphicEngine::Get()->GetTextureManager()->CreateTextureFromFile(L"Assets\\Textures\\earth_spec.jpg");
-	//m_clouds_texture = GraphicEngine::Get()->GetTextureManager()->CreateTextureFromFile(L"Assets\\Textures\\clouds.jpg");
-	//m_earth_night_texture = GraphicEngine::Get()->GetTextureManager()->CreateTextureFromFile(L"Assets\\Textures\\earth_night.jpg");
-
 	m_sky_texture = GraphicEngine::Get()->GetTextureManager()->CreateTextureFromFile(L"Assets\\Textures\\stars_map.jpg");
+	m_brick_texture = GraphicEngine::Get()->GetTextureManager()->CreateTextureFromFile(L"Assets\\Textures\\brick.png");
+	m_earth_texture = GraphicEngine::Get()->GetTextureManager()->CreateTextureFromFile(L"Assets\\Textures\\earth_color.jpg");
 
 	m_mesh = GraphicEngine::Get()->GetMeshManager()->CreateMeshFromFile(L"Assets\\Meshes\\scene.obj");
 	m_sky_mesh = GraphicEngine::Get()->GetMeshManager()->CreateMeshFromFile(L"Assets\\Meshes\\sphere.obj");
@@ -221,105 +197,13 @@ void AppWindow::OnCreate()
 
 	m_world_camera.SetTranslation(Vector3D(0.0f, 0.0f, -1.0f));
 
-	Vector3D position_list[]
-	{
-		{Vector3D(-0.5f, -0.5f, -0.5f)},
-		{Vector3D(-0.5f, 0.5f, -0.5f)},
-		{Vector3D(0.5, 0.5f, -0.5f)},
-		{Vector3D(0.5, -0.5f, -0.5f)},
+	m_mat = GraphicEngine::Get()->CreateMaterial(L"Resources/Shader/PointLightVertexShader.hlsl", L"Resources/Shader/PointLightPixelShader.hlsl");
+	m_mat->AddTexture(m_wall_texture);
+	m_mat->SetCullMode(CULL_MODE_BACK);
 
-		{Vector3D(0.5, -0.5f, 0.5f)},
-		{Vector3D(0.5, 0.5f, 0.5f)},
-		{Vector3D(-0.5, 0.5f, 0.5f)},
-		{Vector3D(-0.5, -0.5f, 0.5f)}
-	};
-
-	Vector2D textcoord_list[]
-	{
-		{Vector2D(0.0f, 0.0f)},
-		{Vector2D(0.0f, 1.0f)},
-		{Vector2D(1.0f, 0.0f)},
-		{Vector2D(1.0f, 1.0f)}
-	};
-
-	Vertex vertex_list[]
-	{
-		//FRONT FACE
-		{position_list[0], textcoord_list[1]},
-		{position_list[1], textcoord_list[0]},
-		{position_list[2], textcoord_list[2]},
-		{position_list[3], textcoord_list[3]},
-		//BACK FACE
-		{position_list[4], textcoord_list[1]},
-		{position_list[5], textcoord_list[0]},
-		{position_list[6], textcoord_list[2]},
-		{position_list[7], textcoord_list[3]},
-		//TOP FACE
-		{position_list[1], textcoord_list[1]},
-		{position_list[6], textcoord_list[0]},
-		{position_list[5], textcoord_list[2]},
-		{position_list[2], textcoord_list[3]},
-		//BOTTOM FACE
-		{position_list[7], textcoord_list[1]},
-		{position_list[0], textcoord_list[0]},
-		{position_list[3], textcoord_list[2]},
-		{position_list[4], textcoord_list[3]},
-		//RIGHT FACE
-		{position_list[3], textcoord_list[1]},
-		{position_list[2], textcoord_list[0]},
-		{position_list[5], textcoord_list[2]},
-		{position_list[4], textcoord_list[3]},
-		//LEFT FACE
-		{position_list[7], textcoord_list[1]},
-		{position_list[6], textcoord_list[0]},
-		{position_list[1], textcoord_list[2]},
-		{position_list[0], textcoord_list[3]}
-
-	};
-
-	UINT sizeList = ARRAYSIZE(vertex_list);
-
-	unsigned int index_list[]
-	{
-		//FRONT FACE
-		0,1,2,
-		2,3,0,
-		//BACK FACE
-		4,5,6,
-		6,7,4,
-		//TOP FACE
-		8,9,10,
-		10,11,8,
-		//BOTTOM FACE
-		12,13,14,
-		14,15,12,
-		//RIGHT FACE
-		16,17,18,
-		18,19,16,
-		//LEFT FACE
-		20,21,22,
-		22,23,20
-	};
-
-	void* shader_byte_code = nullptr;
-	size_t size_shader = 0;
-
-	GraphicEngine::Get()->GetRenderSystem()->CompileVertexShader(L"Resources/Shader/PointLightVertexShader.hlsl", "vsmain", &shader_byte_code, &size_shader);
-	m_vertexShader = GraphicEngine::Get()->GetRenderSystem()->CreateVertexShader(shader_byte_code, size_shader);
-	GraphicEngine::Get()->GetRenderSystem()->ReleaseCompiledShader();
-
-	GraphicEngine::Get()->GetRenderSystem()->CompilePixelShader(L"Resources/Shader/PointLightPixelShader.hlsl", "psmain", &shader_byte_code, &size_shader);
-	m_pixelShader = GraphicEngine::Get()->GetRenderSystem()->CreatePixelShader(shader_byte_code, size_shader);
-	GraphicEngine::Get()->GetRenderSystem()->ReleaseCompiledShader();
-
-	GraphicEngine::Get()->GetRenderSystem()->CompilePixelShader(L"Resources/Shader/SkyBoxShader.hlsl", "psmain", &shader_byte_code, &size_shader);
-	m_skyPixelShader = GraphicEngine::Get()->GetRenderSystem()->CreatePixelShader(shader_byte_code, size_shader);
-	GraphicEngine::Get()->GetRenderSystem()->ReleaseCompiledShader();
-
-	Constant cc{};
-
-	m_constantBuffer = GraphicEngine::Get()->GetRenderSystem()->CreateConstantBuffer(&cc, sizeof(Constant));
-	m_skybox_constantBuffer = GraphicEngine::Get()->GetRenderSystem()->CreateConstantBuffer(&cc, sizeof(Constant));
+	m_sky_mat = GraphicEngine::Get()->CreateMaterial(L"Resources/Shader/PointLightVertexShader.hlsl", L"Resources/Shader/SkyBoxShader.hlsl");
+	m_sky_mat->AddTexture(m_sky_texture);
+	m_sky_mat->SetCullMode(CULL_MODE_FRONT);
 
 	m_world_camera.SetTranslation(Vector3D(0.0f, 0.0f, -2.0f));
 }

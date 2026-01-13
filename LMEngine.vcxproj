@@ -107,6 +107,7 @@
     <ClCompile Include="LMEngine\Source\ResourceManagers\TextureManager.cpp" />
     <ClCompile Include="LMEngine\Source\Core\VertexBuffer.cpp" />
     <ClCompile Include="LMEngine\Source\Core\VertexShader.cpp" />
+    <ClCompile Include="LMEngine\Source\Core\Material.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="LMEngine\Include\stdafx.h" />
@@ -140,6 +141,7 @@
     <ClInclude Include="LMEngine\Include\Core\VertexBuffer.h" />
     <ClInclude Include="LMEngine\Include\Core\VertexMesh.h" />
     <ClInclude Include="LMEngine\Include\Core\VertexShader.h" />
+    <ClInclude Include="LMEngine\Include\Core\Material.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Resources\Shader\PixelShader.hlsl">

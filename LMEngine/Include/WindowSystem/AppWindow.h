@@ -34,44 +34,30 @@ public:
 	void OnRightMouseButtonUp(const Point& delta_mouse_pos) override;
 
 public:
-	void DrawMesh(const MeshPtr& mesh, 
-		const VertexShaderPtr& vs, 
-		const PixelShaderPtr& ps, 
-		const ConstantBufferPtr& cb, 
-		const TexturePtr* list_textures, 
-		unsigned int num_textures);
+	void DrawMesh(const MeshPtr& mesh, const MaterialPtr& material);
 
 private:
 	void Render();
 	void Update();
-	void UpdateModel();
+	void UpdateModel(Vector3D position, const MaterialPtr& material);
 	void UpdateCamera();
 	void UpdateSkyBox();
+	void UpdateLight();
 	void UpdateDeltaTime();
 
 private:
 	SwapChainPtr m_swapChain;
 
-	VertexBufferPtr m_vertexBuffer;
-	IndexBufferPtr m_indexBuffer;
-
-	ConstantBufferPtr m_constantBuffer;
-	ConstantBufferPtr m_skybox_constantBuffer;
-
-	VertexShaderPtr m_vertexShader;
-
-	PixelShaderPtr m_pixelShader;
-	PixelShaderPtr m_skyPixelShader;
-
 	TexturePtr m_sky_texture;
 	TexturePtr m_wall_texture;
-	TexturePtr m_earth_color_texture;
-	TexturePtr m_earth_specular_texture;
-	TexturePtr m_clouds_texture;
-	TexturePtr m_earth_night_texture;
+	TexturePtr m_brick_texture;
+	TexturePtr m_earth_texture;
 
 	MeshPtr m_mesh;
 	MeshPtr m_sky_mesh;
+
+	MaterialPtr m_mat;
+	MaterialPtr m_sky_mat;
 
 private:
 	long m_old_delta;
@@ -97,5 +83,7 @@ private:
 
 	bool m_play_state;
 	bool m_fullscreen_state;
+
+	Vector4D m_lightPosition;
 };
 

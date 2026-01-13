@@ -118,6 +118,7 @@
       <Filter>GameEngine\GraphicEngine\ResourceManager\MeshManager</Filter>
     </ClCompile>
     <ClCompile Include="LMEngine\Include\stdafx.cpp" />
+    <ClCompile Include="LMEngine\Source\Core\Material.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="LMEngine\Include\WindowSystem\AppWindow.h">
@@ -211,6 +212,7 @@
       <Filter>GameEngine\Math</Filter>
     </ClInclude>
     <ClInclude Include="LMEngine\Include\stdafx.h" />
+    <ClInclude Include="LMEngine\Include\Core\Material.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Resources\Shader\VertexShader.hlsl" />
