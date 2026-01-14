@@ -304,18 +304,18 @@ void AppWindow::OnKeyDown(int key)
 
 void AppWindow::OnMouseMove(const Point& mouse_pos)
 {
-	if(!m_play_state)
-		return;
-	
-	RECT rc = this->GetClientWindowRect();
+	//if(!m_play_state)
+	//	return;
+	//
+	//RECT rc = this->GetClientWindowRect();
 
-	int width = rc.right - rc.left;
-	int height = rc.bottom - rc.top;
-	
-	m_rot_x += (mouse_pos.m_axis_y - (height / 2.0f)) * m_delta_time * 0.1f;
-	m_rot_y += (mouse_pos.m_axis_x - (width / 2.0f)) * m_delta_time * 0.1f;
+	//int width = rc.right - rc.left;
+	//int height = rc.bottom - rc.top;
+	//
+	//m_rot_x += (mouse_pos.m_axis_y - (height / 2.0f)) * m_delta_time * 0.1f;
+	//m_rot_y += (mouse_pos.m_axis_x - (width / 2.0f)) * m_delta_time * 0.1f;
 
-	InputSystem::Get()->SetCursorPosition(Point( (int)(width / 2.0f), (int)(height / 2.0f) ));
+	//InputSystem::Get()->SetCursorPosition(Point( (int)(width / 2.0f), (int)(height / 2.0f) ));
 }
 
 void AppWindow::OnLeftMouseButtonDown(const Point& delta_mouse_pos)
@@ -336,4 +336,60 @@ void AppWindow::OnRightMouseButtonDown(const Point& delta_mouse_pos)
 void AppWindow::OnRightMouseButtonUp(const Point& delta_mouse_pos)
 {
 	m_scale_cube = 1.0f;
+}
+
+void AppWindow::OnGamePadButtonAPressed()
+{
+	std::cout << "A BUTTON PRESSED" << "\n";
+}
+
+void AppWindow::OnGamePadButtonYPressed()
+{
+	std::cout << "Y BUTTON PRESSED" << "\n";
+}
+
+void AppWindow::OnGamePadButtonXPressed()
+{
+	std::cout << "X BUTTON PRESSED" << "\n";
+}
+
+void AppWindow::OnGamePadButtonBPressed()
+{
+	std::cout << "B BUTTON PRESSED" << "\n";
+}
+
+void AppWindow::OnGamePadLeftStickXChanged(const float value)
+{
+	m_rightward = value;
+}
+
+void AppWindow::OnGamePadLeftStickYChanged(const float value)
+{
+	m_forward = value;
+}
+
+void AppWindow::OnGamePadRightStickMoved(const float valueX, const float valueY)
+{
+	if (!m_play_state)
+		return;
+
+	if (valueX != 0 || valueY != 0)
+	{
+		RECT rc = this->GetClientWindowRect();
+
+		int width = rc.right - rc.left;
+		int height = rc.bottom - rc.top;
+
+		float xRot = m_rot_x + valueY * m_delta_time;
+		float yRot = m_rot_y + valueX * m_delta_time;
+
+		if (xRot > 1.0f)
+			xRot = 1.0f;
+
+		if (xRot < -1.0f)
+			xRot = -1.0f;
+
+		m_rot_x = xRot;;
+		m_rot_y = yRot;
+	}
 }

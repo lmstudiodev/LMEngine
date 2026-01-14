@@ -5,6 +5,7 @@ InputSystem* InputSystem::m_inputSystem = nullptr;
 
 InputSystem::InputSystem()
 {
+	m_gamepad = new GamePad();
 }
 
 InputSystem::~InputSystem()
@@ -30,6 +31,29 @@ void InputSystem::Update()
 	
 	UpdateMouseInput(currentMousePos);
 	UpdateKeyboardInput(currentMousePos);
+	UpdateGamePadButton();
+
+	if (!m_gamepad->Refresh())
+	{
+		if (wasConnected)
+		{
+			wasConnected = false;
+
+			std::cout << "Please connect an Xbox 360 controller." << std::endl;
+		}
+	}
+	else
+	{
+		if (!wasConnected)
+		{
+			wasConnected = true;
+
+			std::cout << "Controller connected on port " << m_gamepad->GetPort() << std::endl;
+		}
+
+		UpdateGamePadLeftStick();
+		UpdateGamePadRightStick();
+	}
 }
 
 void InputSystem::SetCursorPosition(const Point& pos)
@@ -145,4 +169,150 @@ void InputSystem::UpdateMouseInput(POINT& p)
 	}
 
 	m_old_mouse_pos = Point(p.x, p.y);
+}
+
+void InputSystem::UpdateGamePadButton()
+{
+
+	if (m_gamepad->IsPressed(XINPUT_GAMEPAD_A))
+	{
+		std::unordered_set<InputListener*>::iterator it = m_set_listeners.begin();
+
+		while (it != m_set_listeners.end())
+		{
+			(*it)->OnGamePadButtonAPressed();
+
+			++it;
+		}
+	}
+	else if (m_gamepad->IsPressed(XINPUT_GAMEPAD_Y))
+	{
+		std::unordered_set<InputListener*>::iterator it = m_set_listeners.begin();
+
+		while (it != m_set_listeners.end())
+		{
+			(*it)->OnGamePadButtonYPressed();
+
+			++it;
+		}
+	}
+	else if (m_gamepad->IsPressed(XINPUT_GAMEPAD_X))
+	{
+		std::unordered_set<InputListener*>::iterator it = m_set_listeners.begin();
+
+		while (it != m_set_listeners.end())
+		{
+			(*it)->OnGamePadButtonXPressed();
+
+			++it;
+		}
+	}
+	else if (m_gamepad->IsPressed(XINPUT_GAMEPAD_B))
+	{
+		std::unordered_set<InputListener*>::iterator it = m_set_listeners.begin();
+
+		while (it != m_set_listeners.end())
+		{
+			(*it)->OnGamePadButtonBPressed();
+
+			++it;
+		}
+	}
+}
+
+void InputSystem::UpdateGamePadLeftStick()
+{
+	if (abs(m_gamepad->m_leftStickX) >= 0.1f)
+	{
+		std::unordered_set<InputListener*>::iterator it = m_set_listeners.begin();
+
+		while (it != m_set_listeners.end())
+		{
+			(*it)->OnGamePadLeftStickXChanged(m_gamepad->m_leftStickX);
+
+			++it;
+		}
+	}
+	else
+	{
+		std::unordered_set<InputListener*>::iterator it = m_set_listeners.begin();
+
+		while (it != m_set_listeners.end())
+		{
+			(*it)->OnGamePadLeftStickXChanged(0);
+
+			++it;
+		}
+	}
+
+	if (abs(m_gamepad->m_leftStickY) >= 0.1f)
+	{
+		std::unordered_set<InputListener*>::iterator it = m_set_listeners.begin();
+
+		while (it != m_set_listeners.end())
+		{
+			(*it)->OnGamePadLeftStickYChanged(m_gamepad->m_leftStickY);
+
+			++it;
+		}
+	}
+	else
+	{
+		std::unordered_set<InputListener*>::iterator it = m_set_listeners.begin();
+
+		while (it != m_set_listeners.end())
+		{
+			(*it)->OnGamePadLeftStickYChanged(0);
+
+			++it;
+		}
+	}
+}
+
+void InputSystem::UpdateGamePadRightStick()
+{
+	if (abs(m_gamepad->m_rightStickX) >= 0.1f && abs(m_gamepad->m_rightStickY) >= 0.1f)
+	{
+		std::unordered_set<InputListener*>::iterator it = m_set_listeners.begin();
+
+		while (it != m_set_listeners.end())
+		{
+			(*it)->OnGamePadRightStickMoved(m_gamepad->m_rightStickX, m_gamepad->m_rightStickY);
+
+			++it;
+		}
+	}
+	else if (abs(m_gamepad->m_rightStickX) < 0.1f && abs(m_gamepad->m_rightStickY) >= 0.1f)
+	{
+		std::unordered_set<InputListener*>::iterator it = m_set_listeners.begin();
+
+		while (it != m_set_listeners.end())
+		{
+			(*it)->OnGamePadRightStickMoved(0, m_gamepad->m_rightStickY);
+
+			++it;
+		}
+	}
+	else if (abs(m_gamepad->m_rightStickX) >= 0.1f && abs(m_gamepad->m_rightStickY) < 0.1f)
+	{
+		std::unordered_set<InputListener*>::iterator it = m_set_listeners.begin();
+
+		while (it != m_set_listeners.end())
+		{
+			(*it)->OnGamePadRightStickMoved(m_gamepad->m_rightStickX, 0);
+
+			++it;
+		}
+	}
+	else
+	{
+		std::unordered_set<InputListener*>::iterator it = m_set_listeners.begin();
+
+		while (it != m_set_listeners.end())
+		{
+			(*it)->OnGamePadRightStickMoved(0, 0);
+
+			++it;
+		}
+	}
 }

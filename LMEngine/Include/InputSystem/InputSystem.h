@@ -1,6 +1,8 @@
 #pragma once
 #include "InputListener.h"
 #include "Point.h"
+#include <Xinput.h>
+#include "GamePad.h"
 
 class InputSystem
 {
@@ -24,6 +26,9 @@ public:
 private:
 	void UpdateKeyboardInput(POINT& p);
 	void UpdateMouseInput(POINT& p);
+	void UpdateGamePadButton();
+	void UpdateGamePadLeftStick();
+	void UpdateGamePadRightStick();
 
 private:
 	static InputSystem* m_inputSystem;
@@ -37,5 +42,9 @@ private:
 	Point m_old_mouse_pos;
 
 	bool m_first_time = true;
+
+	GamePad* m_gamepad = nullptr;
+
+	bool wasConnected = true;
 };
 
