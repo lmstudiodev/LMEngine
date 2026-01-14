@@ -119,6 +119,7 @@
     </ClCompile>
     <ClCompile Include="LMEngine\Include\stdafx.cpp" />
     <ClCompile Include="LMEngine\Source\Core\Material.cpp" />
+    <ClCompile Include="LMEngine\Source\InputSystem\GamePad.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="LMEngine\Include\WindowSystem\AppWindow.h">
@@ -213,6 +214,7 @@
     </ClInclude>
     <ClInclude Include="LMEngine\Include\stdafx.h" />
     <ClInclude Include="LMEngine\Include\Core\Material.h" />
+    <ClInclude Include="LMEngine\Include\InputSystem\GamePad.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Resources\Shader\VertexShader.hlsl" />

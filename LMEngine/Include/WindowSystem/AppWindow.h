@@ -33,6 +33,14 @@ public:
 	void OnRightMouseButtonDown(const Point& delta_mouse_pos) override;
 	void OnRightMouseButtonUp(const Point& delta_mouse_pos) override;
 
+	void OnGamePadButtonAPressed();
+	void OnGamePadButtonYPressed();
+	void OnGamePadButtonXPressed();
+	void OnGamePadButtonBPressed();
+	void OnGamePadLeftStickXChanged(const float value);
+	void OnGamePadLeftStickYChanged(const float value);
+	void OnGamePadRightStickMoved(const float valueX, const float valueY);
+
 public:
 	void DrawMesh(const MeshPtr& mesh, const std::vector<MaterialPtr>& material_list);
 
