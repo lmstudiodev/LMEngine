@@ -221,5 +221,7 @@
     <FxCompile Include="Resources\Shader\SkyBoxShader.hlsl" />
     <FxCompile Include="Resources\Shader\PointLightVertexShader.hlsl" />
     <FxCompile Include="Resources\Shader\PointLightPixelShader.hlsl" />
+    <FxCompile Include="Resources\Shader\DirLightBumpVS.hlsl" />
+    <FxCompile Include="Resources\Shader\DirLightBumpPS.hlsl" />
   </ItemGroup>
 </Project>

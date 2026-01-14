@@ -52,19 +52,10 @@ private:
 	MeshPtr m_sky_mesh;
 	MaterialPtr m_sky_mat;
 
-	TexturePtr m_terrain_texture;
-	MeshPtr m_terrain_mesh;
-	MaterialPtr m_terrain_mat;
-
-	TexturePtr m_barrel_texture;
 	TexturePtr m_brick_texture;
-	TexturePtr m_windows_texture;
-	TexturePtr m_woods_texture;
-	MeshPtr m_house_mesh;
-	MaterialPtr m_barrel_mat;
+	TexturePtr m_brick_normal_texture;
+	MeshPtr m_sphere_mesh;
 	MaterialPtr m_brick_mat;
-	MaterialPtr m_windows_mat;
-	MaterialPtr m_woods_mat;
 
 private:
 	long m_old_delta;

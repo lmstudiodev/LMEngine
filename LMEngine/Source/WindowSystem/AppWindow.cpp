@@ -71,18 +71,9 @@ void AppWindow::Render()
 	Update();
 
 	m_material_list.clear();
-	m_material_list.push_back(m_terrain_mat);
-	UpdateModel(Vector3D(0, 0, 0), m_material_list);
-	DrawMesh(m_terrain_mesh, m_material_list);
-
-	m_material_list.clear();
-	m_material_list.push_back(m_barrel_mat);
 	m_material_list.push_back(m_brick_mat);
-	m_material_list.push_back(m_windows_mat);
-	m_material_list.push_back(m_woods_mat);
-
-	UpdateModel(Vector3D(0, 0, 10), m_material_list);
-	DrawMesh(m_house_mesh, m_material_list);
+	UpdateModel(Vector3D(0, 1, 0), m_material_list);
+	DrawMesh(m_sphere_mesh, m_material_list);
 
 	m_material_list.clear();
 	m_material_list.push_back(m_sky_mat);
@@ -173,7 +164,7 @@ void AppWindow::UpdateSkyBox()
 
 void AppWindow::UpdateLight()
 {
-	m_light_rot_y += 1.57f * m_delta_time;
+	//m_light_rot_y += 1.57f * m_delta_time;
 
 	float distance_from_origin = 1.0f;
 
@@ -206,16 +197,11 @@ void AppWindow::OnCreate()
 	InputSystem::Get()->AddListener(this);
 
 	m_sky_texture = GraphicEngine::Get()->GetTextureManager()->CreateTextureFromFile(L"Assets\\Textures\\sky.jpg");
-	m_terrain_texture = GraphicEngine::Get()->GetTextureManager()->CreateTextureFromFile(L"Assets\\Textures\\sand.jpg");
-
-	m_barrel_texture = GraphicEngine::Get()->GetTextureManager()->CreateTextureFromFile(L"Assets\\Textures\\barrel.jpg");
-	m_brick_texture = GraphicEngine::Get()->GetTextureManager()->CreateTextureFromFile(L"Assets\\Textures\\house_brick.jpg");
-	m_windows_texture = GraphicEngine::Get()->GetTextureManager()->CreateTextureFromFile(L"Assets\\Textures\\house_windows.jpg");
-	m_woods_texture = GraphicEngine::Get()->GetTextureManager()->CreateTextureFromFile(L"Assets\\Textures\\house_wood.jpg");
+	m_brick_texture = GraphicEngine::Get()->GetTextureManager()->CreateTextureFromFile(L"Assets\\Textures\\brick_d.jpg");
+	m_brick_normal_texture = GraphicEngine::Get()->GetTextureManager()->CreateTextureFromFile(L"Assets\\Textures\\brick_n.jpg");
 
 	m_sky_mesh = GraphicEngine::Get()->GetMeshManager()->CreateMeshFromFile(L"Assets\\Meshes\\sphere.obj");
-	m_terrain_mesh = GraphicEngine::Get()->GetMeshManager()->CreateMeshFromFile(L"Assets\\Meshes\\terrain.obj");
-	m_house_mesh = GraphicEngine::Get()->GetMeshManager()->CreateMeshFromFile(L"Assets\\Meshes\\house.obj"); //LowPolyPit
+	m_sphere_mesh = GraphicEngine::Get()->GetMeshManager()->CreateMeshFromFile(L"Assets\\Meshes\\sphere.obj");
 
 	RECT rc = this->GetClientWindowRect();
 
@@ -228,25 +214,10 @@ void AppWindow::OnCreate()
 	m_sky_mat->AddTexture(m_sky_texture);
 	m_sky_mat->SetCullMode(CULL_MODE_FRONT);
 
-	m_terrain_mat = GraphicEngine::Get()->CreateMaterial(L"Resources/Shader/PointLightVertexShader.hlsl", L"Resources/Shader/PointLightPixelShader.hlsl");
-	m_terrain_mat->AddTexture(m_terrain_texture);
-	m_terrain_mat->SetCullMode(CULL_MODE_BACK);
-
-	m_barrel_mat = GraphicEngine::Get()->CreateMaterial(L"Resources/Shader/PointLightVertexShader.hlsl", L"Resources/Shader/PointLightPixelShader.hlsl");
-	m_barrel_mat->AddTexture(m_barrel_texture);
-	m_barrel_mat->SetCullMode(CULL_MODE_BACK);
-
-	m_brick_mat = GraphicEngine::Get()->CreateMaterial(L"Resources/Shader/PointLightVertexShader.hlsl", L"Resources/Shader/PointLightPixelShader.hlsl");
+	m_brick_mat = GraphicEngine::Get()->CreateMaterial(L"Resources/Shader/DirLightBumpVS.hlsl", L"Resources/Shader/DirLightBumpPS.hlsl");
 	m_brick_mat->AddTexture(m_brick_texture);
+	m_brick_mat->AddTexture(m_brick_normal_texture);
 	m_brick_mat->SetCullMode(CULL_MODE_BACK);
-
-	m_windows_mat = GraphicEngine::Get()->CreateMaterial(L"Resources/Shader/PointLightVertexShader.hlsl", L"Resources/Shader/PointLightPixelShader.hlsl");
-	m_windows_mat->AddTexture(m_windows_texture);
-	m_windows_mat->SetCullMode(CULL_MODE_BACK);
-
-	m_woods_mat = GraphicEngine::Get()->CreateMaterial(L"Resources/Shader/PointLightVertexShader.hlsl", L"Resources/Shader/PointLightPixelShader.hlsl");
-	m_woods_mat->AddTexture(m_woods_texture);
-	m_woods_mat->SetCullMode(CULL_MODE_BACK);
 
 	m_world_camera.SetTranslation(Vector3D(0.0f, 1.0f, -2.0f));
 
