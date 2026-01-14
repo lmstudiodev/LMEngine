@@ -31,7 +31,6 @@ void InputSystem::Update()
 	
 	UpdateMouseInput(currentMousePos);
 	UpdateKeyboardInput(currentMousePos);
-	UpdateGamePadButton();
 
 	if (!m_gamepad->Refresh())
 	{
@@ -50,9 +49,12 @@ void InputSystem::Update()
 
 			std::cout << "Controller connected on port " << m_gamepad->GetPort() << std::endl;
 		}
-
-		UpdateGamePadLeftStick();
-		UpdateGamePadRightStick();
+		else
+		{
+			UpdateGamePadButton();
+			UpdateGamePadLeftStick();
+			UpdateGamePadRightStick();
+		}
 	}
 }
 
