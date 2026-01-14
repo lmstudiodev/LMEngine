@@ -102,13 +102,13 @@ void MainWindow::Broadcast()
 		this->m_isInitialized = true;
 	}
 
-	this->OnUpdate();
-
-	while (PeekMessageW(&msg, m_hwnd, 0, 0, PM_REMOVE) > 0)
+	if (PeekMessageW(&msg, m_hwnd, 0, 0, PM_REMOVE) > 0)
 	{
 		TranslateMessage(&msg);
 		DispatchMessage(&msg);
 	}
+
+	this->OnUpdate();
 
 	Sleep(1);
 }

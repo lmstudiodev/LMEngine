@@ -20,14 +20,46 @@ public:
 		return v;
 	}
 
-	Vector3D operator *(float num)
+	Vector3D operator *(float num) const
 	{
 		return Vector3D(m_x * num, m_y * num, m_z * num);
 	}
 
-	Vector3D operator +(Vector3D vec)
+	Vector3D operator +(const Vector3D& vec) const
 	{
 		return Vector3D(m_x + vec.m_x, m_y + vec.m_y, m_z + vec.m_z);
+	}
+
+	Vector3D operator -(const Vector3D& vec) const
+	{
+		return Vector3D(m_x - vec.m_x, m_y - vec.m_y, m_z - vec.m_z);
+	}
+
+	static Vector3D Normalize(const Vector3D& vec)
+	{
+		Vector3D result;
+		
+		float len = sqrt((vec.m_x * vec.m_x) + (vec.m_y * vec.m_y) + (vec.m_z * vec.m_z));
+
+		if (!len)
+			return Vector3D();
+
+		result.m_x = vec.m_x / len;
+		result.m_y = vec.m_y / len;
+		result.m_z = vec.m_z / len;
+
+		return result;
+	}
+
+	static Vector3D Cross(const Vector3D& vec1, const Vector3D& vec2)
+	{
+		Vector3D result;
+
+		result.m_x = (vec1.m_y * vec2.m_z) - (vec1.m_z * vec2.m_y);
+		result.m_y = (vec1.m_z * vec2.m_x) - (vec1.m_x * vec2.m_z);
+		result.m_z = (vec1.m_x * vec2.m_y) - (vec1.m_y * vec2.m_x);
+
+		return result;
 	}
 
 	~Vector3D()
