@@ -1,5 +1,5 @@
 #include "stdafx.h"
-#include "AppWindow.h"
+#include "SpaceShooterGame.h"
 #include "InputSystem.h"
 
 int main()
@@ -18,7 +18,7 @@ int main()
 	{
 		try
 		{
-			AppWindow app;
+			SpaceShooterGame app;
 
 			while (app.IsRunnig());
 		}

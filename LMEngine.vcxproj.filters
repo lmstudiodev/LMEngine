@@ -63,7 +63,7 @@
     <ClCompile Include="main.cpp">
       <Filter>Application</Filter>
     </ClCompile>
-    <ClCompile Include="LMEngine\Source\WindowSystem\AppWindow.cpp">
+    <ClCompile Include="LMEngine\Source\GameDemo\AppWindow.cpp">
       <Filter>Application\Source</Filter>
     </ClCompile>
     <ClCompile Include="LMEngine\Source\WindowSystem\MainWindow.cpp">
@@ -120,9 +120,10 @@
     <ClCompile Include="LMEngine\Include\stdafx.cpp" />
     <ClCompile Include="LMEngine\Source\Core\Material.cpp" />
     <ClCompile Include="LMEngine\Source\InputSystem\GamePad.cpp" />
+    <ClCompile Include="LMEngine\Source\GameDemo\SpaceShooterGame.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="LMEngine\Include\WindowSystem\AppWindow.h">
+    <ClInclude Include="LMEngine\Include\GameDemo\AppWindow.h">
       <Filter>Application\Header</Filter>
     </ClInclude>
     <ClInclude Include="LMEngine\Include\WindowSystem\MainWindow.h">
@@ -216,15 +217,19 @@
     <ClInclude Include="LMEngine\Include\Core\Material.h" />
     <ClInclude Include="LMEngine\Include\InputSystem\GamePad.h" />
     <ClInclude Include="LMEngine\Include\Math\Rect.h" />
+    <ClInclude Include="LMEngine\Include\GameDemo\SpaceShooterGame.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Resources\Shader\VertexShader.hlsl" />
     <FxCompile Include="Resources\Shader\PixelShader.hlsl" />
     <FxCompile Include="Resources\Shader\VertexMeshLayoutShader.hlsl" />
-    <FxCompile Include="Resources\Shader\SkyBoxShader.hlsl" />
+    <FxCompile Include="Resources\Shader\SkyBoxPixelShader.hlsl" />
     <FxCompile Include="Resources\Shader\PointLightVertexShader.hlsl" />
     <FxCompile Include="Resources\Shader\PointLightPixelShader.hlsl" />
     <FxCompile Include="Resources\Shader\DirLightBumpVS.hlsl" />
     <FxCompile Include="Resources\Shader\DirLightBumpPS.hlsl" />
+    <FxCompile Include="Resources\Shader\DirectionalLightVertexShader.hlsl" />
+    <FxCompile Include="Resources\Shader\DirectionalLightPixelShader.hlsl" />
+    <FxCompile Include="Resources\Shader\SkyBoxVertexShader.hlsl" />
   </ItemGroup>
 </Project>
