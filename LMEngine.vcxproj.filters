@@ -215,6 +215,7 @@
     <ClInclude Include="LMEngine\Include\stdafx.h" />
     <ClInclude Include="LMEngine\Include\Core\Material.h" />
     <ClInclude Include="LMEngine\Include\InputSystem\GamePad.h" />
+    <ClInclude Include="LMEngine\Include\Math\Rect.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Resources\Shader\VertexShader.hlsl" />
