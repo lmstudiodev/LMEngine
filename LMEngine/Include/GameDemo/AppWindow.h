@@ -40,6 +40,7 @@ public:
 	void OnGamePadLeftStickXChanged(const float value);
 	void OnGamePadLeftStickYChanged(const float value);
 	void OnGamePadRightStickMoved(const float valueX, const float valueY);
+	void OnGamePadLeftThumbPressed(bool value);
 
 public:
 	void DrawMesh(const MeshPtr& mesh, const std::vector<MaterialPtr>& material_list);
