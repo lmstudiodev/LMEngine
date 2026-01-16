@@ -75,11 +75,13 @@ Mesh::Mesh(const wchar_t* full_path) : Resource(full_path), m_vertex_buffer(null
 
 				for (size_t f = 0; f < shapes[s].mesh.num_face_vertices.size(); f++)
 				{
-					
-					if (shapes[s].mesh.material_ids[f] != m)
-						continue;
-
 					unsigned char num_face_verts = shapes[s].mesh.num_face_vertices[f];
+
+					if (shapes[s].mesh.material_ids[f] != m)
+					{
+						indexOffset += num_face_verts;
+						continue;
+					}
 
 					Vector3D vertices_face[3];
 					Vector2D texcoords_face[3];
@@ -177,6 +179,34 @@ Mesh::Mesh(const wchar_t* full_path) : Resource(full_path), m_vertex_buffer(null
 	m_vertex_buffer = GraphicEngine::Get()->GetRenderSystem()->CreateVertexBuffer(&list_vertices[0], sizeof(VertexMesh), (UINT)list_vertices.size(), shader_byte_code, (UINT)size_shader);
 
 	m_index_buffer = GraphicEngine::Get()->GetRenderSystem()->CreateIndexBuffer(&list_indices[0], (UINT)list_indices.size());
+}
+
+Mesh::Mesh(VertexMesh* vertex_list_data, 
+	unsigned int vertex_list_size, 
+	unsigned int* index_list_data, 
+	unsigned int index_list_size, 
+	MaterialSlot* material_slot_list, 
+	unsigned int material_slot_list_size) : Resource(L"")
+{
+	void* shader_byte_code = nullptr;
+	size_t size_shader = 0;
+
+	GraphicEngine::Get()->GetVertexMeshLayoutShaderByteCodeAndSize(&shader_byte_code, &size_shader);
+
+	m_vertex_buffer = GraphicEngine::Get()->GetRenderSystem()->CreateVertexBuffer(vertex_list_data, 
+																					sizeof(VertexMesh), 
+																					(UINT)vertex_list_size,
+																					shader_byte_code, 
+																					(UINT)size_shader);
+
+	m_index_buffer = GraphicEngine::Get()->GetRenderSystem()->CreateIndexBuffer(index_list_data, (UINT)index_list_size);
+
+	m_material_slots.resize(material_slot_list_size);
+
+	for (unsigned int i = 0; i < material_slot_list_size; i++)
+	{
+		m_material_slots[i] = material_slot_list[i];
+	}
 }
 
 Mesh::~Mesh()

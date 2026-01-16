@@ -28,6 +28,40 @@ void DeviceContext::ClearRenderTarget(const SwapChainPtr& swapChain, Vec4 color)
 	m_deviceContext->OMSetRenderTargets(1, &swapChain->m_rtv, swapChain->m_dsw);
 }
 
+void DeviceContext::ClearDepthStencil(const SwapChainPtr& swapChain)
+{
+	m_deviceContext->ClearDepthStencilView(swapChain->m_dsw, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1, 0);
+}
+
+void DeviceContext::ClearRenderTarget(const TexturePtr& rendertarget, Vec4 color)
+{
+	if (rendertarget->m_type != Texture::Type::RenderTarget)
+		return;
+
+	const float colorValues[] = { color.x, color.y, color.z, color.w };
+
+	m_deviceContext->ClearRenderTargetView(rendertarget->m_renderTargetView, colorValues);
+}
+
+void DeviceContext::ClearDepthStencil(const TexturePtr& depthStencil)
+{
+	if (depthStencil->m_type != Texture::Type::DepthStencil)
+		return;
+
+	m_deviceContext->ClearDepthStencilView(depthStencil->m_depthStenciltView, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1, 0);
+}
+
+void DeviceContext::SetRenderTarget(const TexturePtr& rendertarget, const TexturePtr& depthStencil)
+{
+	if (rendertarget->m_type != Texture::Type::RenderTarget)
+		return;
+
+	if (depthStencil->m_type != Texture::Type::DepthStencil)
+		return;
+
+	m_deviceContext->OMSetRenderTargets(1, &rendertarget->m_renderTargetView, depthStencil->m_depthStenciltView);
+}
+
 void DeviceContext::SetVertexBuffer(const VertexBufferPtr& vertex_buffer)
 {
 	UINT stride = vertex_buffer->m_size_vertex;

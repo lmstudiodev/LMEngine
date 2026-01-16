@@ -10,6 +10,12 @@ public:
 
 public:
 	void ClearRenderTarget(const SwapChainPtr& swapChain, Vec4 color);
+	void ClearDepthStencil(const SwapChainPtr& swapChain);
+
+	void ClearRenderTarget(const TexturePtr& rendertarget, Vec4 color);
+	void ClearDepthStencil(const TexturePtr& depthStencil);
+
+	void SetRenderTarget(const TexturePtr& rendertarget, const TexturePtr& depthStencil);
 
 	void SetVertexBuffer(const VertexBufferPtr& vertex_buffer);
 	void SetIndexBuffer(const IndexBufferPtr& index_buffer);

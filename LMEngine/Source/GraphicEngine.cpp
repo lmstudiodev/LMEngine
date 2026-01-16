@@ -110,13 +110,19 @@ void GraphicEngine::SetMaterial(const MaterialPtr& material)
 {
 	m_renderSystem->SetRasterizerState((material->m_cull_mode == CULL_MODE_FRONT));
 	
-	m_renderSystem->GetDeviceContext()->SetConstantBuffer(material->m_vertex_shader, material->m_constant_buffer);
-	m_renderSystem->GetDeviceContext()->SetConstantBuffer(material->m_pixel_shader, material->m_constant_buffer);
+	if (material->m_constant_buffer)
+	{
+		m_renderSystem->GetDeviceContext()->SetConstantBuffer(material->m_vertex_shader, material->m_constant_buffer);
+		m_renderSystem->GetDeviceContext()->SetConstantBuffer(material->m_pixel_shader, material->m_constant_buffer);
+	}
 
 	m_renderSystem->GetDeviceContext()->SetVertexShader(material->m_vertex_shader);
 	m_renderSystem->GetDeviceContext()->SetPixelShader(material->m_pixel_shader);
 
-	m_renderSystem->GetDeviceContext()->SetTexture(material->m_pixel_shader, &material->m_textures[0], material->m_textures.size());
+	if (material->m_textures.size())
+	{
+		m_renderSystem->GetDeviceContext()->SetTexture(material->m_pixel_shader, &material->m_textures[0], material->m_textures.size());
+	}
 }
 
 void GraphicEngine::GetVertexMeshLayoutShaderByteCodeAndSize(void** byte_code, size_t* size)

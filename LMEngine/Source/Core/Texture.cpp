@@ -114,6 +114,9 @@ m_depthStenciltView(nullptr)
 		if (FAILED(hr))
 			throw std::exception("[D3D11 Error] CreateDepthStencilView creation failed.");
 	}
+
+	m_type = type;
+	m_size = size;
 }
 
 Texture::~Texture()

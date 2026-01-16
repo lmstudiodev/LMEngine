@@ -91,11 +91,37 @@ void InputSystem::Release()
 
 void InputSystem::UpdateKeyboardInput(POINT& p)
 {
-	if (GetKeyboardState(m_keys_state))
+	for (unsigned int i = 0; i < 255; i++)
 	{
-		for (unsigned int i = 0; i < 255; i++)
+		m_keys_state[i] = GetAsyncKeyState(i);
+		
+		if (m_keys_state[i] & 0x8001)
 		{
-			if (m_keys_state[i] & 0x80)
+			std::unordered_set<InputListener*>::iterator it = m_set_listeners.begin();
+
+			while (it != m_set_listeners.end())
+			{
+				if (i == VK_LBUTTON)
+				{
+					if (m_keys_state[i] != m_old_keys_state[i])
+						(*it)->OnLeftMouseButtonDown(Point::GetDelta(p, m_old_mouse_pos));
+				}
+				else if (i == VK_RBUTTON)
+				{
+					if (m_keys_state[i] != m_old_keys_state[i])
+						(*it)->OnRightMouseButtonDown(Point::GetDelta(p, m_old_mouse_pos));
+				}
+				else
+				{
+					(*it)->OnKeyDown(i);
+				}
+
+				++it;
+			}
+		}
+		else
+		{
+			if (m_keys_state[i] != m_old_keys_state[i])
 			{
 				std::unordered_set<InputListener*>::iterator it = m_set_listeners.begin();
 
@@ -103,51 +129,24 @@ void InputSystem::UpdateKeyboardInput(POINT& p)
 				{
 					if (i == VK_LBUTTON)
 					{
-						if (m_keys_state[i] != m_old_keys_state[i])
-							(*it)->OnLeftMouseButtonDown(Point::GetDelta(p, m_old_mouse_pos));
+						(*it)->OnLeftMouseButtonUp(Point::GetDelta(p, m_old_mouse_pos));
 					}
 					else if (i == VK_RBUTTON)
 					{
-						if (m_keys_state[i] != m_old_keys_state[i])
-							(*it)->OnRightMouseButtonDown(Point::GetDelta(p, m_old_mouse_pos));
+						(*it)->OnRightMouseButtonUp(Point::GetDelta(p, m_old_mouse_pos));
 					}
 					else
 					{
-						(*it)->OnKeyDown(i);
+						(*it)->OnKeyUp(i);
 					}
 
 					++it;
 				}
 			}
-			else
-			{
-				if (m_keys_state[i] != m_old_keys_state[i])
-				{
-					std::unordered_set<InputListener*>::iterator it = m_set_listeners.begin();
-
-					while (it != m_set_listeners.end())
-					{
-						if (i == VK_LBUTTON)
-						{
-							(*it)->OnLeftMouseButtonUp(Point::GetDelta(p, m_old_mouse_pos));
-						}
-						else if (i == VK_RBUTTON)
-						{
-							(*it)->OnRightMouseButtonUp(Point::GetDelta(p, m_old_mouse_pos));
-						}
-						else
-						{
-							(*it)->OnKeyUp(i);
-						}
-
-						++it;
-					}
-				}
-			}
 		}
-
-		memcpy(m_old_keys_state, m_keys_state, sizeof(unsigned char) * 256);
 	}
+
+	memcpy(m_old_keys_state, m_keys_state, sizeof(short) * 256);
 }
 
 void InputSystem::UpdateMouseInput(POINT& p)
