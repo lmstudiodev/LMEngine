@@ -121,6 +121,7 @@
     <ClCompile Include="LMEngine\Source\Core\Material.cpp" />
     <ClCompile Include="LMEngine\Source\InputSystem\GamePad.cpp" />
     <ClCompile Include="LMEngine\Source\GameDemo\SpaceShooterGame.cpp" />
+    <ClCompile Include="LMEngine\Source\GameDemo\PostProcessingDemo.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="LMEngine\Include\GameDemo\AppWindow.h">
@@ -219,6 +220,7 @@
     <ClInclude Include="LMEngine\Include\Math\Rect.h" />
     <ClInclude Include="LMEngine\Include\GameDemo\SpaceShooterGame.h" />
     <ClInclude Include="LMEngine\Include\Math\MathUtils.h" />
+    <ClInclude Include="LMEngine\Include\GameDemo\PostProcessingDemo.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Resources\Shader\VertexShader.hlsl" />
@@ -232,5 +234,7 @@
     <FxCompile Include="Resources\Shader\DirectionalLightVertexShader.hlsl" />
     <FxCompile Include="Resources\Shader\DirectionalLightPixelShader.hlsl" />
     <FxCompile Include="Resources\Shader\SkyBoxVertexShader.hlsl" />
+    <FxCompile Include="Resources\Shader\PostProcessVS.hlsl" />
+    <FxCompile Include="Resources\Shader\DistortionEffect.hlsl" />
   </ItemGroup>
 </Project>
