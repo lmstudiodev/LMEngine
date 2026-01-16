@@ -164,7 +164,6 @@ void InputSystem::UpdateMouseInput(POINT& p)
 
 		while (it != m_set_listeners.end())
 		{
-			//(*it)->OnMouseMove(Point::GetDelta(p, m_old_mouse_pos));
 			(*it)->OnMouseMove(Point(p.x, p.y));
 			++it;
 		}
@@ -216,6 +215,29 @@ void InputSystem::UpdateGamePadButton()
 		while (it != m_set_listeners.end())
 		{
 			(*it)->OnGamePadButtonBPressed();
+
+			++it;
+		}
+	}
+	
+	if (m_gamepad->IsPressed(XINPUT_GAMEPAD_LEFT_THUMB))
+	{
+		std::unordered_set<InputListener*>::iterator it = m_set_listeners.begin();
+
+		while (it != m_set_listeners.end())
+		{
+			(*it)->OnGamePadLeftThumbPressed(true);
+
+			++it;
+		}
+	}
+	else
+	{
+		std::unordered_set<InputListener*>::iterator it = m_set_listeners.begin();
+
+		while (it != m_set_listeners.end())
+		{
+			(*it)->OnGamePadLeftThumbPressed(false);
 
 			++it;
 		}

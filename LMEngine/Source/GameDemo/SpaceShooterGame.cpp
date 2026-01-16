@@ -45,7 +45,8 @@ m_spaceship_current_position(Vector3D(0, 0, 0)),
 m_spaceship_current_rotation(Vector3D(0, 0, 0)),
 m_camera_distance(14.0f),
 m_camera_current_distance(0),
-m_spaceship_speed(125.0f)
+m_spaceship_speed(125.0f),
+m_spaceship_rotation_speed(20.0f)
 {
 }
 
@@ -445,15 +446,13 @@ void SpaceShooterGame::OnKeyUp(int key)
 
 	if (key == VK_ESCAPE)
 	{
-		if (m_play_state)
-		{
-			m_play_state = false;
-			InputSystem::Get()->ShowMouseCursor(!m_play_state);
-		}
+		m_play_state = !m_play_state;
+		InputSystem::Get()->ShowMouseCursor(!m_play_state);
 	}
 	else if (key == VK_SHIFT)
 	{
-		m_turbo_mode = false;
+		if (m_play_state)
+			m_turbo_mode = false;
 	}
 	else if (key == 'F')
 	{
@@ -467,6 +466,9 @@ void SpaceShooterGame::OnKeyUp(int key)
 
 void SpaceShooterGame::OnKeyDown(int key)
 {
+	if (!m_play_state)
+		return;
+	
 	if (key == 'W')
 	{
 		m_forward = 1.0f;
@@ -508,39 +510,48 @@ void SpaceShooterGame::OnMouseMove(const Point& mouse_pos)
 void SpaceShooterGame::OnLeftMouseButtonDown(const Point& delta_mouse_pos)
 {
 	if (!m_play_state)
-	{
-		m_play_state = true;
-		InputSystem::Get()->ShowMouseCursor(!m_play_state);
-	}
+		return;
 }
 
 void SpaceShooterGame::OnLeftMouseButtonUp(const Point& delta_mouse_pos)
 {
-
+	if (!m_play_state)
+		return;
 }
 
 void SpaceShooterGame::OnRightMouseButtonDown(const Point& delta_mouse_pos)
 {
-
+	if (!m_play_state)
+		return;
 }
 
 void SpaceShooterGame::OnRightMouseButtonUp(const Point& delta_mouse_pos)
 {
-;
+	if (!m_play_state)
+		return;
 }
 
 void SpaceShooterGame::OnGamePadButtonAPressed()
 {
+	if (!m_play_state)
+		return;
+
 	std::cout << "A BUTTON PRESSED" << "\n";
 }
 
 void SpaceShooterGame::OnGamePadButtonYPressed()
 {
+	if (!m_play_state)
+		return;
+
 	std::cout << "Y BUTTON PRESSED" << "\n";
 }
 
 void SpaceShooterGame::OnGamePadButtonXPressed()
 {
+	if (!m_play_state)
+		return;
+
 	std::cout << "X BUTTON PRESSED" << "\n";
 }
 
@@ -551,37 +562,37 @@ void SpaceShooterGame::OnGamePadButtonBPressed()
 
 void SpaceShooterGame::OnGamePadLeftStickXChanged(const float value)
 {
-	//m_rightward = value;
+	if (!m_play_state)
+		return;
+
+	m_rightward = value;
 }
 
 void SpaceShooterGame::OnGamePadLeftStickYChanged(const float value)
 {
-	//m_forward = value;
+	if (!m_play_state)
+		return;
+
+	m_forward = value;
 }
 
 void SpaceShooterGame::OnGamePadRightStickMoved(const float valueX, const float valueY)
 {
-	//if (!m_play_state)
-	//	return;
+	if (!m_play_state)
+		return;
 
-	//if (valueX != 0 || valueY != 0)
-	//{
-	//	RECT rc = this->GetClientWindowRect();
+	if (valueX != 0 || valueY != 0)
+	{
+		m_delta_mouse_x = (int)(valueX * m_spaceship_rotation_speed);
+		m_delta_mouse_y = (int)(valueY * m_spaceship_rotation_speed);
+	}
+}
 
-	//	int width = rc.right - rc.left;
-	//	int height = rc.bottom - rc.top;
+void SpaceShooterGame::OnGamePadLeftThumbPressed(bool value)
+{
+	if (!m_play_state)
+		return;
 
-	//	float xRot = m_rot_x + valueY * m_delta_time;
-	//	float yRot = m_rot_y + valueX * m_delta_time;
-
-	//	if (xRot > 1.0f)
-	//		xRot = 1.0f;
-
-	//	if (xRot < -1.0f)
-	//		xRot = -1.0f;
-
-	//	m_rot_x = xRot;;
-	//	m_rot_y = yRot;
-	//}
+	m_turbo_mode = value;
 }
 
