@@ -4,6 +4,7 @@
 #include "Matrix4x4.h"
 #include "InputSystem.h"
 #include "Mesh.h"
+#include "MathUtils.h"
 
 constexpr auto PI = 3.14159265359;
 
@@ -34,11 +35,16 @@ m_fullscreen_state(false),
 m_time(0),
 cull(true),
 m_anim(false),
-m_camera_rotation(Vector3D(0,0,0)),
+m_turbo_mode(false),
+m_camera_rotation(Vector3D(0, 0, 0)),
 m_camera_position(Vector3D(0, 0, 0)),
+m_camera_current_rotation(Vector3D(0, 0, 0)),
 m_spaceship_position(Vector3D(0, 0, 0)),
-m_spaceship_rotation(Vector3D(0,0,0)),
+m_spaceship_rotation(Vector3D(0, 0, 0)),
+m_spaceship_current_position(Vector3D(0, 0, 0)),
+m_spaceship_current_rotation(Vector3D(0, 0, 0)),
 m_camera_distance(14.0f),
+m_camera_current_distance(0),
 m_spaceship_speed(125.0f)
 {
 }
@@ -79,14 +85,18 @@ void SpaceShooterGame::Render()
 	//SPACE SHIP
 	m_material_list.clear();
 	m_material_list.push_back(m_spaceship_mat);
-	UpdateModel(m_spaceship_position, m_spaceship_rotation, Vector3D(1.0f, 1.0f, 1.0f), m_material_list);
+	UpdateModel(m_spaceship_current_position, m_spaceship_current_rotation, Vector3D(1.0f, 1.0f, 1.0f), m_material_list);
 	DrawMesh(m_spaceship_mesh, m_material_list);
 
 	//ASTEROIDS
 	m_material_list.clear();
 	m_material_list.push_back(m_asteroid_mat);
-	UpdateModel(Vector3D(0, 0, 20.0), Vector3D(0.0f, 0.0f, 0.0f), Vector3D(1.0f, 1.0f, 1.0f), m_material_list);
-	DrawMesh(m_asteroid_mesh, m_material_list);
+
+	for (unsigned int i = 0; i < m_num_of_asteroids; i++)
+	{
+		UpdateModel(m_asteroid_pos_list[i], m_asteroid_rot_list[i], m_asteroid_scale_list[i], m_material_list);
+		DrawMesh(m_asteroid_mesh, m_material_list);
+	}
 
 	//DRAW SKY BOX
 	m_material_list.clear();
@@ -100,10 +110,10 @@ void SpaceShooterGame::Render()
 
 void SpaceShooterGame::Update()
 {
-	UpdateLight();
-	UpdateSkyBox();
 	UpdateSpaceShip();
 	UpdateThirdPersonCamera();
+	UpdateLight();
+	UpdateSkyBox();
 }
 
 void SpaceShooterGame::UpdateModel(Vector3D position, Vector3D rotation, Vector3D scale, const std::vector<MaterialPtr>& material_list)
@@ -200,17 +210,37 @@ void SpaceShooterGame::UpdateThirdPersonCamera()
 	else if (m_camera_rotation.m_x <= -maxRotationAngle)
 		m_camera_rotation.m_x = -maxRotationAngle;
 
+	m_camera_current_rotation = Vector3D::Lerp(m_camera_current_rotation, m_camera_rotation, 3.0f * m_delta_time);
+
 	tempMatrix.SetIdentity();
-	tempMatrix.SetRotationX(m_camera_rotation.m_x);
+	tempMatrix.SetRotationX(m_camera_current_rotation.m_x);
 	worldCam *= tempMatrix;
 
 	tempMatrix.SetIdentity();
-	tempMatrix.SetRotationY(m_camera_rotation.m_y);
+	tempMatrix.SetRotationY(m_camera_current_rotation.m_y);
 	worldCam *= tempMatrix;
 
-	m_camera_position = m_spaceship_position;
+	if (m_forward)
+	{
+		if (m_turbo_mode)
+		{
+			m_camera_distance = m_forward > 0 ? 25.0f : 5.0f;
+		}
+		else
+		{
+			m_camera_distance = m_forward > 0 ? 16.0f : 9.0f;
+		}
+	}
+	else
+	{
+		m_camera_distance = 14.0f;
+	}
 
-	Vector3D newPos = m_camera_position + worldCam.GetZDirection() * (-m_camera_distance);
+	m_camera_current_distance = MathUtils::Lerp(m_camera_current_distance, m_camera_distance, 2.0f * m_delta_time);
+
+	m_camera_position = m_spaceship_current_position;
+
+	Vector3D newPos = m_camera_position + worldCam.GetZDirection() * (-m_camera_current_distance);
 	newPos = newPos + worldCam.GetYDirection() * (5.0f);
 
 	worldCam.SetTranslation(newPos);
@@ -226,7 +256,7 @@ void SpaceShooterGame::UpdateThirdPersonCamera()
 	int width = rc.right - rc.left;
 	int height = rc.bottom - rc.top;
 
-	m_proj_camera.SetPerspectiveFovLH(1.57f, ((float)width / (float)height), 0.1f, 100.0f);
+	m_proj_camera.SetPerspectiveFovLH(1.57f, ((float)width / (float)height), 0.1f, 5000.0f);
 }
 
 void SpaceShooterGame::UpdateSkyBox()
@@ -234,7 +264,7 @@ void SpaceShooterGame::UpdateSkyBox()
 	Constant cc{};
 
 	cc.m_worldMatrix.SetIdentity();
-	cc.m_worldMatrix.SetScale(Vector3D(100.0f, 100.0f, 100.0f));
+	cc.m_worldMatrix.SetScale(Vector3D(4000.0f, 4000.0f, 4000.0f));
 	cc.m_worldMatrix.SetTranslation(m_world_camera.GetTranslation());
 	cc.m_viewMatrix = m_view_camera;
 	cc.m_projectionMatrix = m_proj_camera;
@@ -244,9 +274,9 @@ void SpaceShooterGame::UpdateSkyBox()
 
 void SpaceShooterGame::UpdateSpaceShip()
 {
-	Matrix4x4 worldCam;
+	Matrix4x4 worldModel;
 	Matrix4x4 tempMatrix;
-	worldCam.SetIdentity();
+	worldModel.SetIdentity();
 
 	m_spaceship_rotation.m_x += m_delta_mouse_y * m_delta_time * 0.1f;
 	m_spaceship_rotation.m_y += m_delta_mouse_x * m_delta_time * 0.1f;
@@ -258,15 +288,26 @@ void SpaceShooterGame::UpdateSpaceShip()
 	else if (m_spaceship_rotation.m_x <= -maxRotationAngle)
 		m_spaceship_rotation.m_x = -maxRotationAngle;
 
-	tempMatrix.SetIdentity();
-	tempMatrix.SetRotationX(m_spaceship_rotation.m_x);
-	worldCam *= tempMatrix;
+	m_spaceship_current_rotation = Vector3D::Lerp(m_spaceship_current_rotation, m_spaceship_rotation, 5.0f * m_delta_time);
 
 	tempMatrix.SetIdentity();
-	tempMatrix.SetRotationY(m_spaceship_rotation.m_y);
-	worldCam *= tempMatrix;
+	tempMatrix.SetRotationX(m_spaceship_current_rotation.m_x);
+	worldModel *= tempMatrix;
 
-	m_spaceship_position = m_spaceship_position + worldCam.GetZDirection() * (m_forward) *m_spaceship_speed * m_delta_time;
+	tempMatrix.SetIdentity();
+	tempMatrix.SetRotationY(m_spaceship_current_rotation.m_y);
+	worldModel *= tempMatrix;
+
+	m_spaceship_speed = 125.0f;
+
+	if (m_turbo_mode)
+	{
+		m_spaceship_speed = 305.0f;
+	}
+
+	m_spaceship_position = m_spaceship_position + worldModel.GetZDirection() * (m_forward) * m_spaceship_speed * m_delta_time;
+
+	m_spaceship_current_position = Vector3D::Lerp(m_spaceship_current_position, m_spaceship_position, 3.0f * m_delta_time);
 }
 
 void SpaceShooterGame::UpdateLight()
@@ -288,7 +329,8 @@ void SpaceShooterGame::UpdateDeltaTime()
 {
 	m_old_delta = m_new_delta;
 	m_new_delta = GetTickCount64();
-	m_delta_time = (m_old_delta) ? ((m_new_delta - m_old_delta) / 1000.0f) : 0.0f;
+	//m_delta_time = (m_old_delta) ? ((m_new_delta - m_old_delta) / 1000.0f) : 0.0f;
+	m_delta_time = 1.0f / 60.0f;
 
 	m_time += m_delta_time;
 }
@@ -300,6 +342,9 @@ void SpaceShooterGame::OnUpdate()
 	InputSystem::Get()->Update();
 	this->Update();
 	this->Render();
+
+	m_delta_mouse_x = 0.0f;
+	m_delta_mouse_y = 0.0f;
 }
 
 void SpaceShooterGame::OnCreate()
@@ -314,6 +359,25 @@ void SpaceShooterGame::OnCreate()
 	auto height = rc.bottom - rc.top;
 
 	m_swapChain = GraphicEngine::Get()->GetRenderSystem()->CreateSwapChain(this->m_hwnd, UINT(width), UINT(height));
+
+	srand(time(NULL));
+
+	for (unsigned int i = 0; i < m_num_of_asteroids; i++)
+	{
+		float rand_pos_x = rand() % 4000 + (-2000);
+		float rand_pos_y = rand() % 4000 + (-2000);
+		float rand_pos_z = rand() % 4000 + (-2000);
+
+		float rand_rot_x = (rand() % 628) / 100.0f;
+		float rand_rot_y = (rand() % 628) / 100.0f;
+		float rand_rot_z = (rand() % 628) / 100.0f;
+
+		float rand_scale = rand() % 20 + (6);
+
+		m_asteroid_pos_list[i] = Vector3D(rand_pos_x, rand_pos_y, rand_pos_z);
+		m_asteroid_rot_list[i] = Vector3D(rand_rot_x, rand_rot_y, rand_rot_z);
+		m_asteroid_scale_list[i] = Vector3D(rand_scale, rand_scale, rand_scale);
+	}
 
 	m_sky_texture = GraphicEngine::Get()->GetTextureManager()->CreateTextureFromFile(L"Assets\\Textures\\stars_map.jpg");
 	m_spaceship_texture = GraphicEngine::Get()->GetTextureManager()->CreateTextureFromFile(L"Assets\\Textures\\spaceship.jpg");
@@ -364,6 +428,7 @@ void SpaceShooterGame::OnSize()
 
 	m_swapChain->Resize(width, height);
 
+	this->Update();
 	this->Render();
 }
 
@@ -385,6 +450,10 @@ void SpaceShooterGame::OnKeyUp(int key)
 			m_play_state = false;
 			InputSystem::Get()->ShowMouseCursor(!m_play_state);
 		}
+	}
+	else if (key == VK_SHIFT)
+	{
+		m_turbo_mode = false;
 	}
 	else if (key == 'F')
 	{
@@ -414,6 +483,10 @@ void SpaceShooterGame::OnKeyDown(int key)
 	{
 		m_rightward = 1.0f;
 	}
+	else if (key == VK_SHIFT)
+	{
+		m_turbo_mode = true;
+	}
 }
 
 void SpaceShooterGame::OnMouseMove(const Point& mouse_pos)
@@ -426,8 +499,8 @@ void SpaceShooterGame::OnMouseMove(const Point& mouse_pos)
 	int width = rc.right - rc.left;
 	int height = rc.bottom - rc.top;
 
-	m_delta_mouse_x = (int)(mouse_pos.m_axis_x - (rc.left + (width / 2.0f)));
-	m_delta_mouse_y = (int)(mouse_pos.m_axis_y - (rc.top + (height / 2.0f)));
+	m_delta_mouse_x = (int)(mouse_pos.m_axis_x - (int)(rc.left + (width / 2.0f)));
+	m_delta_mouse_y = (int)(mouse_pos.m_axis_y - (int)(rc.top + (height / 2.0f)));
 
 	InputSystem::Get()->SetCursorPosition(Point(rc.left + (int)(width / 2.0f), rc.top + (int)(height / 2.0f) ));
 }

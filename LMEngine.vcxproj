@@ -113,6 +113,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="LMEngine\Include\InputSystem\GamePad.h" />
+    <ClInclude Include="LMEngine\Include\Math\MathUtils.h" />
     <ClInclude Include="LMEngine\Include\Math\Rect.h" />
     <ClInclude Include="LMEngine\Include\stdafx.h" />
     <ClInclude Include="LMEngine\Include\GameDemo\AppWindow.h" />

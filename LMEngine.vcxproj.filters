@@ -218,6 +218,7 @@
     <ClInclude Include="LMEngine\Include\InputSystem\GamePad.h" />
     <ClInclude Include="LMEngine\Include\Math\Rect.h" />
     <ClInclude Include="LMEngine\Include\GameDemo\SpaceShooterGame.h" />
+    <ClInclude Include="LMEngine\Include\Math\MathUtils.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Resources\Shader\VertexShader.hlsl" />

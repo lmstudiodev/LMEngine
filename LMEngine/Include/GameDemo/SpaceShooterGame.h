@@ -79,12 +79,16 @@ private:
 
 	Vector3D m_camera_rotation;
 	Vector3D m_camera_position;
+	Vector3D m_camera_current_rotation;
 
 	Vector3D m_spaceship_rotation;
 	Vector3D m_spaceship_position;
+	Vector3D m_spaceship_current_rotation;
+	Vector3D m_spaceship_current_position;
 
 	float m_spaceship_speed;
 
+	float m_camera_current_distance;
 	float m_camera_distance;
 
 	float m_delta_mouse_x;
@@ -101,6 +105,7 @@ private:
 	bool m_fullscreen_state;
 	bool cull;
 	bool m_anim;
+	bool m_turbo_mode;
 
 	Matrix4x4 m_world_camera;
 	Matrix4x4 m_view_camera;
@@ -110,6 +115,12 @@ private:
 	std::vector<MaterialPtr> m_material_list;
 
 	Vector4D m_lightPosition;
+
+	Vector3D m_asteroid_pos_list[200];
+	Vector3D m_asteroid_rot_list[200];
+	Vector3D m_asteroid_scale_list[200];
+
+	unsigned int m_num_of_asteroids = 200;
 };
 
 
