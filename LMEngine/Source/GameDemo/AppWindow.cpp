@@ -210,7 +210,7 @@ void AppWindow::OnCreate()
 
 	m_swapChain = GraphicEngine::Get()->GetRenderSystem()->CreateSwapChain(this->m_hwnd, UINT(width), UINT(height));
 
-	m_sky_mat = GraphicEngine::Get()->CreateMaterial(L"Resources/Shader/PointLightVertexShader.hlsl", L"Resources/Shader/SkyBoxShader.hlsl");
+	m_sky_mat = GraphicEngine::Get()->CreateMaterial(L"Resources/Shader/SkyBoxVertexShader.hlsl", L"Resources/Shader/SkyBoxPixelShader.hlsl");
 	m_sky_mat->AddTexture(m_sky_texture);
 	m_sky_mat->SetCullMode(CULL_MODE_FRONT);
 
@@ -392,4 +392,9 @@ void AppWindow::OnGamePadRightStickMoved(const float valueX, const float valueY)
 		m_rot_x = xRot;;
 		m_rot_y = yRot;
 	}
+}
+
+void AppWindow::OnGamePadLeftThumbPressed(bool value)
+{
+
 }
