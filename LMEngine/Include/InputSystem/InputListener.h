@@ -31,4 +31,5 @@ public:
 	virtual void OnGamePadLeftStickXChanged(const float value) = 0;
 	virtual void OnGamePadLeftStickYChanged(const float value) = 0;
 	virtual void OnGamePadRightStickMoved(const float valueX, const float valueY) = 0;
+	virtual void OnGamePadLeftThumbPressed(bool value) = 0;
 };
