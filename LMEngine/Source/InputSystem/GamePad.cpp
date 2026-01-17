@@ -1,4 +1,4 @@
-#include "stdafx.h"
+#include <stdafx.h>
 #include "GamePad.h"
 
 GamePad::GamePad() : m_deadzoneX(0.05f), m_deadzoneY(0.02f), m_cId(-1), m_state(0)

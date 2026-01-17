@@ -1,10 +1,10 @@
-#include "stdafx.h"
-#include "SwapChain.h"
-#include "RenderSystem.h"
+#include <stdafx.h>
+#include <SwapChain.h>
+#include <RenderSystem.h>
 
 SwapChain::SwapChain(HWND hwnd, UINT width, UINT height, RenderSystem* system): m_swapChain(nullptr), m_rtv(nullptr), m_system(system), m_dsw(nullptr)
 {
-	ID3D11Device* device = m_system->m_d3d_device;
+	ID3D11Device* device = m_system->m_d3d_device.Get();
 
 	DXGI_SWAP_CHAIN_DESC desc{};
 	ZeroMemory(&desc, sizeof(desc));
@@ -24,27 +24,15 @@ SwapChain::SwapChain(HWND hwnd, UINT width, UINT height, RenderSystem* system): 
 	if (FAILED(m_system->m_dxgiFactory->CreateSwapChain(device, &desc, &m_swapChain)))
 		throw std::exception("[D3D11 Error] CreateSwapChain creation failed.");
 
-	ReloadBuffers(width, height);
+	reloadBuffers(width, height);
 }
 
-SwapChain::~SwapChain()
-{
-	if(m_swapChain)
-		m_swapChain->Release();
-
-	if(m_rtv)
-		m_rtv->Release();
-
-	if (m_dsw)
-		m_dsw->Release();
-}
-
-void SwapChain::Present(bool vsync)
+void SwapChain::present(bool vsync)
 {
 	m_swapChain->Present(vsync, NULL);
 }
 
-void SwapChain::Resize(unsigned int width, unsigned int height)
+void SwapChain::resize(unsigned int width, unsigned int height)
 {
 	if (m_rtv)
 		m_rtv->Release();
@@ -57,12 +45,12 @@ void SwapChain::Resize(unsigned int width, unsigned int height)
 	if (FAILED(hr))
 		std::cout << "[D3D11 warning] Unable to resize buffers." << "\n";
 
-	ReloadBuffers(width, height);
+	reloadBuffers(width, height);
 }
 
-void SwapChain::SetFullscreen(bool fullscreen, unsigned int width, unsigned int height)
+void SwapChain::setFullscreen(bool fullscreen, unsigned int width, unsigned int height)
 {
-	Resize(width, height);
+	resize(width, height);
 	
 	HRESULT hr = m_swapChain->SetFullscreenState(fullscreen, nullptr);
 
@@ -70,9 +58,9 @@ void SwapChain::SetFullscreen(bool fullscreen, unsigned int width, unsigned int 
 		std::cout << "[D3D11 warning] Unable to switch to full screen mode." << "\n";
 }
 
-void SwapChain::ReloadBuffers(unsigned int width, unsigned int height)
+void SwapChain::reloadBuffers(unsigned int width, unsigned int height)
 {
-	ID3D11Device* device = m_system->m_d3d_device;
+	ID3D11Device* device = m_system->m_d3d_device.Get();
 	
 	ID3D11Texture2D* buffer = nullptr;
 

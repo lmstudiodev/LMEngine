@@ -1,5 +1,5 @@
-#include "stdafx.h"
-#include "Texture.h"
+#include <stdafx.h>
+#include <Texture.h>
 #include "GraphicEngine.h"
 
 Texture::Texture(const wchar_t* full_path) : Resource(full_path), 

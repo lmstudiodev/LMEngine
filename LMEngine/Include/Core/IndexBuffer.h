@@ -1,18 +1,17 @@
 #pragma once
-#include "Prerequisites.h"
+#include <Prerequisites.h>
 
 class IndexBuffer
 {
 public:
 	IndexBuffer(void* list_indices, UINT size_list, RenderSystem* system);
-	~IndexBuffer();
 
 public:
-	UINT GetSizeIndexList();
+	UINT getSizeIndexList();
 
 private:
 	UINT m_size_list;
-	ID3D11Buffer* m_buffer;
+	Microsoft::WRL::ComPtr<ID3D11Buffer> m_buffer;
 
 	RenderSystem* m_system = nullptr;
 

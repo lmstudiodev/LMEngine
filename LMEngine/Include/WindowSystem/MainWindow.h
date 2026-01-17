@@ -1,31 +1,26 @@
+#include <Rect.h>
+#include <Prerequisites.h>
 
 class MainWindow
 {
 public:
 	MainWindow();
-	~MainWindow();
+	virtual ~MainWindow();
 
 public:
-	bool IsRunnig();
-
-	RECT GetClientWindowRect();
-	RECT GetScreenSize();
+	Rect getClientSize();
+	Rect getScreenSize();
 
 	virtual void OnUpdate();
 	virtual void OnCreate();
 	virtual void OnDestroy();
-	virtual void OnFocus() = 0;
-	virtual void OnKillFocus() = 0;
+	virtual void OnFocus();
+	virtual void OnKillFocus();
 	virtual void OnSize();
 
-private:
-	void Broadcast();
-
 protected:
-	HWND m_hwnd;
-	bool m_isRunning;
-	bool m_isInitialized;
-	RECT m_wndRect;
+	void* m_hwnd;
+	Rect m_size;
 };
 
 

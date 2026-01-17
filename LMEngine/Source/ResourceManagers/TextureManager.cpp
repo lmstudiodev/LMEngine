@@ -1,6 +1,6 @@
-#include "stdafx.h"
+#include <stdafx.h>
 #include "TextureManager.h"
-#include "Texture.h"
+#include <Texture.h>
 
 TextureManager::TextureManager() : ResourceManager()
 {

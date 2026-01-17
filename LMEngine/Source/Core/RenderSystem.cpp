@@ -1,13 +1,12 @@
-#include "stdafx.h"
-#include "RenderSystem.h"
-#include "SwapChain.h"
-#include "DeviceContext.h"
-#include "VertexBuffer.h"
-#include "ConstantBuffer.h"
-#include "IndexBuffer.h"
-#include "VertexShader.h"
-#include "PixelShader.h"
-#include "InputSystem.h"
+#include <stdafx.h>
+#include <RenderSystem.h>
+#include <SwapChain.h>
+#include <DeviceContext.h>
+#include <VertexBuffer.h>
+#include <IndexBuffer.h>
+#include <ConstantBuffer.h>
+#include <VertexShader.h>
+#include <PixelShader.h>
 
 RenderSystem::RenderSystem() : m_d3d_device(nullptr),
 m_deviceContext(nullptr),
@@ -15,6 +14,10 @@ m_dxgiDevice(nullptr),
 m_dxgiAdapter(nullptr),
 m_dxgiFactory(nullptr),
 m_blob(nullptr),
+m_vsblob(nullptr),
+m_psblob(nullptr),
+m_vs(nullptr),
+m_ps(nullptr),
 m_cull_front_state(nullptr),
 m_cull_back_state(nullptr)
 {
@@ -36,7 +39,6 @@ m_cull_back_state(nullptr)
 
 	HRESULT hr = 0;
 
-	ID3D11DeviceContext* m_immediateDeviceContext;
 	D3D_FEATURE_LEVEL m_featureLevel;
 
 	for (UINT dtIndex = 0; dtIndex < driverTypesCount;)
@@ -52,7 +54,7 @@ m_cull_back_state(nullptr)
 	if (FAILED(hr))
 		throw std::exception("[D3D11 Error] D3D11CreateDevice creation failed.");
 
-	m_deviceContext = std::make_shared<DeviceContext>(m_immediateDeviceContext, this);
+	m_deviceContext = std::make_shared<DeviceContext>(m_immediateDeviceContext.Get(), this);
 
 	if (FAILED(m_d3d_device->QueryInterface(__uuidof(IDXGIDevice), (void**)&m_dxgiDevice)))
 		throw std::exception("[D3D11 Error] IDXGIDevice creation failed.");
@@ -63,24 +65,16 @@ m_cull_back_state(nullptr)
 	if (FAILED(m_dxgiAdapter->GetParent(__uuidof(IDXGIFactory), (void**)&m_dxgiFactory)))
 		throw std::exception("[D3D11 Error] IDXGIFactory creation failed.");
 
-	InitRasterizerState();
+	initRasterizerState();
+	compilePrivateShaders();
 }
 
 RenderSystem::~RenderSystem()
 {
-	if (this->m_cull_front_state)
-		this->m_cull_front_state->Release();
 
-	if (this->m_cull_back_state)
-		this->m_cull_back_state->Release();
-	
-	m_dxgiDevice->Release();
-	m_dxgiAdapter->Release();
-	m_dxgiFactory->Release();
-	m_d3d_device->Release();
 }
 
-SwapChainPtr RenderSystem::CreateSwapChain(HWND hwnd, UINT width, UINT height)
+SwapChainPtr RenderSystem::createSwapChain(HWND hwnd, UINT width, UINT height)
 {
 	SwapChainPtr sc = nullptr;
 
@@ -93,25 +87,17 @@ SwapChainPtr RenderSystem::CreateSwapChain(HWND hwnd, UINT width, UINT height)
 	return sc;
 }
 
-DeviceContextPtr RenderSystem::GetDeviceContext()
+DeviceContextPtr RenderSystem::getDeviceContext()
 {
 	return this->m_deviceContext;
 }
 
-VertexBufferPtr RenderSystem::CreateVertexBuffer(void* list_vertices, UINT size_vertex, UINT size_list, void* shader_byte_code, UINT size_byte_shader)
+VertexBufferPtr RenderSystem::createVertexBuffer(void* list_vertices, UINT size_vertex, UINT size_list)
 {
-	VertexBufferPtr vb = nullptr;
-
-	try
-	{
-		vb = std::make_shared<VertexBuffer>(list_vertices, size_vertex, size_list, shader_byte_code, size_byte_shader, this);
-	}
-	catch(...){}
-	
-	return vb;
+	return std::make_shared<VertexBuffer>(list_vertices, size_vertex, size_list, this);;
 }
 
-ConstantBufferPtr RenderSystem::CreateConstantBuffer(void* buffer, UINT size_buffer)
+ConstantBufferPtr RenderSystem::createConstantBuffer(void* buffer, UINT size_buffer)
 {
 	ConstantBufferPtr cb = nullptr;
 
@@ -124,7 +110,7 @@ ConstantBufferPtr RenderSystem::CreateConstantBuffer(void* buffer, UINT size_buf
 	return cb;
 }
 
-IndexBufferPtr RenderSystem::CreateIndexBuffer(void* list_indices, UINT size_list)
+IndexBufferPtr RenderSystem::createIndexBuffer(void* list_indices, UINT size_list)
 {
 	IndexBufferPtr ib = nullptr;
 
@@ -137,7 +123,7 @@ IndexBufferPtr RenderSystem::CreateIndexBuffer(void* list_indices, UINT size_lis
 	return ib;
 }
 
-VertexShaderPtr RenderSystem::CreateVertexShader(const void* shader_byte_code, size_t byte_code_size)
+VertexShaderPtr RenderSystem::createVertexShader(const void* shader_byte_code, size_t byte_code_size)
 {
 	VertexShaderPtr vs = nullptr;
 
@@ -150,7 +136,7 @@ VertexShaderPtr RenderSystem::CreateVertexShader(const void* shader_byte_code, s
 	return vs;
 }
 
-PixelShaderPtr RenderSystem::CreatePixelShader(const void* shader_byte_code, size_t byte_code_size)
+PixelShaderPtr RenderSystem::createPixelShader(const void* shader_byte_code, size_t byte_code_size)
 {
 	PixelShaderPtr ps = nullptr;
 
@@ -163,7 +149,7 @@ PixelShaderPtr RenderSystem::CreatePixelShader(const void* shader_byte_code, siz
 	return ps;
 }
 
-void RenderSystem::InitRasterizerState()
+void RenderSystem::initRasterizerState()
 {
 	D3D11_RASTERIZER_DESC desc{};
 	desc.CullMode = D3D11_CULL_FRONT;
@@ -183,7 +169,47 @@ void RenderSystem::InitRasterizerState()
 		throw std::exception("[D3D11 Error] Create Cull back state creation failed.");
 }
 
-bool RenderSystem::CompileVertexShader(const wchar_t* fileName, const char* entryPointName, void** shader_byte_code, size_t* byte_code_size)
+void RenderSystem::compilePrivateShaders()
+{
+	Microsoft::WRL::ComPtr<ID3DBlob> blob;
+	Microsoft::WRL::ComPtr<ID3DBlob> errBlob;
+
+	auto meshLayoutCode = R"(
+struct VS_INPUT
+{
+    float4 position : POSITION0;
+    float2 texcoord : TEXCOORD0;
+    float3 normal : NORMAL0;
+    float3 tangent : TANGENT0;
+    float3 binormal : BINORMAL0;
+};
+
+struct VS_OUTPUT
+{
+    float4 position : SV_POSITION;
+    float2 texcoord : TEXCOORD0;
+};
+
+VS_OUTPUT vsmain(VS_INPUT input)
+{
+    VS_OUTPUT output = (VS_OUTPUT) 0;
+
+    return output;
+}
+	)";
+
+	auto codeSize = std::strlen(meshLayoutCode);
+
+	if (FAILED(D3DCompile(meshLayoutCode, codeSize, "VertexMeshLayoutShader", nullptr, nullptr, "vsmain", "vs_5_0", 0, 0, &blob, &errBlob)))
+	{
+		Dx3DError("VertexMeshLayoutShader compilation failed.");
+	}
+
+	memcpy(m_meshLayoutByteCode, blob->GetBufferPointer(), blob->GetBufferSize());
+	m_meshLayoutSize = blob->GetBufferSize();
+}
+
+bool RenderSystem::compileVertexShader(const wchar_t* fileName, const char* entryPointName, void** shader_byte_code, size_t* byte_code_size)
 {
 	ID3DBlob* errblob = nullptr;
 
@@ -201,7 +227,7 @@ bool RenderSystem::CompileVertexShader(const wchar_t* fileName, const char* entr
 	return true;
 }
 
-bool RenderSystem::CompilePixelShader(const wchar_t* fileName, const char* entryPointName, void** shader_byte_code, size_t* byte_code_size)
+bool RenderSystem::compilePixelShader(const wchar_t* fileName, const char* entryPointName, void** shader_byte_code, size_t* byte_code_size)
 {
 	ID3DBlob* errblob = nullptr;
 
@@ -219,20 +245,20 @@ bool RenderSystem::CompilePixelShader(const wchar_t* fileName, const char* entry
 	return true;
 }
 
-void RenderSystem::ReleaseCompiledShader()
+void RenderSystem::releaseCompiledShader()
 {
 	if (this->m_blob)
 		this->m_blob->Release();
 }
 
-void RenderSystem::SetRasterizerState(bool cull_front)
+void RenderSystem::setRasterizerState(bool cull_front)
 {
 	if (cull_front)
 	{
-		m_deviceContext->m_deviceContext->RSSetState(m_cull_front_state);
+		m_deviceContext->m_deviceContext->RSSetState(m_cull_front_state.Get());
 	}
 	else
 	{
-		m_deviceContext->m_deviceContext->RSSetState(m_cull_back_state);
+		m_deviceContext->m_deviceContext->RSSetState(m_cull_back_state.Get());
 	}
 }

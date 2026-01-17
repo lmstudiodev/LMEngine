@@ -1,5 +1,5 @@
-#include "stdafx.h"
-#include "MainWindow.h"
+#include <stdafx.h>
+#include <MainWindow.h>
 
 static LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
@@ -20,7 +20,12 @@ static LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lPara
 	{
 		MainWindow* window = (MainWindow*)GetWindowLongPtr(hwnd, GWLP_USERDATA);
 		window->OnDestroy();
-		::PostQuitMessage(0);
+		//::PostQuitMessage(0);
+		break;
+	}
+	case WM_CLOSE:
+	{
+		PostQuitMessage(0);
 		break;
 	}
 	case WM_SETFOCUS:
@@ -43,106 +48,112 @@ static LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lPara
 	return DefWindowProc(hwnd, msg, wParam, lParam);
 }
 
-MainWindow::MainWindow() : m_hwnd(nullptr), m_isRunning(false), m_wndRect({0,0,0,0}), m_isInitialized(false)
+MainWindow::MainWindow() : m_hwnd(nullptr), m_size{0,0,1920,1280}
 {
 	WNDCLASSEX wc{};
-	wc.cbClsExtra = NULL;
 	wc.cbSize = sizeof(WNDCLASSEX);
-	wc.cbWndExtra = NULL;
-	wc.hbrBackground = (HBRUSH)COLOR_WINDOW;
-	wc.hCursor = LoadCursor(NULL, IDC_ARROW);
-	wc.hIcon = LoadIcon(NULL, IDI_APPLICATION);
-	wc.hIconSm = LoadIcon(NULL, IDI_APPLICATION);
-	wc.hInstance = NULL;
 	wc.lpszClassName = L"LMEWindow";
-	wc.lpszMenuName = L"";
-	wc.style = NULL;
 	wc.lpfnWndProc = WndProc;
 
-	if (!RegisterClassEx(&wc))
-		throw std::exception("[LMEngine Error] Register Window Class failed.");
+	auto classId = RegisterClassEx(&wc);
 
-	m_wndRect = { 0, 0, 1920, 1280 };
+	if (!classId)
+		Dx3DError("Register Window Class failed.");
 
-	AdjustWindowRect(&m_wndRect, WS_OVERLAPPEDWINDOW, false);
+	RECT rc{ 0, 0, m_size.width, m_size.height };
 
-	m_hwnd = CreateWindowEx(WS_EX_OVERLAPPEDWINDOW,
-		L"LMEWindow",
+	AdjustWindowRect(&rc, WS_OVERLAPPEDWINDOW, false);
+
+	m_hwnd = CreateWindowEx(NULL,
+		MAKEINTATOM(classId),
 		L"D3DX LMEngine",
 		WS_OVERLAPPEDWINDOW,
 		CW_USEDEFAULT,
 		CW_USEDEFAULT,
-		m_wndRect.right - m_wndRect.left,
-		m_wndRect.bottom - m_wndRect.top,
+		rc.right - rc.left,
+		rc.bottom - rc.top,
 		NULL, NULL, NULL, NULL);
 
 	if (!m_hwnd)
-		throw std::exception("[LMEngine Error] Window creation failed.");
+		Dx3DError("[LMEngine Error] Window creation failed.");
 
-	ShowWindow(m_hwnd, SW_SHOW);
-	UpdateWindow(m_hwnd);
+	auto hwnd = static_cast<HWND>(m_hwnd);
 
-	m_isRunning = true;
+	SetWindowLongPtr(hwnd, GWLP_USERDATA, (LONG_PTR)this);
+
+	ShowWindow(hwnd, SW_SHOW);
+	UpdateWindow(hwnd);
 }
 
 MainWindow::~MainWindow()
 {
-
+	DestroyWindow(static_cast<HWND>(m_hwnd));
 }
 
-void MainWindow::Broadcast()
+//void MainWindow::Broadcast()
+//{
+	//MSG msg;
+
+	//if (!this->m_isInitialized)
+	//{
+	//	SetWindowLongPtr(m_hwnd, GWLP_USERDATA, (LONG_PTR)this);
+	//	this->OnCreate();
+	//	
+	//	this->m_isInitialized = true;
+	//}
+
+	//if (PeekMessageW(&msg, m_hwnd, 0, 0, PM_REMOVE) > 0)
+	//{
+	//	TranslateMessage(&msg);
+	//	DispatchMessage(&msg);
+	//}
+
+	//this->OnUpdate();
+
+	//Sleep(1);
+//}
+//
+//bool MainWindow::IsRunnig()
+//{
+//	if (m_isRunning)
+//		Broadcast();
+//
+//	return m_isRunning;
+//}
+
+Rect MainWindow::getClientSize()
 {
-	MSG msg;
+	RECT rc{};
 
-	if (!this->m_isInitialized)
-	{
-		SetWindowLongPtr(m_hwnd, GWLP_USERDATA, (LONG_PTR)this);
-		this->OnCreate();
-		
-		this->m_isInitialized = true;
-	}
+	auto hwnd = static_cast<HWND>(m_hwnd);
 
-	if (PeekMessageW(&msg, m_hwnd, 0, 0, PM_REMOVE) > 0)
-	{
-		TranslateMessage(&msg);
-		DispatchMessage(&msg);
-	}
+	GetClientRect(hwnd, &rc);
+	ClientToScreen(hwnd, (LPPOINT) & rc.left);
+	ClientToScreen(hwnd, (LPPOINT)&rc.right);
 
-	this->OnUpdate();
-
-	Sleep(1);
+	return { 0, 0, rc.right - rc.left, rc.bottom - rc.top };
 }
 
-bool MainWindow::IsRunnig()
+Rect MainWindow::getScreenSize()
 {
-	if (m_isRunning)
-		Broadcast();
+	RECT rc{};
 
-	return m_isRunning;
-}
-
-RECT MainWindow::GetClientWindowRect()
-{
-	RECT rc;
-
-	GetClientRect(this->m_hwnd, &rc);
-	ClientToScreen(this->m_hwnd, (LPPOINT) & rc.left);
-	ClientToScreen(this->m_hwnd, (LPPOINT)&rc.right);
-
-	return rc;
-}
-
-RECT MainWindow::GetScreenSize()
-{
-	RECT rc;
 	rc.right = GetSystemMetrics(SM_CXSCREEN);
 	rc.bottom = GetSystemMetrics(SM_CYSCREEN);
-	return rc;
+	return { 0, 0, rc.right - rc.left, rc.bottom - rc.top };
 }
 
 void MainWindow::OnDestroy()
 {
-	m_isRunning = false;
+
+}
+
+void MainWindow::OnFocus()
+{
+}
+
+void MainWindow::OnKillFocus()
+{
 }
 
 void MainWindow::OnCreate()

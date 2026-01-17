@@ -1,13 +1,11 @@
-#include "stdafx.h"
-#include "VertexBuffer.h"
-#include "RenderSystem.h"
+#include <stdafx.h>
+#include <VertexBuffer.h>
+#include <RenderSystem.h>
 
 VertexBuffer::VertexBuffer(void* list_vertices, 
 	UINT size_vertex, 
-	UINT size_list, 
-	void* shader_byte_code, 
-	UINT size_byte_shader, 
-	RenderSystem* system) : m_buffer(0), m_size_vertex(0), m_size_list(0), m_layout(0), m_system(system)
+	UINT size_list,
+	RenderSystem* system) : m_buffer(nullptr), m_size_vertex(0), m_size_list(0), m_layout(nullptr), m_system(system)
 {
 	D3D11_BUFFER_DESC bufferDesc{};
 	bufferDesc.Usage = D3D11_USAGE_DEFAULT;
@@ -36,20 +34,11 @@ VertexBuffer::VertexBuffer(void* list_vertices,
 
 	UINT size_layout = ARRAYSIZE(elementDesc);
 
-	if (FAILED(m_system->m_d3d_device->CreateInputLayout(elementDesc, size_layout, shader_byte_code, size_byte_shader, &m_layout)))
+	if (FAILED(m_system->m_d3d_device->CreateInputLayout(elementDesc, size_layout, m_system->m_meshLayoutByteCode, m_system->m_meshLayoutSize, &m_layout)))
 		throw std::exception("[D3D11 Error] InputLayout creation failed.");
 }
 
-VertexBuffer::~VertexBuffer()
-{
-	if(m_layout)
-		m_layout->Release();
-
-	if(m_buffer)
-		m_buffer->Release();
-}
-
-UINT VertexBuffer::GetSizeVertexList()
+UINT VertexBuffer::getSizeVertexList()
 {
 	return this->m_size_list;
 }

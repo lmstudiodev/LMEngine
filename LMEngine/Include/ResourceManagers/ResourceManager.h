@@ -1,19 +1,26 @@
 #pragma once
-#include "Prerequisites.h"
-#include "Resource.h"
+#include <Prerequisites.h>
+#include <Resource.h>
 
 class ResourceManager
 {
 public:
-	ResourceManager();
-	virtual ~ResourceManager();
+	ResourceManager(Game* game);
+	~ResourceManager();
 
-	ResourcerPtr CreateResourceFromFile(const wchar_t* file_path);
+	template<typename T>
+	std::shared_ptr<T> createResourceFromFile(const wchar_t* file_path)
+	{
+		return std::dynamic_pointer_cast<T>(createResourceFromFileConcrete(file_path));
+	}
 
-protected:
-	virtual Resource* CreateResourceFromFileConcrete(const wchar_t* file_path) = 0;
+	Game* getGame();
 
 private:
-	std::unordered_map<std::wstring, ResourcerPtr> m_resources;
+	ResourcePtr createResourceFromFileConcrete(const wchar_t* file_path);
+
+private:
+	std::unordered_map<std::wstring, ResourcePtr> m_resources;
+	Game* m_game = nullptr;
 };
 

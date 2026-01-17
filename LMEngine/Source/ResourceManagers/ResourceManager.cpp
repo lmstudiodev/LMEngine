@@ -1,7 +1,8 @@
-#include "stdafx.h"
-#include "ResourceManager.h"
+#include <stdafx.h>
+#include <ResourceManager.h>
+#include <Mesh.h>
 
-ResourceManager::ResourceManager()
+ResourceManager::ResourceManager(Game* game) : m_game(game)
 {
 }
 
@@ -9,22 +10,35 @@ ResourceManager::~ResourceManager()
 {
 }
 
-ResourcerPtr ResourceManager::CreateResourceFromFile(const wchar_t* file_path)
+Game* ResourceManager::getGame()
 {
-	std::wstring fullPath = std::filesystem::absolute(file_path);
-	
-	auto it = m_resources.find(fullPath);
+	return m_game;
+}
+
+ResourcePtr ResourceManager::createResourceFromFileConcrete(const wchar_t* file_path)
+{
+	std::filesystem::path resourcePath = file_path;
+	auto ext = resourcePath.extension();
+		
+	auto it = m_resources.find(file_path);
 
 	if (it != m_resources.end())
 		return it->second;
 
-	Resource* raw_res = this->CreateResourceFromFileConcrete(fullPath.c_str());
-
-	if (raw_res)
+	if (!std::filesystem::exists(resourcePath))
 	{
-		ResourcerPtr res(raw_res);
-		m_resources[fullPath] = res;
-		return res;
+		return ResourcePtr();
+	}
+
+	if (!ext.compare(L".obj"))
+	{
+		auto ptr = std::make_shared<Mesh>(resourcePath.c_str(), this);
+
+		if (ptr)
+		{
+			m_resources.emplace(file_path, ptr);
+			return ptr;
+		}
 	}
 
 	return nullptr;

@@ -44,8 +44,8 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>Libs\DirectXTex\include;Libs\tinyobjloader\include;$(IncludePath)</IncludePath>
-    <LibraryPath>Libs\DirectXTex\bin;$(LibraryPath)</LibraryPath>
+    <IncludePath>LMEngine\Include;LMEngine\Vendor\DirectXTex\include;LMEngine\Vendor\tinyobjloader\include;$(IncludePath)</IncludePath>
+    <LibraryPath>LMengine\Vendor\DirectXTex\bin;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -54,7 +54,7 @@
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
-      <AdditionalIncludeDirectories>LMEngine\Include;LMEngine\Include\GameDemo;LMEngine\Include\Math;LMEngine\Include\InputSystem;LMEngine\include\Core;LMengine\include\ResourceManagers;LMEngine\Include\WindowSystem;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>LMEngine\Include;LMEngine\Include\GameDemo;LMEngine\Include\Math;LMEngine\Include\InputSystem;LMEngine\include\Core;LMengine\include\ResourceManagers;LMEngine\Include\WindowSystem;LMEngine\Include\Game;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
@@ -84,58 +84,52 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="LMEngine\Source\Game\Display.cpp" />
+    <ClCompile Include="LMEngine\Source\Game\Game.cpp" />
     <ClCompile Include="LMEngine\Source\InputSystem\GamePad.cpp" />
     <ClCompile Include="LMEngine\Include\stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="LMEngine\Source\GameDemo\AppWindow.cpp" />
     <ClCompile Include="LMEngine\Source\Core\ConstantBuffer.cpp" />
     <ClCompile Include="LMEngine\Source\Core\DeviceContext.cpp" />
-    <ClCompile Include="LMEngine\Source\GraphicEngine.cpp" />
+    <ClCompile Include="LMEngine\Source\Core\GraphicEngine.cpp" />
     <ClCompile Include="LMEngine\Source\Core\IndexBuffer.cpp" />
     <ClCompile Include="LMEngine\Source\InputSystem\InputSystem.cpp" />
+    <ClCompile Include="LMEngine\Source\ResourceManagers\Mesh.cpp" />
+    <ClCompile Include="LMEngine\Source\ResourceManagers\Resource.cpp" />
+    <ClCompile Include="LMEngine\Source\ResourceManagers\ResourceManager.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="LMEngine\Source\WindowSystem\MainWindow.cpp" />
-    <ClCompile Include="LMEngine\Source\Core\Mesh.cpp" />
-    <ClCompile Include="LMEngine\Source\ResourceManagers\MeshManager.cpp" />
     <ClCompile Include="LMEngine\Source\Core\PixelShader.cpp" />
     <ClCompile Include="LMEngine\Source\Core\RenderSystem.cpp" />
-    <ClCompile Include="LMEngine\Source\Core\Resource.cpp" />
-    <ClCompile Include="LMEngine\Source\ResourceManagers\ResourceManager.cpp" />
     <ClCompile Include="LMEngine\Source\Core\SwapChain.cpp" />
-    <ClCompile Include="LMEngine\Source\Core\Texture.cpp" />
-    <ClCompile Include="LMEngine\Source\ResourceManagers\TextureManager.cpp" />
     <ClCompile Include="LMEngine\Source\Core\VertexBuffer.cpp" />
     <ClCompile Include="LMEngine\Source\Core\VertexShader.cpp" />
-    <ClCompile Include="LMEngine\Source\Core\Material.cpp" />
-    <ClCompile Include="LMEngine\Source\GameDemo\SpaceShooterGame.cpp" />
-    <ClCompile Include="LMEngine\Source\GameDemo\PostProcessingDemo.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="LMEngine\Include\Game\Display.h" />
+    <ClInclude Include="LMEngine\Include\Game\Game.h" />
     <ClInclude Include="LMEngine\Include\InputSystem\GamePad.h" />
     <ClInclude Include="LMEngine\Include\Math\MathUtils.h" />
     <ClInclude Include="LMEngine\Include\Math\Rect.h" />
+    <ClInclude Include="LMEngine\Include\Math\VertexMesh.h" />
+    <ClInclude Include="LMEngine\Include\ResourceManagers\Mesh.h" />
+    <ClInclude Include="LMEngine\Include\ResourceManagers\Resource.h" />
+    <ClInclude Include="LMEngine\Include\ResourceManagers\ResourceManager.h" />
     <ClInclude Include="LMEngine\Include\stdafx.h" />
-    <ClInclude Include="LMEngine\Include\GameDemo\AppWindow.h" />
     <ClInclude Include="LMEngine\Include\Core\ConstantBuffer.h" />
     <ClInclude Include="LMEngine\Include\Core\DeviceContext.h" />
-    <ClInclude Include="LMEngine\Include\GraphicEngine.h" />
+    <ClInclude Include="LMEngine\Include\Core\GraphicEngine.h" />
     <ClInclude Include="LMEngine\Include\Core\IndexBuffer.h" />
     <ClInclude Include="LMEngine\Include\InputSystem\InputListener.h" />
     <ClInclude Include="LMEngine\Include\InputSystem\InputSystem.h" />
     <ClInclude Include="LMEngine\Include\WindowSystem\MainWindow.h" />
     <ClInclude Include="LMEngine\Include\Math\Matrix4x4.h" />
-    <ClInclude Include="LMEngine\Include\Core\Mesh.h" />
-    <ClInclude Include="LMEngine\Include\ResourceManagers\MeshManager.h" />
     <ClInclude Include="LMEngine\Include\Core\PixelShader.h" />
     <ClInclude Include="LMEngine\Include\Math\Point.h" />
     <ClInclude Include="LMEngine\Include\Prerequisites.h" />
     <ClInclude Include="LMEngine\Include\Core\RenderSystem.h" />
-    <ClInclude Include="LMEngine\Include\Core\Resource.h" />
-    <ClInclude Include="LMEngine\Include\ResourceManagers\ResourceManager.h" />
-    <ClInclude Include="LMEngine\Include\Core\Texture.h" />
-    <ClInclude Include="LMEngine\Include\ResourceManagers\TextureManager.h" />
     <ClInclude Include="LMEngine\Include\Math\Vec2.h" />
     <ClInclude Include="LMEngine\Include\Math\Vector2D.h" />
     <ClInclude Include="LMEngine\Include\Math\Vector3D.h" />
@@ -145,11 +139,7 @@
     <ClInclude Include="LMEngine\Include\Core\SwapChain.h" />
     <ClInclude Include="LMEngine\Include\Math\Vec4.h" />
     <ClInclude Include="LMEngine\Include\Core\VertexBuffer.h" />
-    <ClInclude Include="LMEngine\Include\Core\VertexMesh.h" />
     <ClInclude Include="LMEngine\Include\Core\VertexShader.h" />
-    <ClInclude Include="LMEngine\Include\Core\Material.h" />
-    <ClInclude Include="LMEngine\Include\GameDemo\SpaceShooterGame.h" />
-    <ClInclude Include="LMEngine\Include\GameDemo\PostProcessingDemo.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Resources\Shader\DirectionalLightPixelShader.hlsl">

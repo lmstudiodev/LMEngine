@@ -1,6 +1,6 @@
-#include "stdafx.h"
-#include "IndexBuffer.h"
-#include "RenderSystem.h"
+#include <stdafx.h>
+#include <IndexBuffer.h>
+#include <RenderSystem.h>
 
 IndexBuffer::IndexBuffer(void* list_indices, UINT size_list, RenderSystem* system) : m_buffer(nullptr), m_size_list(0), m_system(system)
 {
@@ -22,13 +22,7 @@ IndexBuffer::IndexBuffer(void* list_indices, UINT size_list, RenderSystem* syste
 	}
 }
 
-IndexBuffer::~IndexBuffer()
-{
-	if (m_buffer)
-		m_buffer->Release();
-}
-
-UINT IndexBuffer::GetSizeIndexList()
+UINT IndexBuffer::getSizeIndexList()
 {
 	return this->m_size_list;
 }

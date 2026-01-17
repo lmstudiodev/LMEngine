@@ -1,6 +1,6 @@
-#include "stdafx.h"
-#include "PixelShader.h"
-#include "RenderSystem.h"
+#include <stdafx.h>
+#include <PixelShader.h>
+#include <RenderSystem.h>
 
 PixelShader::PixelShader(const void* shader_byte_code, size_t byte_code_size, RenderSystem* system) : m_ps(nullptr), m_system(system)
 {
@@ -8,10 +8,4 @@ PixelShader::PixelShader(const void* shader_byte_code, size_t byte_code_size, Re
 	{
 		throw std::exception("[D3D11 Error] PixelShader creation failed.");
 	}
-}
-
-PixelShader::~PixelShader()
-{
-	if(m_ps)
-		m_ps->Release();
 }

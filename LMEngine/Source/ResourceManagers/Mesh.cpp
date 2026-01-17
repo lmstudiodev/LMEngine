@@ -1,13 +1,16 @@
-#include "stdafx.h"
-#include "Mesh.h"
+#include <stdafx.h>
+#include <Mesh.h>
 
 #define TINYOBJLOADER_IMPLEMENTATION
 #include <tiny_obj_loader.h>
 
-#include "GraphicEngine.h"
-#include "VertexMesh.h"
+#include <GraphicEngine.h>
+#include <ResourceManager.h>
+#include <VertexMesh.h>
+#include <Game.h>
+#include <RenderSystem.h>
 
-Mesh::Mesh(const wchar_t* full_path) : Resource(full_path), m_vertex_buffer(nullptr), m_index_buffer(nullptr)
+Mesh::Mesh(const wchar_t* full_path, ResourceManager* resource_manager) : Resource(full_path, resource_manager), m_vertex_buffer(nullptr), m_index_buffer(nullptr)
 {
 	tinyobj::attrib_t attributes{};
 	
@@ -109,7 +112,7 @@ Mesh::Mesh(const wchar_t* full_path) : Resource(full_path), m_vertex_buffer(null
 
 					Vector3D tangent, binormal;
 
-					ComputeTangents(
+					computeTangents(
 						vertices_face[0], 
 						vertices_face[1], 
 						vertices_face[2],
@@ -171,14 +174,10 @@ Mesh::Mesh(const wchar_t* full_path) : Resource(full_path), m_vertex_buffer(null
 		std::cout << "...." << "\n";
 	}
 
-	void* shader_byte_code = nullptr;
-	size_t size_shader = 0;
+	auto resSys = m_manager->getGame()->getGraphicEngine()->getRenderSystem();
 
-	GraphicEngine::Get()->GetVertexMeshLayoutShaderByteCodeAndSize(&shader_byte_code, &size_shader);
-
-	m_vertex_buffer = GraphicEngine::Get()->GetRenderSystem()->CreateVertexBuffer(&list_vertices[0], sizeof(VertexMesh), (UINT)list_vertices.size(), shader_byte_code, (UINT)size_shader);
-
-	m_index_buffer = GraphicEngine::Get()->GetRenderSystem()->CreateIndexBuffer(&list_indices[0], (UINT)list_indices.size());
+	m_vertex_buffer = resSys->createVertexBuffer(&list_vertices[0], sizeof(VertexMesh), (UINT)list_vertices.size());
+	m_index_buffer = resSys->createIndexBuffer(&list_indices[0], (UINT)list_indices.size());
 }
 
 Mesh::Mesh(VertexMesh* vertex_list_data, 
@@ -186,20 +185,14 @@ Mesh::Mesh(VertexMesh* vertex_list_data,
 	unsigned int* index_list_data, 
 	unsigned int index_list_size, 
 	MaterialSlot* material_slot_list, 
-	unsigned int material_slot_list_size) : Resource(L"")
+	unsigned int material_slot_list_size, 
+	ResourceManager* resource_manager) : Resource(L"", resource_manager)
 {
-	void* shader_byte_code = nullptr;
-	size_t size_shader = 0;
+	auto resSys = m_manager->getGame()->getGraphicEngine()->getRenderSystem();
 
-	GraphicEngine::Get()->GetVertexMeshLayoutShaderByteCodeAndSize(&shader_byte_code, &size_shader);
+	m_vertex_buffer = resSys->createVertexBuffer(vertex_list_data, sizeof(VertexMesh), (UINT)vertex_list_size);
 
-	m_vertex_buffer = GraphicEngine::Get()->GetRenderSystem()->CreateVertexBuffer(vertex_list_data, 
-																					sizeof(VertexMesh), 
-																					(UINT)vertex_list_size,
-																					shader_byte_code, 
-																					(UINT)size_shader);
-
-	m_index_buffer = GraphicEngine::Get()->GetRenderSystem()->CreateIndexBuffer(index_list_data, (UINT)index_list_size);
+	m_index_buffer = resSys->createIndexBuffer(index_list_data, (UINT)index_list_size);
 
 	m_material_slots.resize(material_slot_list_size);
 
@@ -213,17 +206,7 @@ Mesh::~Mesh()
 {
 }
 
-const VertexBufferPtr& Mesh::GetVertexBuffer()
-{
-	return m_vertex_buffer;
-}
-
-const IndexBufferPtr& Mesh::GetIndexBuffer()
-{
-	return m_index_buffer;
-}
-
-const MaterialSlot& Mesh::GetMaterialSlot(unsigned int slot)
+MaterialSlot Mesh::getMaterialSlot(unsigned int slot)
 {
 	if (slot >= m_material_slots.size())
 		return MaterialSlot();
@@ -231,12 +214,12 @@ const MaterialSlot& Mesh::GetMaterialSlot(unsigned int slot)
 	return m_material_slots[slot];
 }
 
-size_t Mesh::GetNumMaterialSlots()
+size_t Mesh::getNumMaterialSlots()
 {
 	return m_material_slots.size();
 }
 
-void Mesh::ComputeTangents(const Vector3D& v0, const Vector3D& v1, const Vector3D& v2, 
+void Mesh::computeTangents(const Vector3D& v0, const Vector3D& v1, const Vector3D& v2, 
 	const Vector2D& t0, const Vector2D& t1, const Vector2D& t2, 
 	Vector3D& tangent, Vector3D& binormal)
 {

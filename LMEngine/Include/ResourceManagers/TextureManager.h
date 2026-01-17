@@ -1,6 +1,6 @@
 #pragma once
 #include "ResourceManager.h"
-#include "Texture.h"
+#include <Texture.h>
 
 class TextureManager : public ResourceManager
 {

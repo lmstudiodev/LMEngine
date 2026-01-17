@@ -1,4 +1,4 @@
-#include "stdafx.h"
+#include <stdafx.h>
 #include "Material.h"
 #include "GraphicEngine.h"
 
@@ -7,16 +7,16 @@ Material::Material(const wchar_t* vertex_sahder_path, const wchar_t* pixel_shade
 	void* shader_byte_code = nullptr;
 	size_t size_shader = 0;
 
-	GraphicEngine::Get()->GetRenderSystem()->CompileVertexShader(vertex_sahder_path, "vsmain", &shader_byte_code, &size_shader);
-	m_vertex_shader = GraphicEngine::Get()->GetRenderSystem()->CreateVertexShader(shader_byte_code, size_shader);
-	GraphicEngine::Get()->GetRenderSystem()->ReleaseCompiledShader();
+	GraphicEngine::Get()->GetRenderSystem()->compileVertexShader(vertex_sahder_path, "vsmain", &shader_byte_code, &size_shader);
+	m_vertex_shader = GraphicEngine::Get()->GetRenderSystem()->createVertexShader(shader_byte_code, size_shader);
+	GraphicEngine::Get()->GetRenderSystem()->releaseCompiledShader();
 
 	if (!m_vertex_shader)
 		throw std::runtime_error("[D3D11 Error] Unable to compile vertex shader for material. Material not created.");
 
-	GraphicEngine::Get()->GetRenderSystem()->CompilePixelShader(pixel_shader_path, "psmain", &shader_byte_code, &size_shader);
-	m_pixel_shader = GraphicEngine::Get()->GetRenderSystem()->CreatePixelShader(shader_byte_code, size_shader);
-	GraphicEngine::Get()->GetRenderSystem()->ReleaseCompiledShader();
+	GraphicEngine::Get()->GetRenderSystem()->compilePixelShader(pixel_shader_path, "psmain", &shader_byte_code, &size_shader);
+	m_pixel_shader = GraphicEngine::Get()->GetRenderSystem()->createPixelShader(shader_byte_code, size_shader);
+	GraphicEngine::Get()->GetRenderSystem()->releaseCompiledShader();
 
 	if (!m_pixel_shader)
 		throw std::runtime_error("[D3D11 Error] Unable to compile pixel shader for material. Material not created.");
@@ -52,11 +52,11 @@ void Material::SetData(void* data, unsigned int size)
 {
 	if (!m_constant_buffer)
 	{
-		m_constant_buffer = GraphicEngine::Get()->GetRenderSystem()->CreateConstantBuffer(data, size);
+		m_constant_buffer = GraphicEngine::Get()->GetRenderSystem()->createConstantBuffer(data, size);
 	}
 	else
 	{
-		m_constant_buffer->Update(GraphicEngine::Get()->GetRenderSystem()->GetDeviceContext(), data);
+		m_constant_buffer->Update(GraphicEngine::Get()->GetRenderSystem()->getDeviceContext(), data);
 	}
 }
 

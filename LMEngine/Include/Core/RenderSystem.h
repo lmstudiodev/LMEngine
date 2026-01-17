@@ -1,5 +1,5 @@
 #pragma once
-#include "Prerequisites.h"
+#include <Prerequisites.h>
 
 class RenderSystem
 {
@@ -8,36 +8,48 @@ public:
 	~RenderSystem();
 
 public:
-	SwapChainPtr CreateSwapChain(HWND hwnd, UINT width, UINT height);
-	DeviceContextPtr GetDeviceContext();
-	VertexBufferPtr CreateVertexBuffer(void* list_vertices, UINT size_vertex, UINT size_list, void* shader_byte_code, UINT size_byte_shader);
-	ConstantBufferPtr CreateConstantBuffer(void* buffer, UINT size_buffer);
-	IndexBufferPtr CreateIndexBuffer(void* list_indices, UINT size_list);
-	VertexShaderPtr CreateVertexShader(const void* shader_byte_code, size_t byte_code_size);
-	PixelShaderPtr CreatePixelShader(const void* shader_byte_code, size_t byte_code_size);
+	SwapChainPtr createSwapChain(HWND hwnd, UINT width, UINT height);
+	DeviceContextPtr getDeviceContext();
+	VertexBufferPtr createVertexBuffer(void* list_vertices, UINT size_vertex, UINT size_list);
+	ConstantBufferPtr createConstantBuffer(void* buffer, UINT size_buffer);
+	IndexBufferPtr createIndexBuffer(void* list_indices, UINT size_list);
+	VertexShaderPtr createVertexShader(const void* shader_byte_code, size_t byte_code_size);
+	PixelShaderPtr createPixelShader(const void* shader_byte_code, size_t byte_code_size);
 
 public:
-	bool CompileVertexShader(const wchar_t* fileName, const char* entryPointName, void** shader_byte_code, size_t* byte_code_size);
-	bool CompilePixelShader(const wchar_t* fileName, const char* entryPointName, void** shader_byte_code, size_t* byte_code_size);
-	void ReleaseCompiledShader();
-	void SetRasterizerState(bool cull_front);
+	bool compileVertexShader(const wchar_t* fileName, const char* entryPointName, void** shader_byte_code, size_t* byte_code_size);
+	bool compilePixelShader(const wchar_t* fileName, const char* entryPointName, void** shader_byte_code, size_t* byte_code_size);
+	void releaseCompiledShader();
+	void setRasterizerState(bool cull_front);
 
 private:
-	void InitRasterizerState();
+	void compilePrivateShaders();
+	void initRasterizerState();
 
 private:
 	DeviceContextPtr m_deviceContext;
 
 private:
-	ID3D11Device* m_d3d_device;
+	Microsoft::WRL::ComPtr<ID3D11DeviceContext> m_immediateDeviceContext;
 
-private:
-	IDXGIDevice* m_dxgiDevice;
-	IDXGIAdapter* m_dxgiAdapter;
-	IDXGIFactory* m_dxgiFactory;
-	ID3DBlob* m_blob;
-	ID3D11RasterizerState* m_cull_front_state;
-	ID3D11RasterizerState* m_cull_back_state;
+	Microsoft::WRL::ComPtr<ID3D11Device> m_d3d_device;
+	Microsoft::WRL::ComPtr<IDXGIDevice> m_dxgiDevice;
+	Microsoft::WRL::ComPtr<IDXGIAdapter> m_dxgiAdapter;
+	Microsoft::WRL::ComPtr<IDXGIFactory> m_dxgiFactory;
+
+	Microsoft::WRL::ComPtr<ID3DBlob> m_blob;
+
+	Microsoft::WRL::ComPtr<ID3D11RasterizerState> m_cull_front_state;
+	Microsoft::WRL::ComPtr<ID3D11RasterizerState> m_cull_back_state;
+
+	Microsoft::WRL::ComPtr<ID3DBlob> m_vsblob;
+	Microsoft::WRL::ComPtr<ID3DBlob> m_psblob;
+
+	Microsoft::WRL::ComPtr<ID3D11VertexShader> m_vs;
+	Microsoft::WRL::ComPtr<ID3D11PixelShader> m_ps;
+
+	unsigned char m_meshLayoutByteCode[1024];
+	size_t m_meshLayoutSize = 0;
 
 private:
 	friend class SwapChain;

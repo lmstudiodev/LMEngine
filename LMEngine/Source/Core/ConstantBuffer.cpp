@@ -1,7 +1,7 @@
-#include "stdafx.h"
-#include "ConstantBuffer.h"
-#include "RenderSystem.h"
-#include "DeviceContext.h"
+#include <stdafx.h>
+#include <ConstantBuffer.h>
+#include <RenderSystem.h>
+#include <DeviceContext.h>
 
 ConstantBuffer::ConstantBuffer(void* buffer, UINT size_buffer, RenderSystem* system) : m_buffer(nullptr), m_system(system)
 {
@@ -21,13 +21,7 @@ ConstantBuffer::ConstantBuffer(void* buffer, UINT size_buffer, RenderSystem* sys
 	}
 }
 
-ConstantBuffer::~ConstantBuffer()
-{
-	if(m_buffer)
-		m_buffer->Release();
-}
-
 void ConstantBuffer::Update(DeviceContextPtr context, void* buffer)
 {
-	context->m_deviceContext->UpdateSubresource(this->m_buffer, NULL, NULL, buffer, NULL, NULL);
+	context->m_deviceContext->UpdateSubresource(this->m_buffer.Get(), NULL, NULL, buffer, NULL, NULL);
 }

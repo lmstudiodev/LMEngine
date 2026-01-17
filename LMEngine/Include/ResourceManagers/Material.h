@@ -1,9 +1,9 @@
 #pragma once
-#include "VertexShader.h"
-#include "PixelShader.h"
-#include "ConstantBuffer.h"
+#include <VertexShader.h>
+#include <PixelShader.h>
+#include <ConstantBuffer.h>
 
-#include "Prerequisites.h"
+#include <Prerequisites.h>
 
 enum CULL_MODE
 {
