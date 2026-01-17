@@ -84,6 +84,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="LMEngine\Source\Core\Texture2D.cpp" />
     <ClCompile Include="LMEngine\Source\Game\Display.cpp" />
     <ClCompile Include="LMEngine\Source\Game\Game.cpp" />
     <ClCompile Include="LMEngine\Source\InputSystem\GamePad.cpp" />
@@ -106,8 +107,10 @@
     <ClCompile Include="LMEngine\Source\Core\SwapChain.cpp" />
     <ClCompile Include="LMEngine\Source\Core\VertexBuffer.cpp" />
     <ClCompile Include="LMEngine\Source\Core\VertexShader.cpp" />
+    <ClCompile Include="LMEngine\Source\ResourceManagers\Texture.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="LMEngine\Include\Core\Texture2D.h" />
     <ClInclude Include="LMEngine\Include\Game\Display.h" />
     <ClInclude Include="LMEngine\Include\Game\Game.h" />
     <ClInclude Include="LMEngine\Include\InputSystem\GamePad.h" />
@@ -140,6 +143,7 @@
     <ClInclude Include="LMEngine\Include\Math\Vec4.h" />
     <ClInclude Include="LMEngine\Include\Core\VertexBuffer.h" />
     <ClInclude Include="LMEngine\Include\Core\VertexShader.h" />
+    <ClInclude Include="LMEngine\Include\ResourceManagers\Texture.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Resources\Shader\DirectionalLightPixelShader.hlsl">

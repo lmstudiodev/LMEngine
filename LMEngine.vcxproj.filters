@@ -103,6 +103,8 @@
     <ClCompile Include="LMEngine\Source\ResourceManagers\ResourceManager.cpp" />
     <ClCompile Include="LMEngine\Source\ResourceManagers\Resource.cpp" />
     <ClCompile Include="LMEngine\Source\ResourceManagers\Mesh.cpp" />
+    <ClCompile Include="LMEngine\Source\Core\Texture2D.cpp" />
+    <ClCompile Include="LMEngine\Source\ResourceManagers\Texture.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="LMEngine\Include\WindowSystem\MainWindow.h">
@@ -181,6 +183,8 @@
     <ClInclude Include="LMEngine\Include\ResourceManagers\Resource.h" />
     <ClInclude Include="LMEngine\Include\ResourceManagers\Mesh.h" />
     <ClInclude Include="LMEngine\Include\Math\VertexMesh.h" />
+    <ClInclude Include="LMEngine\Include\Core\Texture2D.h" />
+    <ClInclude Include="LMEngine\Include\ResourceManagers\Texture.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Resources\Shader\VertexShader.hlsl" />

@@ -1,5 +1,6 @@
 #pragma once
 #include <Prerequisites.h>
+#include <Texture2D.h>
 
 class RenderSystem
 {
@@ -15,6 +16,9 @@ public:
 	IndexBufferPtr createIndexBuffer(void* list_indices, UINT size_list);
 	VertexShaderPtr createVertexShader(const void* shader_byte_code, size_t byte_code_size);
 	PixelShaderPtr createPixelShader(const void* shader_byte_code, size_t byte_code_size);
+
+	Texture2DPtr createTexture(const wchar_t* full_path);
+	Texture2DPtr createTexture(const Rect& size, Texture2D::Type type);
 
 public:
 	bool compileVertexShader(const wchar_t* fileName, const char* entryPointName, void** shader_byte_code, size_t* byte_code_size);
@@ -58,7 +62,7 @@ private:
 	friend class VertexShader;
 	friend class PixelShader;
 	friend class ConstantBuffer;
-	friend class Texture;
+	friend class Texture2D;
 };
 
 

@@ -1,6 +1,7 @@
 #include <stdafx.h>
 #include <ResourceManager.h>
 #include <Mesh.h>
+#include <Texture.h>
 
 ResourceManager::ResourceManager(Game* game) : m_game(game)
 {
@@ -25,6 +26,8 @@ ResourcePtr ResourceManager::createResourceFromFileConcrete(const wchar_t* file_
 	if (it != m_resources.end())
 		return it->second;
 
+	ResourcePtr resPtr;
+
 	if (!std::filesystem::exists(resourcePath))
 	{
 		return ResourcePtr();
@@ -32,13 +35,17 @@ ResourcePtr ResourceManager::createResourceFromFileConcrete(const wchar_t* file_
 
 	if (!ext.compare(L".obj"))
 	{
-		auto ptr = std::make_shared<Mesh>(resourcePath.c_str(), this);
+		resPtr = std::make_shared<Mesh>(resourcePath.c_str(), this);
+	}
+	else if (!ext.compare(L".jpg") || !ext.compare(L".png") || !ext.compare(L".bmp"))
+	{
+		resPtr = std::make_shared<Texture>(resourcePath.c_str(), this);
+	}
 
-		if (ptr)
-		{
-			m_resources.emplace(file_path, ptr);
-			return ptr;
-		}
+	if (resPtr)
+	{
+		m_resources.emplace(file_path, resPtr);
+		return resPtr;
 	}
 
 	return nullptr;

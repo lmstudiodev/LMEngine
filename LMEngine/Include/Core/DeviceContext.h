@@ -11,10 +11,10 @@ public:
 	void clearRenderTarget(const SwapChainPtr& swapChain, Vec4 color);
 	void clearDepthStencil(const SwapChainPtr& swapChain);
 
-	void clearRenderTarget(const TexturePtr& rendertarget, Vec4 color);
-	void clearDepthStencil(const TexturePtr& depthStencil);
+	//void clearRenderTarget(const TexturePtr& rendertarget, Vec4 color);
+	//void clearDepthStencil(const TexturePtr& depthStencil);
 
-	void setRenderTarget(const TexturePtr& rendertarget, const TexturePtr& depthStencil);
+	//void setRenderTarget(const TexturePtr& rendertarget, const TexturePtr& depthStencil);
 
 	void setVertexBuffer(const VertexBufferPtr& vertex_buffer);
 	void setIndexBuffer(const IndexBufferPtr& index_buffer);
@@ -24,8 +24,8 @@ public:
 	void setVertexShader(const VertexShaderPtr& vertex_shader);
 	void setPixelShader(const PixelShaderPtr& pixel_shader);
 
-	void setTexture(const VertexShaderPtr& vertex_shader, const TexturePtr* texture, unsigned int num_textures);
-	void setTexture(const PixelShaderPtr& pixel_shader, const TexturePtr* texture, unsigned int num_textures);
+	//void setTexture(const VertexShaderPtr& vertex_shader, const TexturePtr* texture, unsigned int num_textures);
+	//void setTexture(const PixelShaderPtr& pixel_shader, const TexturePtr* texture, unsigned int num_textures);
 
 	void setConstantBuffer(const VertexShaderPtr& vertex_shader, const ConstantBufferPtr& constant_buffer);
 	void setConstantBuffer(const PixelShaderPtr& pixel_shader, const ConstantBufferPtr& constant_buffer);

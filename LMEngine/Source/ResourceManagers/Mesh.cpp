@@ -3,7 +3,6 @@
 
 #define TINYOBJLOADER_IMPLEMENTATION
 #include <tiny_obj_loader.h>
-
 #include <GraphicEngine.h>
 #include <ResourceManager.h>
 #include <VertexMesh.h>

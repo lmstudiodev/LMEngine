@@ -149,6 +149,16 @@ PixelShaderPtr RenderSystem::createPixelShader(const void* shader_byte_code, siz
 	return ps;
 }
 
+Texture2DPtr RenderSystem::createTexture(const wchar_t* full_path)
+{
+	return std::make_shared<Texture2D>(full_path, this);
+}
+
+Texture2DPtr RenderSystem::createTexture(const Rect& size, Texture2D::Type type)
+{
+	return std::make_shared<Texture2D>(size, type, this);
+}
+
 void RenderSystem::initRasterizerState()
 {
 	D3D11_RASTERIZER_DESC desc{};

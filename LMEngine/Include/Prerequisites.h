@@ -15,6 +15,7 @@ class GraphicEngine;
 class Resource;
 class ResourceManager;
 class Texture;
+class Texture2D;
 class TextureManager;
 class Mesh;
 class MeshManager;
@@ -32,6 +33,7 @@ typedef std::shared_ptr<PixelShader> PixelShaderPtr;
 typedef std::shared_ptr<ConstantBuffer> ConstantBufferPtr;
 typedef std::shared_ptr<Resource> ResourcePtr;
 typedef std::shared_ptr<Texture> TexturePtr;
+typedef std::shared_ptr<Texture2D> Texture2DPtr;
 typedef std::shared_ptr<Mesh> MeshPtr;
 typedef std::shared_ptr<Material> MaterialPtr;
 

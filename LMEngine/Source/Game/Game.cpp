@@ -4,6 +4,7 @@
 #include <GraphicEngine.h>
 #include <ResourceManager.h>
 #include <Mesh.h>
+#include <Texture.h>
 
 Game::Game() : m_isRunning(true)
 {
@@ -12,6 +13,7 @@ Game::Game() : m_isRunning(true)
 	m_resourceManager = std::make_unique<ResourceManager>(this);
 
 	m_resourceManager->createResourceFromFile<Mesh>(L"Assets/Meshes/house.obj");
+	m_resourceManager->createResourceFromFile<Texture>(L"Assets/Textures/wood.jpg");
 }
 
 Game::~Game()

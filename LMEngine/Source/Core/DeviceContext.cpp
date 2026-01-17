@@ -6,7 +6,7 @@
 #include <ConstantBuffer.h>
 #include <VertexShader.h>
 #include <PixelShader.h>
-#include <Texture.h>
+//#include <Texture.h>
 
 DeviceContext::DeviceContext(ID3D11DeviceContext* deviceContext, RenderSystem* system) : m_deviceContext(deviceContext), m_system(system)
 {
@@ -27,34 +27,34 @@ void DeviceContext::clearDepthStencil(const SwapChainPtr& swapChain)
 	m_deviceContext->ClearDepthStencilView(swapChain->m_dsw.Get(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1, 0);
 }
 
-void DeviceContext::clearRenderTarget(const TexturePtr& rendertarget, Vec4 color)
-{
-	if (rendertarget->m_type != Texture::Type::RenderTarget)
-		return;
+//void DeviceContext::clearRenderTarget(const TexturePtr& rendertarget, Vec4 color)
+//{
+//	if (rendertarget->m_type != Texture::Type::RenderTarget)
+//		return;
+//
+//	const float colorValues[] = { color.x, color.y, color.z, color.w };
+//
+//	m_deviceContext->ClearRenderTargetView(rendertarget->m_renderTargetView, colorValues);
+//}
 
-	const float colorValues[] = { color.x, color.y, color.z, color.w };
+//void DeviceContext::clearDepthStencil(const TexturePtr& depthStencil)
+//{
+//	if (depthStencil->m_type != Texture::Type::DepthStencil)
+//		return;
+//
+//	m_deviceContext->ClearDepthStencilView(depthStencil->m_depthStenciltView, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1, 0);
+//}
 
-	m_deviceContext->ClearRenderTargetView(rendertarget->m_renderTargetView, colorValues);
-}
-
-void DeviceContext::clearDepthStencil(const TexturePtr& depthStencil)
-{
-	if (depthStencil->m_type != Texture::Type::DepthStencil)
-		return;
-
-	m_deviceContext->ClearDepthStencilView(depthStencil->m_depthStenciltView, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1, 0);
-}
-
-void DeviceContext::setRenderTarget(const TexturePtr& rendertarget, const TexturePtr& depthStencil)
-{
-	if (rendertarget->m_type != Texture::Type::RenderTarget)
-		return;
-
-	if (depthStencil->m_type != Texture::Type::DepthStencil)
-		return;
-
-	m_deviceContext->OMSetRenderTargets(1, &rendertarget->m_renderTargetView, depthStencil->m_depthStenciltView);
-}
+//void DeviceContext::setRenderTarget(const TexturePtr& rendertarget, const TexturePtr& depthStencil)
+//{
+//	if (rendertarget->m_type != Texture::Type::RenderTarget)
+//		return;
+//
+//	if (depthStencil->m_type != Texture::Type::DepthStencil)
+//		return;
+//
+//	m_deviceContext->OMSetRenderTargets(1, &rendertarget->m_renderTargetView, depthStencil->m_depthStenciltView);
+//}
 
 void DeviceContext::setVertexBuffer(const VertexBufferPtr& vertex_buffer)
 {
@@ -113,35 +113,35 @@ void DeviceContext::setPixelShader(const PixelShaderPtr& pixel_shader)
 	m_deviceContext->PSSetShader(pixel_shader->m_ps.Get(), nullptr, 0);
 }
 
-void DeviceContext::setTexture(const VertexShaderPtr& vertex_shader, const TexturePtr* texture, unsigned int num_textures)
-{
-	ID3D11ShaderResourceView* list_res[32];
-	ID3D11SamplerState* list_samplers[32];
+//void DeviceContext::setTexture(const VertexShaderPtr& vertex_shader, const TexturePtr* texture, unsigned int num_textures)
+//{
+//	ID3D11ShaderResourceView* list_res[32];
+//	ID3D11SamplerState* list_samplers[32];
+//
+//	for (unsigned int i = 0; i < num_textures; i++)
+//	{
+//		list_res[i] = texture[i]->m_shaderResource;
+//		list_samplers[i] = texture[i]->m_samplerState;
+//	}
+//
+//	m_deviceContext->VSSetShaderResources(0, num_textures, list_res);
+//	m_deviceContext->VSSetSamplers(0, num_textures, list_samplers);
+//}
 
-	for (unsigned int i = 0; i < num_textures; i++)
-	{
-		list_res[i] = texture[i]->m_shaderResource;
-		list_samplers[i] = texture[i]->m_samplerState;
-	}
-
-	m_deviceContext->VSSetShaderResources(0, num_textures, list_res);
-	m_deviceContext->VSSetSamplers(0, num_textures, list_samplers);
-}
-
-void DeviceContext::setTexture(const PixelShaderPtr& pixel_shader, const TexturePtr* texture, unsigned int num_textures)
-{
-	ID3D11ShaderResourceView* list_res[32];
-	ID3D11SamplerState* list_samplers[32];
-
-	for (unsigned int i = 0; i < num_textures; i++)
-	{
-		list_res[i] = texture[i]->m_shaderResource;
-		list_samplers[i] = texture[i]->m_samplerState;
-	}
-
-	m_deviceContext->PSSetShaderResources(0, num_textures, list_res);
-	m_deviceContext->PSSetSamplers(0, num_textures, list_samplers);
-}
+//void DeviceContext::setTexture(const PixelShaderPtr& pixel_shader, const TexturePtr* texture, unsigned int num_textures)
+//{
+//	ID3D11ShaderResourceView* list_res[32];
+//	ID3D11SamplerState* list_samplers[32];
+//
+//	for (unsigned int i = 0; i < num_textures; i++)
+//	{
+//		list_res[i] = texture[i]->m_shaderResource;
+//		list_samplers[i] = texture[i]->m_samplerState;
+//	}
+//
+//	m_deviceContext->PSSetShaderResources(0, num_textures, list_res);
+//	m_deviceContext->PSSetSamplers(0, num_textures, list_samplers);
+//}
 
 void DeviceContext::setConstantBuffer(const VertexShaderPtr& vertex_shader, const ConstantBufferPtr& constant_buffer)
 {
