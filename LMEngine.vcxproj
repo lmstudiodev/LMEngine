@@ -87,7 +87,6 @@
     <ClCompile Include="LMEngine\Source\Core\Texture2D.cpp" />
     <ClCompile Include="LMEngine\Source\Game\Display.cpp" />
     <ClCompile Include="LMEngine\Source\Game\Game.cpp" />
-    <ClCompile Include="LMEngine\Source\InputSystem\GamePad.cpp" />
     <ClCompile Include="LMEngine\Include\stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
@@ -109,12 +108,12 @@
     <ClCompile Include="LMEngine\Source\Core\VertexBuffer.cpp" />
     <ClCompile Include="LMEngine\Source\Core\VertexShader.cpp" />
     <ClCompile Include="LMEngine\Source\ResourceManagers\Texture.cpp" />
+    <ClCompile Include="LMEngine\Source\Game\MyGame.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="LMEngine\Include\Core\Texture2D.h" />
     <ClInclude Include="LMEngine\Include\Game\Display.h" />
     <ClInclude Include="LMEngine\Include\Game\Game.h" />
-    <ClInclude Include="LMEngine\Include\InputSystem\GamePad.h" />
     <ClInclude Include="LMEngine\Include\Math\MathUtils.h" />
     <ClInclude Include="LMEngine\Include\Math\Rect.h" />
     <ClInclude Include="LMEngine\Include\Math\VertexMesh.h" />
@@ -127,12 +126,10 @@
     <ClInclude Include="LMEngine\Include\Core\DeviceContext.h" />
     <ClInclude Include="LMEngine\Include\Core\GraphicEngine.h" />
     <ClInclude Include="LMEngine\Include\Core\IndexBuffer.h" />
-    <ClInclude Include="LMEngine\Include\InputSystem\InputListener.h" />
     <ClInclude Include="LMEngine\Include\InputSystem\InputSystem.h" />
     <ClInclude Include="LMEngine\Include\WindowSystem\MainWindow.h" />
     <ClInclude Include="LMEngine\Include\Math\Matrix4x4.h" />
     <ClInclude Include="LMEngine\Include\Core\PixelShader.h" />
-    <ClInclude Include="LMEngine\Include\Math\Point.h" />
     <ClInclude Include="LMEngine\Include\Prerequisites.h" />
     <ClInclude Include="LMEngine\Include\Core\RenderSystem.h" />
     <ClInclude Include="LMEngine\Include\Math\Vec2.h" />
@@ -146,6 +143,7 @@
     <ClInclude Include="LMEngine\Include\Core\VertexBuffer.h" />
     <ClInclude Include="LMEngine\Include\Core\VertexShader.h" />
     <ClInclude Include="LMEngine\Include\ResourceManagers\Texture.h" />
+    <ClInclude Include="LMEngine\Include\Game\MyGame.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Resources\Shader\DirectionalLightPixelShader.hlsl">

@@ -97,7 +97,6 @@
       <Filter>GameEngine\GraphicEngine\RenderSystem</Filter>
     </ClCompile>
     <ClCompile Include="LMEngine\Include\stdafx.cpp" />
-    <ClCompile Include="LMEngine\Source\InputSystem\GamePad.cpp" />
     <ClCompile Include="LMEngine\Source\Game\Game.cpp" />
     <ClCompile Include="LMEngine\Source\Game\Display.cpp" />
     <ClCompile Include="LMEngine\Source\ResourceManagers\ResourceManager.cpp" />
@@ -106,6 +105,7 @@
     <ClCompile Include="LMEngine\Source\Core\Texture2D.cpp" />
     <ClCompile Include="LMEngine\Source\ResourceManagers\Texture.cpp" />
     <ClCompile Include="LMEngine\Source\ResourceManagers\Material.cpp" />
+    <ClCompile Include="LMEngine\Source\Game\MyGame.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="LMEngine\Include\WindowSystem\MainWindow.h">
@@ -153,12 +153,6 @@
     <ClInclude Include="LMEngine\Include\InputSystem\InputSystem.h">
       <Filter>GameEngine\InputSystem</Filter>
     </ClInclude>
-    <ClInclude Include="LMEngine\Include\InputSystem\InputListener.h">
-      <Filter>GameEngine\InputSystem</Filter>
-    </ClInclude>
-    <ClInclude Include="LMEngine\Include\Math\Point.h">
-      <Filter>GameEngine\Math</Filter>
-    </ClInclude>
     <ClInclude Include="LMEngine\Include\Math\Vector4D.h">
       <Filter>GameEngine\Math</Filter>
     </ClInclude>
@@ -175,7 +169,6 @@
       <Filter>GameEngine\Math</Filter>
     </ClInclude>
     <ClInclude Include="LMEngine\Include\stdafx.h" />
-    <ClInclude Include="LMEngine\Include\InputSystem\GamePad.h" />
     <ClInclude Include="LMEngine\Include\Math\Rect.h" />
     <ClInclude Include="LMEngine\Include\Math\MathUtils.h" />
     <ClInclude Include="LMEngine\Include\Game\Game.h" />
@@ -187,6 +180,7 @@
     <ClInclude Include="LMEngine\Include\Core\Texture2D.h" />
     <ClInclude Include="LMEngine\Include\ResourceManagers\Texture.h" />
     <ClInclude Include="LMEngine\Include\ResourceManagers\Material.h" />
+    <ClInclude Include="LMEngine\Include\Game\MyGame.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Resources\Shader\VertexShader.hlsl" />
