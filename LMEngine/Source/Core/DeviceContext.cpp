@@ -16,15 +16,20 @@ void DeviceContext::clearRenderTarget(const SwapChainPtr& swapChain, Vec4 color)
 {
 	const float colorValues[] = { color.x, color.y, color.z, color.w };
 
-	m_deviceContext->ClearRenderTargetView(swapChain->m_rtv.Get(), colorValues);
-	m_deviceContext->ClearDepthStencilView(swapChain->m_dsw.Get(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1, 0);
+	auto rtv = swapChain->m_rtv.Get();
+	auto dsw = swapChain->m_dsw.Get();
 
-	m_deviceContext->OMSetRenderTargets(1, &swapChain->m_rtv, swapChain->m_dsw.Get());
+	m_deviceContext->ClearRenderTargetView(rtv, colorValues);
+	m_deviceContext->ClearDepthStencilView(dsw, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1, 0);
+
+	m_deviceContext->OMSetRenderTargets(1, &rtv, dsw);
 }
 
 void DeviceContext::clearDepthStencil(const SwapChainPtr& swapChain)
 {
-	m_deviceContext->ClearDepthStencilView(swapChain->m_dsw.Get(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1, 0);
+	auto dsw = swapChain->m_dsw.Get();
+	
+	m_deviceContext->ClearDepthStencilView(dsw, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1, 0);
 }
 
 //void DeviceContext::clearRenderTarget(const TexturePtr& rendertarget, Vec4 color)
@@ -60,8 +65,10 @@ void DeviceContext::setVertexBuffer(const VertexBufferPtr& vertex_buffer)
 {
 	UINT stride = vertex_buffer->m_size_vertex;
 	UINT offset = 0;
+
+	auto buffer = vertex_buffer->m_buffer.Get();
 	
-	m_deviceContext->IASetVertexBuffers(0, 1, &vertex_buffer->m_buffer, &stride, &offset);
+	m_deviceContext->IASetVertexBuffers(0, 1, &buffer, &stride, &offset);
 	m_deviceContext->IASetInputLayout(vertex_buffer->m_layout.Get());
 }
 
@@ -143,12 +150,15 @@ void DeviceContext::setPixelShader(const PixelShaderPtr& pixel_shader)
 //	m_deviceContext->PSSetSamplers(0, num_textures, list_samplers);
 //}
 
-void DeviceContext::setConstantBuffer(const VertexShaderPtr& vertex_shader, const ConstantBufferPtr& constant_buffer)
+void DeviceContext::setConstantBuffer(const ConstantBufferPtr& constant_buffer)
 {
-	m_deviceContext->VSSetConstantBuffers(0, 1, &constant_buffer->m_buffer);
+	auto buf = constant_buffer->m_buffer.Get();
+	
+	m_deviceContext->VSSetConstantBuffers(0, 1, &buf);
+	m_deviceContext->PSSetConstantBuffers(0, 1, &buf);
 }
 
-void DeviceContext::setConstantBuffer(const PixelShaderPtr& pixel_shader, const ConstantBufferPtr& constant_buffer)
-{
-	m_deviceContext->PSSetConstantBuffers(0, 1, &constant_buffer->m_buffer);
-}
+//void DeviceContext::setConstantBuffer(const PixelShaderPtr& pixel_shader, const ConstantBufferPtr& constant_buffer)
+//{
+//	m_deviceContext->PSSetConstantBuffers(0, 1, &constant_buffer->m_buffer);
+//}

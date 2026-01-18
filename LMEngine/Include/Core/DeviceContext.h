@@ -27,8 +27,8 @@ public:
 	//void setTexture(const VertexShaderPtr& vertex_shader, const TexturePtr* texture, unsigned int num_textures);
 	//void setTexture(const PixelShaderPtr& pixel_shader, const TexturePtr* texture, unsigned int num_textures);
 
-	void setConstantBuffer(const VertexShaderPtr& vertex_shader, const ConstantBufferPtr& constant_buffer);
-	void setConstantBuffer(const PixelShaderPtr& pixel_shader, const ConstantBufferPtr& constant_buffer);
+	void setConstantBuffer(const ConstantBufferPtr& constant_buffer);
+	//void setConstantBuffer(const PixelShaderPtr& pixel_shader, const ConstantBufferPtr& constant_buffer);
 
 	void drawTriangleList(UINT vertex_count, UINT start_vertex_index);
 	void drawIndexedTriangleList(UINT index_count, UINT start_vertex_index, UINT start_index_location);

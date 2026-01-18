@@ -12,5 +12,8 @@ public:
 private:
 	SwapChainPtr m_swapChain;
 	Game* m_game = nullptr;
+
+private:
+	friend class GraphicEngine;
 };
 

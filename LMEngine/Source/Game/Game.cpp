@@ -5,10 +5,11 @@
 #include <ResourceManager.h>
 #include <Mesh.h>
 #include <Texture.h>
+#include <Material.h>
 
 Game::Game() : m_isRunning(true)
 {
-	m_graphicEngine = std::make_unique<GraphicEngine>();
+	m_graphicEngine = std::make_unique<GraphicEngine>(this);
 	m_display = std::make_unique<Display>(this);
 	m_resourceManager = std::make_unique<ResourceManager>(this);
 
@@ -21,8 +22,15 @@ Game::~Game()
 {
 }
 
+void Game::onInternalUpdate()
+{
+	m_graphicEngine->update();
+}
+
 void Game::run()
 {
+	onCreate();
+	
 	MSG msg{};
 
 	while (m_isRunning)
@@ -40,7 +48,16 @@ void Game::run()
 				DispatchMessage(&msg);
 			}
 		}
+
+		onInternalUpdate();
 	}
+
+	onQuit();
+}
+
+void Game::quit()
+{
+	m_isRunning = false;
 }
 
 GraphicEngine* Game::getGraphicEngine()

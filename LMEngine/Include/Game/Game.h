@@ -8,14 +8,27 @@ public:
 	Game();
 	virtual ~Game();
 
+public:
 	void run();
+	void quit();
 	GraphicEngine* getGraphicEngine();
+
+protected:
+	virtual void onCreate() {}
+	virtual void onUpdate(float deltaTime) {}
+	virtual void onQuit() {}
+
+private:
+	void onInternalUpdate();
 
 private:
 	std::unique_ptr<GraphicEngine> m_graphicEngine;
 	std::unique_ptr<Display> m_display;
-	std::unique_ptr<ResourceManager> m_resourceManager;;
+	std::unique_ptr<ResourceManager> m_resourceManager;
 
 	bool m_isRunning;
+
+private:
+	friend class GraphicEngine;
 };
 
