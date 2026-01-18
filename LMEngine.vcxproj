@@ -54,7 +54,7 @@
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
-      <AdditionalIncludeDirectories>LMEngine\Include;LMEngine\Include\GameDemo;LMEngine\Include\Math;LMEngine\Include\InputSystem;LMEngine\include\Core;LMengine\include\ResourceManagers;LMEngine\Include\WindowSystem;LMEngine\Include\Game;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>LMEngine\Include;LMEngine\Include\Math;LMEngine\Include\InputSystem;LMEngine\include\Core;LMengine\include\ResourceManagers;LMEngine\Include\WindowSystem;LMEngine\Include\Game;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
@@ -84,6 +84,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="LMEngine\Source\Core\Texture2D.cpp" />
     <ClCompile Include="LMEngine\Source\Game\Display.cpp" />
     <ClCompile Include="LMEngine\Source\Game\Game.cpp" />
     <ClCompile Include="LMEngine\Source\InputSystem\GamePad.cpp" />
@@ -96,6 +97,7 @@
     <ClCompile Include="LMEngine\Source\Core\GraphicEngine.cpp" />
     <ClCompile Include="LMEngine\Source\Core\IndexBuffer.cpp" />
     <ClCompile Include="LMEngine\Source\InputSystem\InputSystem.cpp" />
+    <ClCompile Include="LMEngine\Source\ResourceManagers\Material.cpp" />
     <ClCompile Include="LMEngine\Source\ResourceManagers\Mesh.cpp" />
     <ClCompile Include="LMEngine\Source\ResourceManagers\Resource.cpp" />
     <ClCompile Include="LMEngine\Source\ResourceManagers\ResourceManager.cpp" />
@@ -106,14 +108,17 @@
     <ClCompile Include="LMEngine\Source\Core\SwapChain.cpp" />
     <ClCompile Include="LMEngine\Source\Core\VertexBuffer.cpp" />
     <ClCompile Include="LMEngine\Source\Core\VertexShader.cpp" />
+    <ClCompile Include="LMEngine\Source\ResourceManagers\Texture.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="LMEngine\Include\Core\Texture2D.h" />
     <ClInclude Include="LMEngine\Include\Game\Display.h" />
     <ClInclude Include="LMEngine\Include\Game\Game.h" />
     <ClInclude Include="LMEngine\Include\InputSystem\GamePad.h" />
     <ClInclude Include="LMEngine\Include\Math\MathUtils.h" />
     <ClInclude Include="LMEngine\Include\Math\Rect.h" />
     <ClInclude Include="LMEngine\Include\Math\VertexMesh.h" />
+    <ClInclude Include="LMEngine\Include\ResourceManagers\Material.h" />
     <ClInclude Include="LMEngine\Include\ResourceManagers\Mesh.h" />
     <ClInclude Include="LMEngine\Include\ResourceManagers\Resource.h" />
     <ClInclude Include="LMEngine\Include\ResourceManagers\ResourceManager.h" />
@@ -140,6 +145,7 @@
     <ClInclude Include="LMEngine\Include\Math\Vec4.h" />
     <ClInclude Include="LMEngine\Include\Core\VertexBuffer.h" />
     <ClInclude Include="LMEngine\Include\Core\VertexShader.h" />
+    <ClInclude Include="LMEngine\Include\ResourceManagers\Texture.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Resources\Shader\DirectionalLightPixelShader.hlsl">
@@ -165,6 +171,11 @@
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </FxCompile>
+    <FxCompile Include="Resources\Shader\MyMaterial.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
     </FxCompile>
     <FxCompile Include="Resources\Shader\PixelShader.hlsl">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>

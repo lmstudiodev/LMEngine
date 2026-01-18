@@ -4,7 +4,7 @@
 class VertexShader
 {
 public:
-	VertexShader(const void* shader_byte_code, size_t byte_code_size, RenderSystem* system);
+	VertexShader(const wchar_t* full_path, const char* entryPoint, RenderSystem* system);
 
 private:
 	Microsoft::WRL::ComPtr<ID3D11VertexShader> m_vs;

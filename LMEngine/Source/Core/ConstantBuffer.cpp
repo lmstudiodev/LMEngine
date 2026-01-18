@@ -17,7 +17,7 @@ ConstantBuffer::ConstantBuffer(void* buffer, UINT size_buffer, RenderSystem* sys
 
 	if (FAILED(m_system->m_d3d_device->CreateBuffer(&bufferDesc, &initData, &m_buffer)))
 	{
-		throw std::exception("[D3D11 Error] ConstantBuffer creation failed.");
+		Dx3DError("ConstantBuffer creation failed.");
 	}
 }
 

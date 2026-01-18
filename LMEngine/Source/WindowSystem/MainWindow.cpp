@@ -13,13 +13,13 @@ static LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lPara
 	{
 		MainWindow* window = (MainWindow*)GetWindowLongPtr(hwnd, GWLP_USERDATA);
 		if (window)
-			window->OnSize();
+			window->onSize(window->getClientSize());
 		break;
 	}
 	case WM_DESTROY:
 	{
 		MainWindow* window = (MainWindow*)GetWindowLongPtr(hwnd, GWLP_USERDATA);
-		window->OnDestroy();
+		window->onDestroy();
 		//::PostQuitMessage(0);
 		break;
 	}
@@ -32,13 +32,13 @@ static LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lPara
 	{
 		MainWindow* window = (MainWindow*)GetWindowLongPtr(hwnd, GWLP_USERDATA);
 		if(window)
-			window->OnFocus();
+			window->onFocus();
 		break;
 	}
 	case WM_KILLFOCUS:
 	{
 		MainWindow* window = (MainWindow*)GetWindowLongPtr(hwnd, GWLP_USERDATA);
-		window->OnKillFocus();
+		window->onKillFocus();
 		break;
 	}
 	default:
@@ -143,31 +143,31 @@ Rect MainWindow::getScreenSize()
 	return { 0, 0, rc.right - rc.left, rc.bottom - rc.top };
 }
 
-void MainWindow::OnDestroy()
+void MainWindow::onDestroy()
 {
 
 }
 
-void MainWindow::OnFocus()
+void MainWindow::onFocus()
 {
 }
 
-void MainWindow::OnKillFocus()
+void MainWindow::onKillFocus()
 {
 }
 
-void MainWindow::OnCreate()
+void MainWindow::onCreate()
 {
 	
 }
 
-void MainWindow::OnUpdate()
+void MainWindow::onUpdate()
 {
 
 }
 
 
-void MainWindow::OnSize()
+void MainWindow::onSize(const Rect& size)
 {
 
 }

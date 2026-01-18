@@ -1,9 +1,5 @@
 #pragma once
-#include <VertexShader.h>
-#include <PixelShader.h>
-#include <ConstantBuffer.h>
-
-#include <Prerequisites.h>
+#include <Resource.h>
 
 enum CULL_MODE
 {
@@ -11,12 +7,11 @@ enum CULL_MODE
 	CULL_MODE_BACK
 };
 
-class Material
+class Material : public Resource
 {
 public:
-	Material(const wchar_t* vertex_sahder_path, const wchar_t* pixel_shader_path); 
-	Material(const MaterialPtr& material);
-	~Material();
+	Material(const wchar_t* path, ResourceManager* manager); 
+	Material(const MaterialPtr& material, ResourceManager* manager);
 
 public:
 	void AddTexture(const TexturePtr& texture);
@@ -31,7 +26,7 @@ private:
 	VertexShaderPtr m_vertex_shader;
 	PixelShaderPtr m_pixel_shader;
 	ConstantBufferPtr m_constant_buffer;
-	std::vector<TexturePtr> m_textures;
+	std::vector<Texture2DPtr> m_textures;
 	CULL_MODE m_cull_mode;
 
 private:

@@ -1,40 +1,38 @@
 #include <stdafx.h>
-#include "Material.h"
-#include "GraphicEngine.h"
+#include <Material.h>
+#include <Game.h>
+#include <RenderSystem.h>
+#include <GraphicEngine.h>
+#include <ResourceManager.h>
+#include <VertexShader.h>
+#include <PixelShader.h>
+#include <ConstantBuffer.h>
+#include <Texture.h>
 
-Material::Material(const wchar_t* vertex_sahder_path, const wchar_t* pixel_shader_path) : m_cull_mode(CULL_MODE_BACK)
+Material::Material(const wchar_t* path, ResourceManager* manager) : Resource(path, manager),  m_cull_mode(CULL_MODE_BACK)
 {
-	void* shader_byte_code = nullptr;
-	size_t size_shader = 0;
+	auto rsys = manager->getGame()->getGraphicEngine()->getRenderSystem();
 
-	GraphicEngine::Get()->GetRenderSystem()->compileVertexShader(vertex_sahder_path, "vsmain", &shader_byte_code, &size_shader);
-	m_vertex_shader = GraphicEngine::Get()->GetRenderSystem()->createVertexShader(shader_byte_code, size_shader);
-	GraphicEngine::Get()->GetRenderSystem()->releaseCompiledShader();
+	m_vertex_shader = rsys->createVertexShader(path, "vsmain");
 
 	if (!m_vertex_shader)
-		throw std::runtime_error("[D3D11 Error] Unable to compile vertex shader for material. Material not created.");
+		Dx3DError("Unable to compile vertex shader for material. Material not created.");
 
-	GraphicEngine::Get()->GetRenderSystem()->compilePixelShader(pixel_shader_path, "psmain", &shader_byte_code, &size_shader);
-	m_pixel_shader = GraphicEngine::Get()->GetRenderSystem()->createPixelShader(shader_byte_code, size_shader);
-	GraphicEngine::Get()->GetRenderSystem()->releaseCompiledShader();
+	m_pixel_shader = rsys->createPixelShader(path, "psmain");
 
 	if (!m_pixel_shader)
-		throw std::runtime_error("[D3D11 Error] Unable to compile pixel shader for material. Material not created.");
+		Dx3DError("Unable to compile pixel shader for material. Material not created.");
 }
 
-Material::Material(const MaterialPtr& material)
+Material::Material(const MaterialPtr& material, ResourceManager* manager) : Resource(L"", manager), m_cull_mode(CULL_MODE_BACK)
 {
 	m_vertex_shader = material->m_vertex_shader;
 	m_pixel_shader = material->m_pixel_shader;
 }
 
-Material::~Material()
-{
-}
-
 void Material::AddTexture(const TexturePtr& texture)
 {
-	m_textures.push_back(texture);
+	m_textures.push_back(texture->m_texture);
 }
 
 void Material::RemoveTexture(unsigned int texture_index)
@@ -50,13 +48,15 @@ void Material::RemoveTexture(unsigned int texture_index)
 
 void Material::SetData(void* data, unsigned int size)
 {
+	auto rsys = m_manager->getGame()->getGraphicEngine()->getRenderSystem();
+	
 	if (!m_constant_buffer)
 	{
-		m_constant_buffer = GraphicEngine::Get()->GetRenderSystem()->createConstantBuffer(data, size);
+		m_constant_buffer = rsys->createConstantBuffer(data, size);
 	}
 	else
 	{
-		m_constant_buffer->Update(GraphicEngine::Get()->GetRenderSystem()->getDeviceContext(), data);
+		m_constant_buffer->Update(rsys->getDeviceContext(), data);
 	}
 }
 

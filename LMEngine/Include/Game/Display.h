@@ -12,5 +12,11 @@ public:
 private:
 	SwapChainPtr m_swapChain;
 	Game* m_game = nullptr;
+
+protected:
+	virtual void onSize(const Rect& size);
+
+private:
+	friend class GraphicEngine;
 };
 

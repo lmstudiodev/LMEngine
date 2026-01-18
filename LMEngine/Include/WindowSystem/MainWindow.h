@@ -11,12 +11,12 @@ public:
 	Rect getClientSize();
 	Rect getScreenSize();
 
-	virtual void OnUpdate();
-	virtual void OnCreate();
-	virtual void OnDestroy();
-	virtual void OnFocus();
-	virtual void OnKillFocus();
-	virtual void OnSize();
+	virtual void onUpdate();
+	virtual void onCreate();
+	virtual void onDestroy();
+	virtual void onFocus();
+	virtual void onKillFocus();
+	virtual void onSize(const Rect& size);
 
 protected:
 	void* m_hwnd;
