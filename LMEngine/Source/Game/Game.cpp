@@ -12,8 +12,9 @@ Game::Game() : m_isRunning(true)
 	m_display = std::make_unique<Display>(this);
 	m_resourceManager = std::make_unique<ResourceManager>(this);
 
-	m_resourceManager->createResourceFromFile<Mesh>(L"Assets/Meshes/house.obj");
-	m_resourceManager->createResourceFromFile<Texture>(L"Assets/Textures/wood.jpg");
+	m_resourceManager->createResourceFromFile<Mesh>(L"Resources/Meshes/house.obj");
+	m_resourceManager->createResourceFromFile<Texture>(L"Resources/Textures/wood.jpg");
+	m_resourceManager->createResourceFromFile<Material>(L"Resources/Shader/MyMaterial.hlsl");
 }
 
 Game::~Game()

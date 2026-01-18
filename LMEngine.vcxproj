@@ -97,6 +97,7 @@
     <ClCompile Include="LMEngine\Source\Core\GraphicEngine.cpp" />
     <ClCompile Include="LMEngine\Source\Core\IndexBuffer.cpp" />
     <ClCompile Include="LMEngine\Source\InputSystem\InputSystem.cpp" />
+    <ClCompile Include="LMEngine\Source\ResourceManagers\Material.cpp" />
     <ClCompile Include="LMEngine\Source\ResourceManagers\Mesh.cpp" />
     <ClCompile Include="LMEngine\Source\ResourceManagers\Resource.cpp" />
     <ClCompile Include="LMEngine\Source\ResourceManagers\ResourceManager.cpp" />
@@ -117,6 +118,7 @@
     <ClInclude Include="LMEngine\Include\Math\MathUtils.h" />
     <ClInclude Include="LMEngine\Include\Math\Rect.h" />
     <ClInclude Include="LMEngine\Include\Math\VertexMesh.h" />
+    <ClInclude Include="LMEngine\Include\ResourceManagers\Material.h" />
     <ClInclude Include="LMEngine\Include\ResourceManagers\Mesh.h" />
     <ClInclude Include="LMEngine\Include\ResourceManagers\Resource.h" />
     <ClInclude Include="LMEngine\Include\ResourceManagers\ResourceManager.h" />
@@ -169,6 +171,11 @@
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </FxCompile>
+    <FxCompile Include="Resources\Shader\MyMaterial.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
     </FxCompile>
     <FxCompile Include="Resources\Shader\PixelShader.hlsl">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>

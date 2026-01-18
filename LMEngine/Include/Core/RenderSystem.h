@@ -11,19 +11,21 @@ public:
 public:
 	SwapChainPtr createSwapChain(HWND hwnd, UINT width, UINT height);
 	DeviceContextPtr getDeviceContext();
+
 	VertexBufferPtr createVertexBuffer(void* list_vertices, UINT size_vertex, UINT size_list);
 	ConstantBufferPtr createConstantBuffer(void* buffer, UINT size_buffer);
 	IndexBufferPtr createIndexBuffer(void* list_indices, UINT size_list);
-	VertexShaderPtr createVertexShader(const void* shader_byte_code, size_t byte_code_size);
-	PixelShaderPtr createPixelShader(const void* shader_byte_code, size_t byte_code_size);
+
+	VertexShaderPtr createVertexShader(const wchar_t* full_path, const char* entryPoint);
+	PixelShaderPtr createPixelShader(const wchar_t* full_path, const char* entryPoint);
 
 	Texture2DPtr createTexture(const wchar_t* full_path);
 	Texture2DPtr createTexture(const Rect& size, Texture2D::Type type);
 
 public:
-	bool compileVertexShader(const wchar_t* fileName, const char* entryPointName, void** shader_byte_code, size_t* byte_code_size);
-	bool compilePixelShader(const wchar_t* fileName, const char* entryPointName, void** shader_byte_code, size_t* byte_code_size);
-	void releaseCompiledShader();
+	//bool compileVertexShader(const wchar_t* fileName, const char* entryPointName, void** shader_byte_code, size_t* byte_code_size);
+	//bool compilePixelShader(const wchar_t* fileName, const char* entryPointName, void** shader_byte_code, size_t* byte_code_size);
+	//void releaseCompiledShader();
 	void setRasterizerState(bool cull_front);
 
 private:

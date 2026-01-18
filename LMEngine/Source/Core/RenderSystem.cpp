@@ -76,15 +76,7 @@ RenderSystem::~RenderSystem()
 
 SwapChainPtr RenderSystem::createSwapChain(HWND hwnd, UINT width, UINT height)
 {
-	SwapChainPtr sc = nullptr;
-
-	try
-	{
-		sc = std::make_shared<SwapChain>(hwnd, width, height, this);
-	}
-	catch (...) {}
-	
-	return sc;
+	return std::make_shared<SwapChain>(hwnd, width, height, this);
 }
 
 DeviceContextPtr RenderSystem::getDeviceContext()
@@ -99,54 +91,22 @@ VertexBufferPtr RenderSystem::createVertexBuffer(void* list_vertices, UINT size_
 
 ConstantBufferPtr RenderSystem::createConstantBuffer(void* buffer, UINT size_buffer)
 {
-	ConstantBufferPtr cb = nullptr;
-
-	try
-	{
-		cb = std::make_shared<ConstantBuffer>(buffer, size_buffer, this);
-	}
-	catch (...) {}
-	
-	return cb;
+	return std::make_shared<ConstantBuffer>(buffer, size_buffer, this);
 }
 
 IndexBufferPtr RenderSystem::createIndexBuffer(void* list_indices, UINT size_list)
 {
-	IndexBufferPtr ib = nullptr;
-
-	try
-	{
-		ib = std::make_shared<IndexBuffer>(list_indices, size_list, this);
-	}
-	catch (...) {}
-	
-	return ib;
+	return std::make_shared<IndexBuffer>(list_indices, size_list, this);
 }
 
-VertexShaderPtr RenderSystem::createVertexShader(const void* shader_byte_code, size_t byte_code_size)
+VertexShaderPtr RenderSystem::createVertexShader(const wchar_t* full_path, const char* entryPoint)
 {
-	VertexShaderPtr vs = nullptr;
-
-	try
-	{
-		vs = std::make_shared<VertexShader>(shader_byte_code, byte_code_size, this);
-	}
-	catch(...){}
-
-	return vs;
+	return std::make_shared<VertexShader>(full_path, entryPoint, this);
 }
 
-PixelShaderPtr RenderSystem::createPixelShader(const void* shader_byte_code, size_t byte_code_size)
+PixelShaderPtr RenderSystem::createPixelShader(const wchar_t* full_path, const char* entryPoint)
 {
-	PixelShaderPtr ps = nullptr;
-
-	try
-	{
-		ps = std::make_shared<PixelShader>(shader_byte_code, byte_code_size, this);
-	}
-	catch(...){}
-
-	return ps;
+	return std::make_shared<PixelShader>(full_path, entryPoint, this);
 }
 
 Texture2DPtr RenderSystem::createTexture(const wchar_t* full_path)
@@ -219,47 +179,47 @@ VS_OUTPUT vsmain(VS_INPUT input)
 	m_meshLayoutSize = blob->GetBufferSize();
 }
 
-bool RenderSystem::compileVertexShader(const wchar_t* fileName, const char* entryPointName, void** shader_byte_code, size_t* byte_code_size)
-{
-	ID3DBlob* errblob = nullptr;
-
-	if (FAILED(D3DCompileFromFile(fileName, nullptr, nullptr, entryPointName, "vs_5_0", NULL, NULL, &m_blob, &errblob)))
-	{
-		if (errblob)
-			errblob->Release();
-
-		return false;
-	}
-
-	*shader_byte_code = this->m_blob->GetBufferPointer();
-	*byte_code_size = (UINT)this->m_blob->GetBufferSize();
-
-	return true;
-}
-
-bool RenderSystem::compilePixelShader(const wchar_t* fileName, const char* entryPointName, void** shader_byte_code, size_t* byte_code_size)
-{
-	ID3DBlob* errblob = nullptr;
-
-	if (FAILED(D3DCompileFromFile(fileName, nullptr, nullptr, entryPointName, "ps_5_0", NULL, NULL, &m_blob, &errblob)))
-	{
-		if (errblob)
-			errblob->Release();
-
-		return false;
-	}
-
-	*shader_byte_code = this->m_blob->GetBufferPointer();
-	*byte_code_size = (UINT)this->m_blob->GetBufferSize();
-
-	return true;
-}
-
-void RenderSystem::releaseCompiledShader()
-{
-	if (this->m_blob)
-		this->m_blob->Release();
-}
+//bool RenderSystem::compileVertexShader(const wchar_t* fileName, const char* entryPointName, void** shader_byte_code, size_t* byte_code_size)
+//{
+//	ID3DBlob* errblob = nullptr;
+//
+//	if (FAILED(D3DCompileFromFile(fileName, nullptr, nullptr, entryPointName, "vs_5_0", NULL, NULL, &m_blob, &errblob)))
+//	{
+//		if (errblob)
+//			errblob->Release();
+//
+//		return false;
+//	}
+//
+//	*shader_byte_code = this->m_blob->GetBufferPointer();
+//	*byte_code_size = (UINT)this->m_blob->GetBufferSize();
+//
+//	return true;
+//}
+//
+//bool RenderSystem::compilePixelShader(const wchar_t* fileName, const char* entryPointName, void** shader_byte_code, size_t* byte_code_size)
+//{
+//	ID3DBlob* errblob = nullptr;
+//
+//	if (FAILED(D3DCompileFromFile(fileName, nullptr, nullptr, entryPointName, "ps_5_0", NULL, NULL, &m_blob, &errblob)))
+//	{
+//		if (errblob)
+//			errblob->Release();
+//
+//		return false;
+//	}
+//
+//	*shader_byte_code = this->m_blob->GetBufferPointer();
+//	*byte_code_size = (UINT)this->m_blob->GetBufferSize();
+//
+//	return true;
+//}
+//
+//void RenderSystem::releaseCompiledShader()
+//{
+//	if (this->m_blob)
+//		this->m_blob->Release();
+//}
 
 void RenderSystem::setRasterizerState(bool cull_front)
 {

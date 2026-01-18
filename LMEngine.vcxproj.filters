@@ -105,6 +105,7 @@
     <ClCompile Include="LMEngine\Source\ResourceManagers\Mesh.cpp" />
     <ClCompile Include="LMEngine\Source\Core\Texture2D.cpp" />
     <ClCompile Include="LMEngine\Source\ResourceManagers\Texture.cpp" />
+    <ClCompile Include="LMEngine\Source\ResourceManagers\Material.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="LMEngine\Include\WindowSystem\MainWindow.h">
@@ -185,6 +186,7 @@
     <ClInclude Include="LMEngine\Include\Math\VertexMesh.h" />
     <ClInclude Include="LMEngine\Include\Core\Texture2D.h" />
     <ClInclude Include="LMEngine\Include\ResourceManagers\Texture.h" />
+    <ClInclude Include="LMEngine\Include\ResourceManagers\Material.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Resources\Shader\VertexShader.hlsl" />
@@ -200,5 +202,6 @@
     <FxCompile Include="Resources\Shader\SkyBoxVertexShader.hlsl" />
     <FxCompile Include="Resources\Shader\PostProcessVS.hlsl" />
     <FxCompile Include="Resources\Shader\DistortionEffect.hlsl" />
+    <FxCompile Include="Resources\Shader\MyMaterial.hlsl" />
   </ItemGroup>
 </Project>
