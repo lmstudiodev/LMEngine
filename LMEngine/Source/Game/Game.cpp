@@ -28,6 +28,11 @@ void Game::onInternalUpdate()
 	m_graphicEngine->update({m_mesh, m_material});
 }
 
+void Game::onDisplaySize(const Rect& size)
+{
+	onInternalUpdate();
+}
+
 void Game::run()
 {
 	onCreate();

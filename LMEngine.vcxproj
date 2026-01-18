@@ -54,7 +54,7 @@
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
-      <AdditionalIncludeDirectories>LMEngine\Include;LMEngine\Include\GameDemo;LMEngine\Include\Math;LMEngine\Include\InputSystem;LMEngine\include\Core;LMengine\include\ResourceManagers;LMEngine\Include\WindowSystem;LMEngine\Include\Game;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>LMEngine\Include;LMEngine\Include\Math;LMEngine\Include\InputSystem;LMEngine\include\Core;LMengine\include\ResourceManagers;LMEngine\Include\WindowSystem;LMEngine\Include\Game;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>

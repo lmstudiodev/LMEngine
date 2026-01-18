@@ -16,7 +16,7 @@ public:
 	virtual void onDestroy();
 	virtual void onFocus();
 	virtual void onKillFocus();
-	virtual void onSize();
+	virtual void onSize(const Rect& size);
 
 protected:
 	void* m_hwnd;

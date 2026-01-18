@@ -13,7 +13,7 @@ static LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lPara
 	{
 		MainWindow* window = (MainWindow*)GetWindowLongPtr(hwnd, GWLP_USERDATA);
 		if (window)
-			window->onSize();
+			window->onSize(window->getClientSize());
 		break;
 	}
 	case WM_DESTROY:
@@ -167,7 +167,7 @@ void MainWindow::onUpdate()
 }
 
 
-void MainWindow::onSize()
+void MainWindow::onSize(const Rect& size)
 {
 
 }

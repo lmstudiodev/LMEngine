@@ -18,8 +18,11 @@ protected:
 	virtual void onUpdate(float deltaTime) {}
 	virtual void onQuit() {}
 
+
+
 private:
 	void onInternalUpdate();
+	void onDisplaySize(const Rect& size);
 
 private:
 	std::unique_ptr<GraphicEngine> m_graphicEngine;
@@ -33,5 +36,6 @@ private:
 
 private:
 	friend class GraphicEngine;
+	friend class Display;
 };
 
