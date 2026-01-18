@@ -18,13 +18,12 @@ protected:
 	virtual void onUpdate(float deltaTime) {}
 	virtual void onQuit() {}
 
-
-
 private:
 	void onInternalUpdate();
 	void onDisplaySize(const Rect& size);
 
 private:
+	std::unique_ptr<InputSystem> m_inputSystem;
 	std::unique_ptr<GraphicEngine> m_graphicEngine;
 	std::unique_ptr<Display> m_display;
 	std::unique_ptr<ResourceManager> m_resourceManager;

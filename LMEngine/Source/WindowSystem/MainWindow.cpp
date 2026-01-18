@@ -20,7 +20,6 @@ static LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lPara
 	{
 		MainWindow* window = (MainWindow*)GetWindowLongPtr(hwnd, GWLP_USERDATA);
 		window->onDestroy();
-		//::PostQuitMessage(0);
 		break;
 	}
 	case WM_CLOSE:
@@ -90,37 +89,6 @@ MainWindow::~MainWindow()
 	DestroyWindow(static_cast<HWND>(m_hwnd));
 }
 
-//void MainWindow::Broadcast()
-//{
-	//MSG msg;
-
-	//if (!this->m_isInitialized)
-	//{
-	//	SetWindowLongPtr(m_hwnd, GWLP_USERDATA, (LONG_PTR)this);
-	//	this->OnCreate();
-	//	
-	//	this->m_isInitialized = true;
-	//}
-
-	//if (PeekMessageW(&msg, m_hwnd, 0, 0, PM_REMOVE) > 0)
-	//{
-	//	TranslateMessage(&msg);
-	//	DispatchMessage(&msg);
-	//}
-
-	//this->OnUpdate();
-
-	//Sleep(1);
-//}
-//
-//bool MainWindow::IsRunnig()
-//{
-//	if (m_isRunning)
-//		Broadcast();
-//
-//	return m_isRunning;
-//}
-
 Rect MainWindow::getClientSize()
 {
 	RECT rc{};
@@ -128,10 +96,10 @@ Rect MainWindow::getClientSize()
 	auto hwnd = static_cast<HWND>(m_hwnd);
 
 	GetClientRect(hwnd, &rc);
-	ClientToScreen(hwnd, (LPPOINT) & rc.left);
+	ClientToScreen(hwnd, (LPPOINT)&rc.left);
 	ClientToScreen(hwnd, (LPPOINT)&rc.right);
 
-	return { 0, 0, rc.right - rc.left, rc.bottom - rc.top };
+	return { rc.left, rc.top, rc.right - rc.left, rc.bottom - rc.top };
 }
 
 Rect MainWindow::getScreenSize()

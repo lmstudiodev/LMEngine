@@ -1,14 +1,14 @@
 #include <stdafx.h>
-#include <Game.h>
+#include <MyGame.h>
 
 int main()
 {
 
 	try
 	{
-		Game app;
+		MyGame game;
 
-		app.run();
+		game.run();
 	}
 	catch (...)
 	{

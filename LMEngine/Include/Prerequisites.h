@@ -23,6 +23,7 @@ class Material;
 class MainWindow;
 class Game;
 class Display;
+class InputSystem;
 
 typedef std::shared_ptr<SwapChain> SwapChainPtr;
 typedef std::shared_ptr<DeviceContext> DeviceContextPtr;
@@ -36,6 +37,53 @@ typedef std::shared_ptr<Texture> TexturePtr;
 typedef std::shared_ptr<Texture2D> Texture2DPtr;
 typedef std::shared_ptr<Mesh> MeshPtr;
 typedef std::shared_ptr<Material> MaterialPtr;
+
+enum class Key
+{
+	A = 0,
+	B,
+	C,
+	D,
+	E,
+	F,
+	G,
+	H,
+	I,
+	J,
+	K,
+	L,
+	M,
+	N,
+	O,
+	P,
+	Q,
+	R,
+	S,
+	T,
+	U,
+	V,
+	W,
+	X,
+	Y,
+	Z,
+	_0,
+	_1,
+	_2,
+	_3,
+	_4,
+	_5,
+	_6,
+	_7,
+	_8,
+	_9,
+	Escape,
+	Shift,
+	Space,
+	Enter,
+	LeftMouseButton,
+	MiddleMouseButton,
+	RightMouseButton
+};
 
 #define Dx3DError(message)\
 {\

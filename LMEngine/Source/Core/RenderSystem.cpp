@@ -179,48 +179,6 @@ VS_OUTPUT vsmain(VS_INPUT input)
 	m_meshLayoutSize = blob->GetBufferSize();
 }
 
-//bool RenderSystem::compileVertexShader(const wchar_t* fileName, const char* entryPointName, void** shader_byte_code, size_t* byte_code_size)
-//{
-//	ID3DBlob* errblob = nullptr;
-//
-//	if (FAILED(D3DCompileFromFile(fileName, nullptr, nullptr, entryPointName, "vs_5_0", NULL, NULL, &m_blob, &errblob)))
-//	{
-//		if (errblob)
-//			errblob->Release();
-//
-//		return false;
-//	}
-//
-//	*shader_byte_code = this->m_blob->GetBufferPointer();
-//	*byte_code_size = (UINT)this->m_blob->GetBufferSize();
-//
-//	return true;
-//}
-//
-//bool RenderSystem::compilePixelShader(const wchar_t* fileName, const char* entryPointName, void** shader_byte_code, size_t* byte_code_size)
-//{
-//	ID3DBlob* errblob = nullptr;
-//
-//	if (FAILED(D3DCompileFromFile(fileName, nullptr, nullptr, entryPointName, "ps_5_0", NULL, NULL, &m_blob, &errblob)))
-//	{
-//		if (errblob)
-//			errblob->Release();
-//
-//		return false;
-//	}
-//
-//	*shader_byte_code = this->m_blob->GetBufferPointer();
-//	*byte_code_size = (UINT)this->m_blob->GetBufferSize();
-//
-//	return true;
-//}
-//
-//void RenderSystem::releaseCompiledShader()
-//{
-//	if (this->m_blob)
-//		this->m_blob->Release();
-//}
-
 void RenderSystem::setRasterizerState(bool cull_front)
 {
 	if (cull_front)

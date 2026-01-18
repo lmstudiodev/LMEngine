@@ -23,9 +23,6 @@ public:
 	Texture2DPtr createTexture(const Rect& size, Texture2D::Type type);
 
 public:
-	//bool compileVertexShader(const wchar_t* fileName, const char* entryPointName, void** shader_byte_code, size_t* byte_code_size);
-	//bool compilePixelShader(const wchar_t* fileName, const char* entryPointName, void** shader_byte_code, size_t* byte_code_size);
-	//void releaseCompiledShader();
 	void setRasterizerState(bool cull_front);
 
 private:

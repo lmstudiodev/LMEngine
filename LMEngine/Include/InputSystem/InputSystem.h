@@ -1,50 +1,41 @@
 #pragma once
-#include "InputListener.h"
-#include "Point.h"
-#include <Xinput.h>
-#include "GamePad.h"
+#include <Prerequisites.h>
+#include <Vector2D.h>
+#include <Rect.h>
 
 class InputSystem
 {
-private:
+public:
 	InputSystem();
 	~InputSystem();
 
 public:
-	void AddListener(InputListener* listener);
-	void RemoveListener(InputListener* listener);
 	void Update();
 
-	void SetCursorPosition(const Point& pos);
-	void ShowMouseCursor(bool show);
+	bool isKeyDown(const Key& key);
+	bool isKeyUp(const Key& key);
 
-public:
-	static InputSystem* Get();
-	static void Create();
-	static void Release();
+	void lockMouseCursor(bool lock);
+	void setLockArea(const Rect& area);
 
-private:
-	void UpdateKeyboardInput(POINT& p);
-	void UpdateMouseInput(POINT& p);
-	void UpdateGamePadButton();
-	void UpdateGamePadLeftStick();
-	void UpdateGamePadRightStick();
+	Vector2D getDeltaMousePosition();
 
 private:
-	static InputSystem* m_inputSystem;
+	short getInternalKeyCode(const Key& key);
+	
+	void UpdateMouseInput();
+	void UpdateKeyboardInput();
 
 private:
-	std::unordered_set<InputListener*> m_set_listeners;
 
 	short m_keys_state[256]{};
 	short m_old_keys_state[256]{};
+	short m_final_keys_state[256]{};
 
-	Point m_old_mouse_pos;
-
-	bool m_first_time = true;
-
-	GamePad* m_gamepad = nullptr;
-
-	bool wasConnected = true;
+	bool m_cursorLocked = false;
+	Rect m_lock_area;
+	Vector2D m_lock_area_center;
+	Vector2D m_delta_mouse_pos;
+	Vector2D m_old_mouse_pos;
 };
 
