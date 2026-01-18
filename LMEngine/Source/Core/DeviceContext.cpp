@@ -6,7 +6,7 @@
 #include <ConstantBuffer.h>
 #include <VertexShader.h>
 #include <PixelShader.h>
-//#include <Texture.h>
+#include <Texture2D.h>
 
 DeviceContext::DeviceContext(ID3D11DeviceContext* deviceContext, RenderSystem* system) : m_deviceContext(deviceContext), m_system(system)
 {
@@ -131,24 +131,27 @@ void DeviceContext::setPixelShader(const PixelShaderPtr& pixel_shader)
 //		list_samplers[i] = texture[i]->m_samplerState;
 //	}
 //
-//	m_deviceContext->VSSetShaderResources(0, num_textures, list_res);
-//	m_deviceContext->VSSetSamplers(0, num_textures, list_samplers);
+	//m_deviceContext->VSSetShaderResources(0, num_textures, list_res);
+	//m_deviceContext->VSSetSamplers(0, num_textures, list_samplers);
 //}
 
-//void DeviceContext::setTexture(const PixelShaderPtr& pixel_shader, const TexturePtr* texture, unsigned int num_textures)
-//{
-//	ID3D11ShaderResourceView* list_res[32];
-//	ID3D11SamplerState* list_samplers[32];
-//
-//	for (unsigned int i = 0; i < num_textures; i++)
-//	{
-//		list_res[i] = texture[i]->m_shaderResource;
-//		list_samplers[i] = texture[i]->m_samplerState;
-//	}
-//
-//	m_deviceContext->PSSetShaderResources(0, num_textures, list_res);
-//	m_deviceContext->PSSetSamplers(0, num_textures, list_samplers);
-//}
+void DeviceContext::setTexture(const Texture2DPtr* texture, unsigned int num_textures)
+{
+	ID3D11ShaderResourceView* list_res[32];
+	ID3D11SamplerState* list_samplers[32];
+
+	for (unsigned int i = 0; i < num_textures; i++)
+	{
+		list_res[i] = texture[i]->m_shaderResource.Get();
+		list_samplers[i] = texture[i]->m_samplerState.Get();
+	}
+
+	m_deviceContext->VSSetShaderResources(0, num_textures, list_res);
+	m_deviceContext->VSSetSamplers(0, num_textures, list_samplers);
+
+	m_deviceContext->PSSetShaderResources(0, num_textures, list_res);
+	m_deviceContext->PSSetSamplers(0, num_textures, list_samplers);
+}
 
 void DeviceContext::setConstantBuffer(const ConstantBufferPtr& constant_buffer)
 {

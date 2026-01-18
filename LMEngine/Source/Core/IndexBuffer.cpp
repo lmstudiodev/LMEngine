@@ -18,7 +18,7 @@ IndexBuffer::IndexBuffer(void* list_indices, UINT size_list, RenderSystem* syste
 
 	if (FAILED(m_system->m_d3d_device->CreateBuffer(&bufferDesc, &initData, &m_buffer)))
 	{
-		throw std::exception("[D3D11 Error] IndexBuffer creation failed.");
+		Dx3DError("IndexBuffer creation failed.");
 	}
 }
 

@@ -22,7 +22,7 @@ SwapChain::SwapChain(HWND hwnd, UINT width, UINT height, RenderSystem* system): 
 	desc.Windowed = true;
 
 	if (FAILED(m_system->m_dxgiFactory->CreateSwapChain(device, &desc, &m_swapChain)))
-		throw std::exception("[D3D11 Error] CreateSwapChain creation failed.");
+		Dx3DError("CreateSwapChain creation failed.");
 
 	reloadBuffers(width, height);
 }
@@ -43,7 +43,7 @@ void SwapChain::resize(unsigned int width, unsigned int height)
 	HRESULT hr = m_swapChain->ResizeBuffers(1, width, height, DXGI_FORMAT_R8G8B8A8_UNORM, 0);
 
 	if (FAILED(hr))
-		std::cout << "[D3D11 warning] Unable to resize buffers." << "\n";
+		Dx3DWarning("Unable to resize buffers.");
 
 	reloadBuffers(width, height);
 }
@@ -55,7 +55,7 @@ void SwapChain::setFullscreen(bool fullscreen, unsigned int width, unsigned int 
 	HRESULT hr = m_swapChain->SetFullscreenState(fullscreen, nullptr);
 
 	if (FAILED(hr))
-		std::cout << "[D3D11 warning] Unable to switch to full screen mode." << "\n";
+		Dx3DWarning("[D3D11 warning] Unable to switch to full screen mode.");
 }
 
 void SwapChain::reloadBuffers(unsigned int width, unsigned int height)
@@ -67,13 +67,13 @@ void SwapChain::reloadBuffers(unsigned int width, unsigned int height)
 	HRESULT hr = m_swapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), (void**)&buffer);
 
 	if (FAILED(hr))
-		throw std::exception("[D3D11 Error] SwapChain->GetBuffer failed.");
+		Dx3DError("SwapChain->GetBuffer failed.");
 
 	hr = device->CreateRenderTargetView(buffer, NULL, &m_rtv);
 	buffer->Release();
 
 	if (FAILED(hr))
-		throw std::exception("[D3D11 Error] CreateRenderTargetView creation failed.");
+		Dx3DError("CreateRenderTargetView creation failed.");
 
 	D3D11_TEXTURE2D_DESC tex_desc{};
 	tex_desc.Width = width;
@@ -91,11 +91,11 @@ void SwapChain::reloadBuffers(unsigned int width, unsigned int height)
 	hr = device->CreateTexture2D(&tex_desc, nullptr, &buffer);
 
 	if (FAILED(hr))
-		throw std::exception("[D3D11 Error] Depth stencil creation failed.");
+		Dx3DError("Depth stencil creation failed.");
 
 	hr = device->CreateDepthStencilView(buffer, NULL, &m_dsw);
 	buffer->Release();
 
 	if (FAILED(hr))
-		throw std::exception("[D3D11 Error] CreateDepthStencilView creation failed.");
+		Dx3DError("CreateDepthStencilView creation failed.");
 }

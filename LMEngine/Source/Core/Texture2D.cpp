@@ -17,7 +17,7 @@ m_renderSystem(renderSystem)
 	HRESULT hr = DirectX::LoadFromWICFile(full_path, DirectX::WIC_FLAGS_IGNORE_SRGB, nullptr, imageData);
 
 	if (FAILED(hr))
-		throw std::exception("[D3D11 Error] Load texture failed.");
+		Dx3DError("Load texture failed.");
 
 	hr = DirectX::CreateTexture(m_renderSystem->m_d3d_device.Get(),
 		imageData.GetImages(), 
@@ -26,7 +26,7 @@ m_renderSystem(renderSystem)
 		&m_texture);
 
 	if (FAILED(hr))
-		throw std::exception("[D3D11 Error] Create texture failed.");
+		Dx3DError("Create texture failed.");
 
 	D3D11_SHADER_RESOURCE_VIEW_DESC desc{};
 	desc.Format = imageData.GetMetadata().format;
@@ -45,12 +45,12 @@ m_renderSystem(renderSystem)
 	hr = m_renderSystem->m_d3d_device->CreateSamplerState(&samplerDesc, &m_samplerState);
 
 	if (FAILED(hr))
-		throw std::exception("[D3D11 Error] Create sampler state failed.");
+		Dx3DError("Create sampler state failed.");
 
 	hr = m_renderSystem->m_d3d_device->CreateShaderResourceView(m_texture.Get(), &desc, &m_shaderResource);
 
 	if (FAILED(hr))
-		throw std::exception("[D3D11 Error] Create shader resource view failed.");
+		Dx3DError("Create shader resource view failed.");
 }
 
 Texture2D::Texture2D(const Rect& size, Texture2D::Type type, RenderSystem* renderSystem) :
@@ -93,14 +93,14 @@ m_renderSystem(renderSystem)
 	HRESULT hr = m_renderSystem->m_d3d_device->CreateTexture2D(&tex_desc, nullptr, (ID3D11Texture2D**)m_texture.GetAddressOf());
 
 	if (FAILED(hr))
-		throw std::exception("[D3D11 Error] Texture creation failed.");
+		Dx3DError(" Texture creation failed.");
 
 	if (type == Texture2D::Type::Normal || type == Texture2D::Type::RenderTarget)
 	{
 		hr = m_renderSystem->m_d3d_device->CreateShaderResourceView(m_texture.Get(), NULL, &m_shaderResource);
 
 		if (FAILED(hr))
-			throw std::exception("[D3D11 Error] CreateShaderResourceView creation failed.");
+			Dx3DError("CreateShaderResourceView creation failed.");
 	}
 	
 	if (type == Texture2D::Type::RenderTarget)
@@ -108,14 +108,14 @@ m_renderSystem(renderSystem)
 		hr = m_renderSystem->m_d3d_device->CreateRenderTargetView(m_texture.Get(), NULL, &m_renderTargetView);
 
 		if (FAILED(hr))
-			throw std::exception("[D3D11 Error] CreateRenderTargetView creation failed.");
+			Dx3DError("CreateRenderTargetView creation failed.");
 	}
 	else if (type == Texture2D::Type::DepthStencil)
 	{
 		hr = m_renderSystem->m_d3d_device->CreateDepthStencilView(m_texture.Get(), NULL, &m_depthStenciltView);
 
 		if (FAILED(hr))
-			throw std::exception("[D3D11 Error] CreateDepthStencilView creation failed.");
+			Dx3DError("CreateDepthStencilView creation failed.");
 	}
 
 	m_type = type;

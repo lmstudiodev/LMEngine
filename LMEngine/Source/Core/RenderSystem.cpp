@@ -52,18 +52,18 @@ m_cull_back_state(nullptr)
 	}
 
 	if (FAILED(hr))
-		throw std::exception("[D3D11 Error] D3D11CreateDevice creation failed.");
+		Dx3DError("D3D11CreateDevice creation failed.");
 
 	m_deviceContext = std::make_shared<DeviceContext>(m_immediateDeviceContext.Get(), this);
 
 	if (FAILED(m_d3d_device->QueryInterface(__uuidof(IDXGIDevice), (void**)&m_dxgiDevice)))
-		throw std::exception("[D3D11 Error] IDXGIDevice creation failed.");
+		Dx3DError("IDXGIDevice creation failed.");
 
 	if (FAILED(m_dxgiDevice->GetParent(__uuidof(IDXGIAdapter), (void**)&m_dxgiAdapter)))
-		throw std::exception("[D3D11 Error] IDXGIAdapter creation failed.");
+		Dx3DError("IDXGIAdapter creation failed.");
 
 	if (FAILED(m_dxgiAdapter->GetParent(__uuidof(IDXGIFactory), (void**)&m_dxgiFactory)))
-		throw std::exception("[D3D11 Error] IDXGIFactory creation failed.");
+		Dx3DError("IDXGIFactory creation failed.");
 
 	initRasterizerState();
 	compilePrivateShaders();
@@ -129,14 +129,14 @@ void RenderSystem::initRasterizerState()
 	HRESULT hr = m_d3d_device->CreateRasterizerState(&desc, &m_cull_front_state);
 
 	if (FAILED(hr))
-		throw std::exception("[D3D11 Error] Create Cull front state creation failed.");
+		Dx3DError("Create Cull front state creation failed.");
 
 	desc.CullMode = D3D11_CULL_BACK;
 
 	hr = m_d3d_device->CreateRasterizerState(&desc, &m_cull_back_state);
 
 	if (FAILED(hr))
-		throw std::exception("[D3D11 Error] Create Cull back state creation failed.");
+		Dx3DError("Create Cull back state creation failed.");
 }
 
 void RenderSystem::compilePrivateShaders()

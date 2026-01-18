@@ -7,6 +7,7 @@
 #include <VertexShader.h>
 #include <PixelShader.h>
 #include <ConstantBuffer.h>
+#include <Texture.h>
 
 Material::Material(const wchar_t* path, ResourceManager* manager) : Resource(path, manager),  m_cull_mode(CULL_MODE_BACK)
 {
@@ -31,7 +32,7 @@ Material::Material(const MaterialPtr& material, ResourceManager* manager) : Reso
 
 void Material::AddTexture(const TexturePtr& texture)
 {
-	m_textures.push_back(texture);
+	m_textures.push_back(texture->m_texture);
 }
 
 void Material::RemoveTexture(unsigned int texture_index)

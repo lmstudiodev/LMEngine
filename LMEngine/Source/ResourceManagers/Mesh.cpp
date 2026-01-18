@@ -34,14 +34,14 @@ Mesh::Mesh(const wchar_t* full_path, ResourceManager* resource_manager) : Resour
 	if (!err.empty())
 	{
 		std::cout << "[OBJ LOADER Error] " << err << "\n";
-		throw std::exception("[OBJ LOADER Exception] Load model from file failed.");
+		Dx3DError("[OBJ LOADER Exception] Load model from file failed.");
 	}
 
 	if (!warn.empty())
 		std::cout << "[OBJ LOADER Warning] " << warn << "\n";
 
 	if (!result)
-		throw std::exception("[OBJ LOADER Ecxeption] Load model from file failed.");
+		Dx3DError("[OBJ LOADER Ecxeption] Load model from file failed.");
 
 	std::vector<VertexMesh> list_vertices;
 	std::vector<unsigned int> list_indices;

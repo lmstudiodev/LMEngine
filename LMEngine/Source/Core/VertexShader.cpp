@@ -16,5 +16,5 @@ VertexShader::VertexShader(const wchar_t* full_path, const char* entryPoint, Ren
 		Dx3DError("VertexShader" << full_path << " compilation failed.");
 
 	if (FAILED(m_system->m_d3d_device->CreateVertexShader(blob->GetBufferPointer(), blob->GetBufferSize(), nullptr, &m_vs)))
-		throw std::exception("[D3D11 Error] VertexShader creation failed.");
+		Dx3DError("VertexShader creation failed.");
 }

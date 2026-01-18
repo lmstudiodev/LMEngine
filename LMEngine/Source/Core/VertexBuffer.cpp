@@ -21,7 +21,7 @@ VertexBuffer::VertexBuffer(void* list_vertices,
 	m_size_list = size_list;
 
 	if (FAILED(m_system->m_d3d_device->CreateBuffer(&bufferDesc, &initData, &m_buffer)))
-		throw std::exception("[D3D11 Error] VertexBuffer creation failed.");
+		Dx3DError("VertexBuffer creation failed.");
 
 	D3D11_INPUT_ELEMENT_DESC elementDesc[] =
 	{
@@ -35,7 +35,7 @@ VertexBuffer::VertexBuffer(void* list_vertices,
 	UINT size_layout = ARRAYSIZE(elementDesc);
 
 	if (FAILED(m_system->m_d3d_device->CreateInputLayout(elementDesc, size_layout, m_system->m_meshLayoutByteCode, m_system->m_meshLayoutSize, &m_layout)))
-		throw std::exception("[D3D11 Error] InputLayout creation failed.");
+		Dx3DError("InputLayout creation failed.");
 }
 
 UINT VertexBuffer::getSizeVertexList()

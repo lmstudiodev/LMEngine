@@ -8,6 +8,9 @@ public:
 
 private:
 	Texture2DPtr m_texture;
+
+private:
+	friend class Material;
 };
 
 

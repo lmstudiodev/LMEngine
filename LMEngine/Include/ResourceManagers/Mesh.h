@@ -43,6 +43,6 @@ private:
 	std::vector<MaterialSlot> m_material_slots;
 
 private:
-	friend class DeviceContext;
+	friend class GraphicEngine;
 };
 

@@ -26,7 +26,7 @@ private:
 	VertexShaderPtr m_vertex_shader;
 	PixelShaderPtr m_pixel_shader;
 	ConstantBufferPtr m_constant_buffer;
-	std::vector<TexturePtr> m_textures;
+	std::vector<Texture2DPtr> m_textures;
 	CULL_MODE m_cull_mode;
 
 private:

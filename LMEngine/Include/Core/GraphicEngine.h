@@ -5,6 +5,12 @@
 //#include <MeshManager.h>
 //#include <Material.h>
 
+struct MeshData
+{
+	MeshPtr mesh;
+	MaterialPtr material;
+};
+
 class GraphicEngine
 {
 public:
@@ -12,7 +18,7 @@ public:
 	~GraphicEngine();
 
 public:
-	void update();
+	void update(const MeshData& data);
 
 public:
 	RenderSystem* getRenderSystem();

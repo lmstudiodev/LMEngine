@@ -25,7 +25,7 @@ public:
 	void setPixelShader(const PixelShaderPtr& pixel_shader);
 
 	//void setTexture(const VertexShaderPtr& vertex_shader, const TexturePtr* texture, unsigned int num_textures);
-	//void setTexture(const PixelShaderPtr& pixel_shader, const TexturePtr* texture, unsigned int num_textures);
+	void setTexture(const Texture2DPtr* texture, unsigned int num_textures);
 
 	void setConstantBuffer(const ConstantBufferPtr& constant_buffer);
 	//void setConstantBuffer(const PixelShaderPtr& pixel_shader, const ConstantBufferPtr& constant_buffer);

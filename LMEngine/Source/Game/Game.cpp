@@ -13,9 +13,10 @@ Game::Game() : m_isRunning(true)
 	m_display = std::make_unique<Display>(this);
 	m_resourceManager = std::make_unique<ResourceManager>(this);
 
-	m_resourceManager->createResourceFromFile<Mesh>(L"Resources/Meshes/house.obj");
-	m_resourceManager->createResourceFromFile<Texture>(L"Resources/Textures/wood.jpg");
-	m_resourceManager->createResourceFromFile<Material>(L"Resources/Shader/MyMaterial.hlsl");
+	m_mesh = m_resourceManager->createResourceFromFile<Mesh>(L"Resources/Meshes/house.obj");
+	auto texture = m_resourceManager->createResourceFromFile<Texture>(L"Resources/Textures/wood.jpg");
+	m_material = m_resourceManager->createResourceFromFile<Material>(L"Resources/Shader/MyMaterial.hlsl");
+	m_material->AddTexture(texture);
 }
 
 Game::~Game()
@@ -24,7 +25,7 @@ Game::~Game()
 
 void Game::onInternalUpdate()
 {
-	m_graphicEngine->update();
+	m_graphicEngine->update({m_mesh, m_material});
 }
 
 void Game::run()

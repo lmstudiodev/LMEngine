@@ -26,6 +26,9 @@ private:
 	std::unique_ptr<Display> m_display;
 	std::unique_ptr<ResourceManager> m_resourceManager;
 
+	MeshPtr m_mesh;
+	MaterialPtr m_material;
+
 	bool m_isRunning;
 
 private:

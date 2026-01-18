@@ -16,6 +16,6 @@ PixelShader::PixelShader(const wchar_t* full_path, const char* entryPoint, Rende
 		Dx3DError("PixelShader" << full_path << " compilation failed.");
 
 	if (FAILED(m_system->m_d3d_device->CreatePixelShader(blob->GetBufferPointer(), blob->GetBufferSize(), nullptr, &m_ps)))
-		throw std::exception("[D3D11 Error] PixelShader creation failed.");
+		Dx3DError("PixelShader creation failed.");
 
 }
