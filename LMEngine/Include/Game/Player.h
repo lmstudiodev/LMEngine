@@ -14,5 +14,8 @@ protected:
 private:
 	Entity* m_entity = nullptr;
 	f32 m_elapsed_seconds = 0.0f;
+
+	f32 m_forward = 0.0f;
+	f32 m_rightward = 0.0f;
 };
 

@@ -11,6 +11,7 @@ public:
 	void release();
 
 	World* getWorld();
+	InputSystem* getInputSystem();
 	TransformComponent* getTransformComponent();
 
 	template <typename T>

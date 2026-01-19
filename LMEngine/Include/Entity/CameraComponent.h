@@ -2,7 +2,6 @@
 #include <Prerequisites.h>
 #include <Entity/Component.h>
 #include <Math/Rect.h>
-#include <Math/Vector3D.h>
 #include <Math/Matrix4x4.h>
 
 class CameraComponent : public Component

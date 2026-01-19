@@ -102,3 +102,8 @@ ResourceManager* Game::getResourceManager()
 {
 	return m_resourceManager.get();
 }
+
+InputSystem* Game::getInputSystem()
+{
+	return m_inputSystem.get();
+}

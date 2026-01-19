@@ -107,17 +107,20 @@ RenderSystem* GraphicEngine::getRenderSystem()
 
 void GraphicEngine::addComponent(Component* component)
 {
-	if (auto c = dynamic_cast<MeshComponent*>(component))
-		m_meshes.emplace(c);
+	if (auto m = dynamic_cast<MeshComponent*>(component))
+		m_meshes.emplace(m);
 
-	if (auto c = dynamic_cast<CameraComponent*>(component) && !m_cameras.size())
-		m_cameras.emplace(c);
+	if (auto c = dynamic_cast<CameraComponent*>(component))
+	{
+		if(!m_cameras.size())
+			m_cameras.emplace(c);
+	}
 }
 
 void GraphicEngine::removeComponent(Component* component)
 {
-	if (auto c = dynamic_cast<MeshComponent*>(component))
-		m_meshes.erase(c);
+	if (auto m = dynamic_cast<MeshComponent*>(component))
+		m_meshes.erase(m);
 
 	if (auto c = dynamic_cast<CameraComponent*>(component))
 		m_cameras.erase(c);

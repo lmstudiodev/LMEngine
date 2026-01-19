@@ -18,6 +18,12 @@ void MyGame::onUpdate(f32 deltaTime)
 	m_rotation += 1.57f * deltaTime;
 
 	m_entity->getTransformComponent()->setRotation(Vector3D(0.0f, m_rotation, 0.0f));
+
+	if (getInputSystem()->isKeyUp(Key::Escape))
+	{
+		m_locked = !m_locked;
+		getInputSystem()->lockMouseCursor(m_locked);
+	}
 }
 
 void MyGame::onCreate()
@@ -38,4 +44,6 @@ void MyGame::onCreate()
 	meshComponent->addMaterial(material);
 
 	getWorld()->createEntity<Player>();
+
+	getInputSystem()->lockMouseCursor(m_locked);
 }

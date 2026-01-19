@@ -74,6 +74,15 @@ bool InputSystem::isKeyUp(const Key& key)
 void InputSystem::lockMouseCursor(bool lock)
 {
 	m_cursorLocked = lock;
+
+	if (lock)
+	{
+		while (ShowCursor(false) >= 0);
+	}
+	else
+	{
+		while (ShowCursor(true) <= 1);
+	}
 }
 
 void InputSystem::setLockArea(const Rect& area)

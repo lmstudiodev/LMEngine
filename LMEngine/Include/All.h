@@ -4,6 +4,7 @@
 #include <Entity/Component.h>
 #include <Entity/TransformComponent.h>
 #include <Entity/MeshComponent.h>
+#include <Entity/CameraComponent.h>
 
 #include <ResourceManagers/ResourceManager.h>
 #include <ResourceManagers/Mesh.h>
@@ -12,3 +13,4 @@
 
 #include <Game/World.h>
 #include <Game/Game.h>
+#include <InputSystem/InputSystem.h>

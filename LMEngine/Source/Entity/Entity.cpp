@@ -3,6 +3,8 @@
 #include <Entity/Component.h>
 #include <Entity/TransformComponent.h>
 #include <Game/World.h>
+#include <Game/Game.h>
+#include <Core/GraphicEngine.h>
 
 Entity::Entity()
 {
@@ -42,6 +44,11 @@ void Entity::removeComponent(size_t id)
 World* Entity::getWorld()
 {
 	return m_world;
+}
+
+InputSystem* Entity::getInputSystem()
+{
+	return m_world->getGame()->getInputSystem();
 }
 
 TransformComponent* Entity::getTransformComponent()
