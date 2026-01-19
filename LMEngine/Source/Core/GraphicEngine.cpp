@@ -59,11 +59,6 @@ void GraphicEngine::update()
 		c->getProjectionMatrix(constData.m_projectionMatrix);
 	}
 
-	//constData.m_viewMatrix.SetTranslation(Vector3D(0.0f, 0.0f, -10.0f));
-	//constData.m_viewMatrix.inverse();
-
-	//constData.m_projectionMatrix.SetPerspectiveFovLH(1.5f, (float)winSize.width / (float)winSize.height, 0.01f, 1000.0f);
-
 	for (auto m : m_meshes)
 	{
 		auto transform =  m->getEntity()->getTransformComponent();
@@ -81,6 +76,8 @@ void GraphicEngine::update()
 				break;
 
 			auto mat = materials[i].get();
+
+			m_render_system->setCullMode(mat->GetCullMode());
 			
 			mat->SetData(&constData, sizeof(ConstantData));
 

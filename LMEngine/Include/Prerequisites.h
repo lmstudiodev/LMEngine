@@ -49,6 +49,13 @@ typedef int i32;
 typedef float f32;
 typedef double d64;
 
+enum class CullMode
+{
+	None = 0,
+	Front,
+	Back
+};
+
 enum class CameraType
 {
 	Orthogonal = 0,

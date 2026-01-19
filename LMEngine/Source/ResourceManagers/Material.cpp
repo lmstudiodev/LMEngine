@@ -9,7 +9,7 @@
 #include <Core/ConstantBuffer.h>
 #include <ResourceManagers/Texture.h>
 
-Material::Material(const wchar_t* path, ResourceManager* manager) : Resource(path, manager),  m_cull_mode(CULL_MODE_BACK)
+Material::Material(const wchar_t* path, ResourceManager* manager) : Resource(path, manager),  m_cull_mode(CullMode::Back)
 {
 	auto rsys = manager->getGame()->getGraphicEngine()->getRenderSystem();
 
@@ -24,7 +24,7 @@ Material::Material(const wchar_t* path, ResourceManager* manager) : Resource(pat
 		Dx3DError("Unable to compile pixel shader for material. Material not created.");
 }
 
-Material::Material(const MaterialPtr& material, ResourceManager* manager) : Resource(L"", manager), m_cull_mode(CULL_MODE_BACK)
+Material::Material(const MaterialPtr& material, ResourceManager* manager) : Resource(L"", manager), m_cull_mode(CullMode::Back)
 {
 	m_vertex_shader = material->m_vertex_shader;
 	m_pixel_shader = material->m_pixel_shader;
@@ -60,12 +60,12 @@ void Material::SetData(void* data, unsigned int size)
 	}
 }
 
-void Material::SetCullMode(CULL_MODE cull_mode)
+void Material::SetCullMode(CullMode cull_mode)
 {
 	m_cull_mode = cull_mode;
 }
 
-CULL_MODE Material::GetCullMode() const
+CullMode Material::GetCullMode() const
 {
 	return m_cull_mode;
 }

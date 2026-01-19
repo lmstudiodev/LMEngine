@@ -65,7 +65,7 @@ m_cull_back_state(nullptr)
 	if (FAILED(m_dxgiAdapter->GetParent(__uuidof(IDXGIFactory), (void**)&m_dxgiFactory)))
 		Dx3DError("IDXGIFactory creation failed.");
 
-	initRasterizerState();
+	initRasterizerStates();
 	compilePrivateShaders();
 }
 
@@ -119,12 +119,13 @@ Texture2DPtr RenderSystem::createTexture(const Rect& size, Texture2D::Type type)
 	return std::make_shared<Texture2D>(size, type, this);
 }
 
-void RenderSystem::initRasterizerState()
+void RenderSystem::initRasterizerStates()
 {
 	D3D11_RASTERIZER_DESC desc{};
-	desc.CullMode = D3D11_CULL_FRONT;
 	desc.DepthClipEnable = true;
 	desc.FillMode = D3D11_FILL_SOLID;
+	desc.FrontCounterClockwise = true;
+	desc.CullMode = D3D11_CULL_FRONT;
 
 	HRESULT hr = m_d3d_device->CreateRasterizerState(&desc, &m_cull_front_state);
 
@@ -137,6 +138,13 @@ void RenderSystem::initRasterizerState()
 
 	if (FAILED(hr))
 		Dx3DError("Create Cull back state creation failed.");
+
+	desc.CullMode = D3D11_CULL_NONE;
+
+	hr = m_d3d_device->CreateRasterizerState(&desc, &m_cull_none_state);
+
+	if (FAILED(hr))
+		Dx3DError("Create Cull none state creation failed.");
 }
 
 void RenderSystem::compilePrivateShaders()
@@ -179,14 +187,18 @@ VS_OUTPUT vsmain(VS_INPUT input)
 	m_meshLayoutSize = blob->GetBufferSize();
 }
 
-void RenderSystem::setRasterizerState(bool cull_front)
+void RenderSystem::setCullMode(const CullMode& cullmode)
 {
-	if (cull_front)
+	if (cullmode == CullMode::Front)
 	{
 		m_deviceContext->m_deviceContext->RSSetState(m_cull_front_state.Get());
 	}
-	else
+	else if(cullmode == CullMode::Back)
 	{
 		m_deviceContext->m_deviceContext->RSSetState(m_cull_back_state.Get());
+	}
+	else if (cullmode == CullMode::None)
+	{
+		m_deviceContext->m_deviceContext->RSSetState(m_cull_none_state.Get());
 	}
 }

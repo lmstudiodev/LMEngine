@@ -17,7 +17,7 @@ void MyGame::onUpdate(f32 deltaTime)
 
 	m_rotation += 1.57f * deltaTime;
 
-	m_entity->getTransformComponent()->setRotation(Vector3D(0.0f, m_rotation, 0.0f));
+	//m_entity->getTransformComponent()->setRotation(Vector3D(0.0f, m_rotation, 0.0f));
 
 	if (getInputSystem()->isKeyUp(Key::Escape))
 	{
@@ -30,18 +30,36 @@ void MyGame::onCreate()
 {
 	Game::onCreate();
 
-	auto mesh = getResourceManager()->createResourceFromFile<Mesh>(L"Resources/Meshes/house.obj");
-	auto texture = getResourceManager()->createResourceFromFile<Texture>(L"Resources/Textures/wood.jpg");
-	auto material = getResourceManager()->createResourceFromFile<Material>(L"Resources/Shader/MyMaterial.hlsl");
-	material->AddTexture(texture);
+	auto house_mesh = getResourceManager()->createResourceFromFile<Mesh>(L"Resources/Meshes/house.obj");
+	auto terrain_mesh = getResourceManager()->createResourceFromFile<Mesh>(L"Resources/Meshes/terrain.obj");
+
+
+	auto house_texture = getResourceManager()->createResourceFromFile<Texture>(L"Resources/Textures/wood.jpg");
+	auto terrain_texture = getResourceManager()->createResourceFromFile<Texture>(L"Resources/Textures/Sponza/sponza_floor_a_diff.jpg");
+
+
+
+	auto house_material = getResourceManager()->createResourceFromFile<Material>(L"Resources/Shader/MyMaterial.hlsl");
+	house_material->AddTexture(house_texture);
+
+	auto terrain_material = getResourceManager()->createResourceFromFile<Material>(L"Resources/Shader/MyMaterial.hlsl");
+	terrain_material->AddTexture(terrain_texture);
+
+	{
+		auto entity = getWorld()->createEntity<Entity>();
+		auto meshComponent = entity->createComponent<MeshComponent>();
+		meshComponent->setMesh(terrain_mesh);
+		meshComponent->addMaterial(terrain_material);
+	}
+
 
 	m_entity = getWorld()->createEntity<Entity>();
 	auto meshComponent = m_entity->createComponent<MeshComponent>();
-	meshComponent->setMesh(mesh);
-	meshComponent->addMaterial(material);
-	meshComponent->addMaterial(material);
-	meshComponent->addMaterial(material);
-	meshComponent->addMaterial(material);
+	meshComponent->setMesh(house_mesh);
+	meshComponent->addMaterial(house_material);
+	meshComponent->addMaterial(house_material);
+	meshComponent->addMaterial(house_material);
+	meshComponent->addMaterial(house_material);
 
 	getWorld()->createEntity<Player>();
 
