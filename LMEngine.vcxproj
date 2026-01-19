@@ -114,6 +114,7 @@
     <ClCompile Include="LMEngine\Source\Game\World.cpp" />
     <ClCompile Include="LMEngine\Source\Game\Player.cpp" />
     <ClCompile Include="LMEngine\Source\Entity\TransformComponent.cpp" />
+    <ClCompile Include="LMEngine\Source\Entity\MeshComponent.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="LMEngine\Include\Entity\Component.h" />
@@ -155,6 +156,7 @@
     <ClInclude Include="LMEngine\Include\Game\World.h" />
     <ClInclude Include="LMEngine\Include\Game\Player.h" />
     <ClInclude Include="LMEngine\Include\Entity\TransformComponent.h" />
+    <ClInclude Include="LMEngine\Include\Entity\MeshComponent.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Resources\Shader\DirectionalLightPixelShader.hlsl">

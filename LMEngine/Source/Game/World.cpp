@@ -2,7 +2,7 @@
 #include <Game/World.h>
 #include <Entity/Entity.h>
 
-World::World()
+World::World(Game* game) : m_game(game)
 {
 }
 
@@ -42,4 +42,9 @@ void World::createEntityInternal(Entity* entity, size_t id)
 void World::removeEntity(Entity* entity)
 {
 	m_entitiesToDestroy.emplace(entity);
+}
+
+Game* World::getGame()
+{
+	return m_game;
 }

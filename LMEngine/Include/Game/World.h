@@ -4,7 +4,7 @@
 class World
 {
 public:
-	World();
+	World(Game* game);
 	~World();
 
 	template <typename T>
@@ -21,6 +21,7 @@ public:
 
 public:
 	void update(f32 deltaTime);
+	Game* getGame();
 
 private:
 	void createEntityInternal(Entity* entity, size_t id);
@@ -29,6 +30,7 @@ private:
 private:
 	std::map<size_t, std::map<Entity*, std::unique_ptr<Entity>>> m_entities;
 	std::set<Entity*> m_entitiesToDestroy;
+	Game* m_game;
 
 private:
 	friend class Entity;

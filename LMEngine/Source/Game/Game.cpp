@@ -15,12 +15,7 @@ Game::Game() : m_isRunning(true)
 	m_graphicEngine = std::make_unique<GraphicEngine>(this);
 	m_display = std::make_unique<Display>(this);
 	m_resourceManager = std::make_unique<ResourceManager>(this);
-	m_world = std::make_unique<World>();
-
-	m_mesh = m_resourceManager->createResourceFromFile<Mesh>(L"Resources/Meshes/house.obj");
-	auto texture = m_resourceManager->createResourceFromFile<Texture>(L"Resources/Textures/wood.jpg");
-	m_material = m_resourceManager->createResourceFromFile<Material>(L"Resources/Shader/MyMaterial.hlsl");
-	m_material->AddTexture(texture);
+	m_world = std::make_unique<World>(this);
 
 	m_inputSystem->setLockArea(m_display->getClientSize());
 	m_inputSystem->lockMouseCursor(false);
@@ -50,7 +45,7 @@ void Game::onInternalUpdate()
 
 	m_world->update(deltaTime);
 
-	m_graphicEngine->update({m_mesh, m_material});
+	m_graphicEngine->update();
 }
 
 void Game::onDisplaySize(const Rect& size)
@@ -101,4 +96,9 @@ GraphicEngine* Game::getGraphicEngine()
 World* Game::getWorld()
 {
 	return m_world.get();
+}
+
+ResourceManager* Game::getResourceManager()
+{
+	return m_resourceManager.get();
 }

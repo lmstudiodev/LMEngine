@@ -6,7 +6,13 @@
 class Matrix4x4
 {
 public:
-	Matrix4x4() {}
+	Matrix4x4()
+	{
+		m_mat[0][0] = 1.0f;
+		m_mat[1][1] = 1.0f;
+		m_mat[2][2] = 1.0f;
+		m_mat[3][3] = 1.0f;
+	}
 
 	~Matrix4x4()
 	{
