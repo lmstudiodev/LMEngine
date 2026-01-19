@@ -109,6 +109,7 @@
     <ClCompile Include="LMEngine\Source\Game\World.cpp" />
     <ClCompile Include="LMEngine\Source\Entity\Entity.cpp" />
     <ClCompile Include="LMEngine\Source\Game\Player.cpp" />
+    <ClCompile Include="LMEngine\Source\Entity\Component.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="LMEngine\Include\WindowSystem\MainWindow.h">
@@ -188,6 +189,7 @@
     <ClInclude Include="LMEngine\Include\Entity\Entity.h" />
     <ClInclude Include="LMEngine\Include\All.h" />
     <ClInclude Include="LMEngine\Include\Game\Player.h" />
+    <ClInclude Include="LMEngine\Include\Entity\Component.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Resources\Shader\VertexShader.hlsl" />

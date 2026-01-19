@@ -84,6 +84,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="LMEngine\Source\Entity\Component.cpp" />
     <ClCompile Include="LMEngine\Source\Entity\Entity.cpp" />
     <ClCompile Include="LMEngine\Source\Core\Texture2D.cpp" />
     <ClCompile Include="LMEngine\Source\Game\Display.cpp" />
@@ -114,6 +115,7 @@
     <ClCompile Include="LMEngine\Source\Game\Player.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="LMEngine\Include\Entity\Component.h" />
     <ClInclude Include="LMEngine\Include\All.h" />
     <ClInclude Include="LMEngine\Include\Entity\Entity.h" />
     <ClInclude Include="LMEngine\Include\Core\Texture2D.h" />

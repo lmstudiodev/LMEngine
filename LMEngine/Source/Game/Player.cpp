@@ -17,6 +17,7 @@ void Player::onUpdate(f32 deltaTime)
 
 	if (m_entity && m_elapsed_seconds > 3.0f)
 	{
+		m_entity->getComponent<Component>()->release();
 		m_entity->release();
 		m_entity = nullptr;
 	}
@@ -27,4 +28,5 @@ void Player::onCreate()
 	Entity::onCreate();
 
 	m_entity = getWorld()->createEntity<Entity>();
+	m_entity->createComponent<Component>();
 }
