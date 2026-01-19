@@ -1,7 +1,7 @@
 #pragma once
 #include <Prerequisites.h>
-#include <Vector2D.h>
-#include <Rect.h>
+#include <Math/Vector2D.h>
+#include <Math/Rect.h>
 
 class InputSystem
 {

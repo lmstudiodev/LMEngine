@@ -1,4 +1,4 @@
-#include <Rect.h>
+#include <Math/Rect.h>
 #include <Prerequisites.h>
 
 class MainWindow

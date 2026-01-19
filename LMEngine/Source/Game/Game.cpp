@@ -1,12 +1,13 @@
 #include <stdafx.h>
-#include <Game.h>
-#include <Display.h>
-#include <GraphicEngine.h>
-#include <ResourceManager.h>
-#include <Mesh.h>
-#include <Texture.h>
-#include <Material.h>
-#include <InputSystem.h>
+#include <Game/Game.h>
+#include <Game/Display.h>
+#include <Core/GraphicEngine.h>
+#include <ResourceManagers/ResourceManager.h>
+#include <ResourceManagers/Mesh.h>
+#include <ResourceManagers/Texture.h>
+#include <ResourceManagers/Material.h>
+#include <InputSystem/InputSystem.h>
+#include <Game/World.h>
 
 Game::Game() : m_isRunning(true)
 {
@@ -14,6 +15,7 @@ Game::Game() : m_isRunning(true)
 	m_graphicEngine = std::make_unique<GraphicEngine>(this);
 	m_display = std::make_unique<Display>(this);
 	m_resourceManager = std::make_unique<ResourceManager>(this);
+	m_world = std::make_unique<World>();
 
 	m_mesh = m_resourceManager->createResourceFromFile<Mesh>(L"Resources/Meshes/house.obj");
 	auto texture = m_resourceManager->createResourceFromFile<Texture>(L"Resources/Textures/wood.jpg");
@@ -30,22 +32,24 @@ Game::~Game()
 
 void Game::onInternalUpdate()
 {
+	auto currentTime = std::chrono::system_clock::now();
+	auto elapsedSeconds = std::chrono::duration<double>();
+
+	if (m_previousTime.time_since_epoch().count())
+	{
+		elapsedSeconds = currentTime - m_previousTime;
+	}
+
+	m_previousTime = currentTime;
+
+	auto deltaTime = (float)elapsedSeconds.count();
+	
 	m_inputSystem->Update();
 
-	if (m_inputSystem->isKeyUp(Key::Escape))
-	{
-		m_inputSystem->lockMouseCursor(false);
-	}
-	else if (m_inputSystem->isKeyUp(Key::Enter))
-	{
-		m_inputSystem->lockMouseCursor(true);
-	}
+	onUpdate(deltaTime);
 
-	auto deltaPos = m_inputSystem->getDeltaMousePosition();
+	m_world->update(deltaTime);
 
-	Dx3DInfo("Delta Mouse Pos - x: " << deltaPos.m_x << " - Y: " << deltaPos.m_y << "\n");
-
-	
 	m_graphicEngine->update({m_mesh, m_material});
 }
 
@@ -92,4 +96,9 @@ void Game::quit()
 GraphicEngine* Game::getGraphicEngine()
 {
 	return m_graphicEngine.get();
+}
+
+World* Game::getWorld()
+{
+	return m_world.get();
 }

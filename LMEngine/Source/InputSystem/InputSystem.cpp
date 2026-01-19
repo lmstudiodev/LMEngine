@@ -1,5 +1,5 @@
 #include <stdafx.h>
-#include <InputSystem.h>
+#include <InputSystem/InputSystem.h>
 
 InputSystem::InputSystem()
 {

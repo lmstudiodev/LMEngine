@@ -1,7 +1,7 @@
 #pragma once
-#include <Rect.h>
+#include <Math/Rect.h>
 #include <Prerequisites.h>
-#include <MainWindow.h>
+#include <WindowSystem/MainWindow.h>
 
 class Display : public MainWindow
 {

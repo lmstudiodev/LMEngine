@@ -1,15 +1,15 @@
 #include <stdafx.h>
-#include <GraphicEngine.h>
-#include <SwapChain.h>
-#include <ResourceManager.h>
-#include <Mesh.h>
-#include <Texture.h>
-#include <Material.h>
-#include <RenderSystem.h>
-#include <DeviceContext.h>
-#include <Game.h>
-#include <Display.h>
-#include <Matrix4x4.h>
+#include <Core/GraphicEngine.h>
+#include <Core/SwapChain.h>
+#include <ResourceManagers/ResourceManager.h>
+#include <ResourceManagers/Mesh.h>
+#include <ResourceManagers/Texture.h>
+#include <ResourceManagers/Material.h>
+#include <Core/RenderSystem.h>
+#include <Core/DeviceContext.h>
+#include <Game/Game.h>
+#include <Game/Display.h>
+#include <Math/Matrix4x4.h>
 
 __declspec(align(16))
 struct ConstantData

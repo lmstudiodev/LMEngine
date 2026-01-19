@@ -1,5 +1,5 @@
 #include <stdafx.h>
-#include <MainWindow.h>
+#include <WindowSystem/MainWindow.h>
 
 static LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {

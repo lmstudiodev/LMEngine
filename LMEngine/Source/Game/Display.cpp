@@ -1,9 +1,9 @@
 #include <stdafx.h>
-#include <Display.h>
-#include <Game.h>
-#include <GraphicEngine.h>
-#include <RenderSystem.h>
-#include <SwapChain.h>
+#include <Game/Display.h>
+#include <Game/Game.h>
+#include <Core/GraphicEngine.h>
+#include <Core/RenderSystem.h>
+#include <Core/SwapChain.h>
 
 Display::Display(Game* game) : m_game(game)
 {

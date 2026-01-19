@@ -1,5 +1,5 @@
 #pragma once
-#include <Vec4.h>
+#include <Math/Vec4.h>
 #include <Prerequisites.h>
 
 class DeviceContext

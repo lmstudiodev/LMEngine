@@ -54,7 +54,7 @@
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
-      <AdditionalIncludeDirectories>LMEngine\Include;LMEngine\Include\Math;LMEngine\Include\InputSystem;LMEngine\include\Core;LMengine\include\ResourceManagers;LMEngine\Include\WindowSystem;LMEngine\Include\Game;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>LMEngine\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
@@ -84,6 +84,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="LMEngine\Source\Entity\Entity.cpp" />
     <ClCompile Include="LMEngine\Source\Core\Texture2D.cpp" />
     <ClCompile Include="LMEngine\Source\Game\Display.cpp" />
     <ClCompile Include="LMEngine\Source\Game\Game.cpp" />
@@ -109,8 +110,12 @@
     <ClCompile Include="LMEngine\Source\Core\VertexShader.cpp" />
     <ClCompile Include="LMEngine\Source\ResourceManagers\Texture.cpp" />
     <ClCompile Include="LMEngine\Source\Game\MyGame.cpp" />
+    <ClCompile Include="LMEngine\Source\Game\World.cpp" />
+    <ClCompile Include="LMEngine\Source\Game\Player.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="LMEngine\Include\All.h" />
+    <ClInclude Include="LMEngine\Include\Entity\Entity.h" />
     <ClInclude Include="LMEngine\Include\Core\Texture2D.h" />
     <ClInclude Include="LMEngine\Include\Game\Display.h" />
     <ClInclude Include="LMEngine\Include\Game\Game.h" />
@@ -144,6 +149,8 @@
     <ClInclude Include="LMEngine\Include\Core\VertexShader.h" />
     <ClInclude Include="LMEngine\Include\ResourceManagers\Texture.h" />
     <ClInclude Include="LMEngine\Include\Game\MyGame.h" />
+    <ClInclude Include="LMEngine\Include\Game\World.h" />
+    <ClInclude Include="LMEngine\Include\Game\Player.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Resources\Shader\DirectionalLightPixelShader.hlsl">

@@ -1,5 +1,5 @@
 #include <stdafx.h>
-#include <MyGame.h>
+#include <Game/MyGame.h>
 
 int main()
 {

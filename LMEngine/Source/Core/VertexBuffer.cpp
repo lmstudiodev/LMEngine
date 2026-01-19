@@ -1,6 +1,6 @@
 #include <stdafx.h>
-#include <VertexBuffer.h>
-#include <RenderSystem.h>
+#include <Core/VertexBuffer.h>
+#include <Core/RenderSystem.h>
 
 VertexBuffer::VertexBuffer(void* list_vertices, 
 	UINT size_vertex, 

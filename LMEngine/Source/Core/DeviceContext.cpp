@@ -1,12 +1,12 @@
 #include "stdafx.h"
-#include <DeviceContext.h>
-#include "SwapChain.h"
-#include "VertexBuffer.h"
-#include <IndexBuffer.h>
-#include <ConstantBuffer.h>
-#include <VertexShader.h>
-#include <PixelShader.h>
-#include <Texture2D.h>
+#include <Core/DeviceContext.h>
+#include <Core/SwapChain.h>
+#include <Core/VertexBuffer.h>
+#include <Core/IndexBuffer.h>
+#include <Core/ConstantBuffer.h>
+#include <Core/VertexShader.h>
+#include <Core/PixelShader.h>
+#include <Core/Texture2D.h>
 
 DeviceContext::DeviceContext(ID3D11DeviceContext* deviceContext, RenderSystem* system) : m_deviceContext(deviceContext), m_system(system)
 {

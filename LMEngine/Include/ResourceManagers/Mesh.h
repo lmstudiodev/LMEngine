@@ -1,10 +1,10 @@
 #pragma once
-#include <Resource.h>
-#include <VertexBuffer.h>
-#include <IndexBuffer.h>
-#include <Vector2D.h>
-#include <Vector3D.h>
-#include <VertexMesh.h>
+#include <ResourceManagers/Resource.h>
+#include <Core/VertexBuffer.h>
+#include <Core/IndexBuffer.h>
+#include <Math/Vector2D.h>
+#include <Math/Vector3D.h>
+#include <Math/VertexMesh.h>
 
 struct MaterialSlot
 {

@@ -1,11 +1,11 @@
 #pragma once
 #include <All.h>
 
-class MyGame : public Game
+class Player : public Entity
 {
 public:
-	MyGame();
-	~MyGame();
+	Player();
+	virtual ~Player();
 
 protected:
 	virtual void onCreate();

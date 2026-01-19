@@ -1,6 +1,6 @@
 #include <stdafx.h>
-#include <PixelShader.h>
-#include <RenderSystem.h>
+#include <Core/PixelShader.h>
+#include <Core/RenderSystem.h>
 
 PixelShader::PixelShader(const wchar_t* full_path, const char* entryPoint, RenderSystem* system) : m_ps(nullptr), m_system(system)
 {
