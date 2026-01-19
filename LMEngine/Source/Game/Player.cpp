@@ -15,12 +15,14 @@ void Player::onUpdate(f32 deltaTime)
 
 	m_elapsed_seconds += deltaTime;
 
-	if (m_entity && m_elapsed_seconds > 3.0f)
-	{
-		m_entity->getComponent<Component>()->release();
-		m_entity->release();
-		m_entity = nullptr;
-	}
+	//if (m_entity && m_elapsed_seconds > 3.0f)
+	//{
+	//	m_entity->getComponent<Component>()->release();
+	//	m_entity->release();
+	//	m_entity = nullptr;
+	//}
+
+	m_entity->getTransformComponent()->setRotation(Vector3D(m_elapsed_seconds, 0.0f, 0.0f));
 }
 
 void Player::onCreate()

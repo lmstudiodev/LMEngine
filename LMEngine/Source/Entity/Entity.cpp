@@ -1,10 +1,12 @@
 #include <stdafx.h>
 #include <Entity/Entity.h>
 #include <Entity/Component.h>
+#include <Entity/TransformComponent.h>
 #include <Game/World.h>
 
 Entity::Entity()
 {
+	m_transformComponent = createComponent<TransformComponent>();
 }
 
 Entity::~Entity()
@@ -38,6 +40,11 @@ void Entity::removeComponent(size_t id)
 World* Entity::getWorld()
 {
 	return m_world;
+}
+
+TransformComponent* Entity::getTransformComponent()
+{
+	return m_transformComponent;
 }
 
 void Entity::release()

@@ -11,6 +11,7 @@ public:
 	void release();
 
 	World* getWorld();
+	TransformComponent* getTransformComponent();
 
 	template <typename T>
 	T* createComponent()
@@ -38,7 +39,7 @@ public:
 
 		auto id = typeid(T).hash_code();
 
-		return getComponentInternal(id);
+		return (T*)getComponentInternal(id);
 	}
 
 private:
@@ -54,6 +55,7 @@ protected:
 	size_t m_type_id = 0;
 	World* m_world = nullptr;
 
+	TransformComponent* m_transformComponent = nullptr;
 	std::map <size_t, std::unique_ptr<Component>> m_components;
 
 private:
