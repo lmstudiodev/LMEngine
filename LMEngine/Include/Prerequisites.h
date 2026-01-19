@@ -28,6 +28,7 @@ class World;
 class Entity;
 class Component;
 class TransformComponent;
+class MeshComponent;
 
 typedef std::shared_ptr<SwapChain> SwapChainPtr;
 typedef std::shared_ptr<DeviceContext> DeviceContextPtr;

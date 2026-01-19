@@ -20,6 +20,8 @@ void Entity::createComponentInternal(Component* component, size_t id)
 	m_components.emplace(id, std::move(componentPtr));
 	component->m_type_id = id;
 	component->m_entity = this;
+
+	component->onCreateInternal();
 }
 
 Component* Entity::getComponentInternal(size_t id)

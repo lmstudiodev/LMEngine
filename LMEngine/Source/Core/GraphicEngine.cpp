@@ -10,6 +10,9 @@
 #include <Game/Game.h>
 #include <Game/Display.h>
 #include <Math/Matrix4x4.h>
+#include <Entity/Entity.h>
+#include <Entity/TransformComponent.h>
+#include <Entity/MeshComponent.h>
 
 __declspec(align(16))
 struct ConstantData
@@ -28,7 +31,7 @@ GraphicEngine::~GraphicEngine()
 {
 }
 
-void GraphicEngine::update(const MeshData& data)
+void GraphicEngine::update()
 {
 	auto swapchain = m_game->m_display->m_swapChain;
 
@@ -44,34 +47,46 @@ void GraphicEngine::update(const MeshData& data)
 	context->setViewPortSize(winSize.width, winSize.height);
 
 	ConstantData constData{};
-	constData.m_worldMatrix.SetIdentity();
+
 	constData.m_viewMatrix.SetIdentity();
 	constData.m_projectionMatrix.SetIdentity();
-
-	constData.m_worldMatrix.SetRotationY(0.707f);
 
 	constData.m_viewMatrix.SetTranslation(Vector3D(0.0f, 0.0f, -10.0f));
 	constData.m_viewMatrix.inverse();
 
 	constData.m_projectionMatrix.SetPerspectiveFovLH(1.5f, (float)winSize.width / (float)winSize.height, 0.01f, 1000.0f);
 
-	context->setVertexBuffer(data.mesh->m_vertex_buffer);
-	context->setIndexBuffer(data.mesh->m_index_buffer);
-
-	for (auto i = 0; i < data.mesh->getNumMaterialSlots(); i++)
+	for (auto m : m_meshes)
 	{
-		data.material->SetData(&constData, sizeof(ConstantData));
+		auto transform =  m->getEntity()->getTransformComponent();
+		transform->getWorldMatrix(constData.m_worldMatrix);
+
+		auto mesh = m->getMesh().get();
+		const auto materials = m->getMaterials();
 		
-		context->setConstantBuffer(data.material->m_constant_buffer);
+		context->setVertexBuffer(mesh->m_vertex_buffer);
+		context->setIndexBuffer(mesh->m_index_buffer);
 
-		context->setVertexShader(data.material->m_vertex_shader);
-		context->setPixelShader(data.material->m_pixel_shader);
+		for (auto i = 0; i < mesh->getNumMaterialSlots(); i++)
+		{
+			if (i >= materials.size())
+				break;
 
-		context->setTexture(&data.material->m_textures[0], data.material->m_textures.size());
+			auto mat = materials[i].get();
+			
+			mat->SetData(&constData, sizeof(ConstantData));
 
-		auto slot = data.mesh->getMaterialSlot(i);
+			context->setConstantBuffer(mat->m_constant_buffer);
 
-		context->drawIndexedTriangleList(slot.num_indices, slot.start_index, 0);
+			context->setVertexShader(mat->m_vertex_shader);
+			context->setPixelShader(mat->m_pixel_shader);
+
+			context->setTexture(&mat->m_textures[0], mat->m_textures.size());
+
+			auto slot = mesh->getMaterialSlot(i);
+
+			context->drawIndexedTriangleList(slot.num_indices, slot.start_index, 0);
+		}
 	}
 
 	swapchain->present(true);
@@ -80,5 +95,17 @@ void GraphicEngine::update(const MeshData& data)
 RenderSystem* GraphicEngine::getRenderSystem()
 {
 	return m_render_system.get();
+}
+
+void GraphicEngine::addComponent(Component* component)
+{
+	if (auto c = dynamic_cast<MeshComponent*>(component))
+		m_meshes.emplace(c);
+}
+
+void GraphicEngine::removeComponent(Component* component)
+{
+	if (auto c = dynamic_cast<MeshComponent*>(component))
+		m_meshes.erase(c);
 }
 

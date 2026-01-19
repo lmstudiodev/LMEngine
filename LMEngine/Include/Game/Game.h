@@ -13,6 +13,7 @@ public:
 	void quit();
 	GraphicEngine* getGraphicEngine();
 	World* getWorld();
+	ResourceManager* getResourceManager();
 
 protected:
 	virtual void onCreate() {}
@@ -29,9 +30,6 @@ private:
 	std::unique_ptr<Display> m_display;
 	std::unique_ptr<ResourceManager> m_resourceManager;
 	std::unique_ptr<World> m_world;
-
-	MeshPtr m_mesh;
-	MaterialPtr m_material;
 
 	bool m_isRunning;
 
