@@ -84,6 +84,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="LMEngine\Source\Entity\Component.cpp" />
     <ClCompile Include="LMEngine\Source\Entity\Entity.cpp" />
     <ClCompile Include="LMEngine\Source\Core\Texture2D.cpp" />
     <ClCompile Include="LMEngine\Source\Game\Display.cpp" />
@@ -112,8 +113,10 @@
     <ClCompile Include="LMEngine\Source\Game\MyGame.cpp" />
     <ClCompile Include="LMEngine\Source\Game\World.cpp" />
     <ClCompile Include="LMEngine\Source\Game\Player.cpp" />
+    <ClCompile Include="LMEngine\Source\Entity\TransformComponent.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="LMEngine\Include\Entity\Component.h" />
     <ClInclude Include="LMEngine\Include\All.h" />
     <ClInclude Include="LMEngine\Include\Entity\Entity.h" />
     <ClInclude Include="LMEngine\Include\Core\Texture2D.h" />
@@ -151,6 +154,7 @@
     <ClInclude Include="LMEngine\Include\Game\MyGame.h" />
     <ClInclude Include="LMEngine\Include\Game\World.h" />
     <ClInclude Include="LMEngine\Include\Game\Player.h" />
+    <ClInclude Include="LMEngine\Include\Entity\TransformComponent.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Resources\Shader\DirectionalLightPixelShader.hlsl">

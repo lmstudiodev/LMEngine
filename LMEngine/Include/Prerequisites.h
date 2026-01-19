@@ -26,6 +26,8 @@ class Display;
 class InputSystem;
 class World;
 class Entity;
+class Component;
+class TransformComponent;
 
 typedef std::shared_ptr<SwapChain> SwapChainPtr;
 typedef std::shared_ptr<DeviceContext> DeviceContextPtr;
