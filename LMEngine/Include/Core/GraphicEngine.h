@@ -1,12 +1,6 @@
 #pragma once
 #include <Prerequisites.h>
 
-struct MeshData
-{
-	MeshPtr mesh;
-	MaterialPtr material;
-};
-
 class GraphicEngine
 {
 public:
@@ -25,6 +19,7 @@ public:
 private:
 	std::unique_ptr<RenderSystem> m_render_system;
 	std::set<MeshComponent*> m_meshes;
+	std::set<CameraComponent*> m_cameras;
 
 	Game* m_game = nullptr;
 };
