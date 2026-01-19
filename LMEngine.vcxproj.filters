@@ -106,6 +106,9 @@
     <ClCompile Include="LMEngine\Source\ResourceManagers\Texture.cpp" />
     <ClCompile Include="LMEngine\Source\ResourceManagers\Material.cpp" />
     <ClCompile Include="LMEngine\Source\Game\MyGame.cpp" />
+    <ClCompile Include="LMEngine\Source\Game\World.cpp" />
+    <ClCompile Include="LMEngine\Source\Entity\Entity.cpp" />
+    <ClCompile Include="LMEngine\Source\Game\Player.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="LMEngine\Include\WindowSystem\MainWindow.h">
@@ -181,6 +184,10 @@
     <ClInclude Include="LMEngine\Include\ResourceManagers\Texture.h" />
     <ClInclude Include="LMEngine\Include\ResourceManagers\Material.h" />
     <ClInclude Include="LMEngine\Include\Game\MyGame.h" />
+    <ClInclude Include="LMEngine\Include\Game\World.h" />
+    <ClInclude Include="LMEngine\Include\Entity\Entity.h" />
+    <ClInclude Include="LMEngine\Include\All.h" />
+    <ClInclude Include="LMEngine\Include\Game\Player.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Resources\Shader\VertexShader.hlsl" />

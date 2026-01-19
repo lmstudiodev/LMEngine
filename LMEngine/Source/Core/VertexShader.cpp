@@ -1,6 +1,6 @@
 #include <stdafx.h>
-#include <VertexShader.h>
-#include <RenderSystem.h>
+#include <Core/VertexShader.h>
+#include <Core/RenderSystem.h>
 
 VertexShader::VertexShader(const wchar_t* full_path, const char* entryPoint, RenderSystem* system) : m_vs(nullptr), m_system(system)
 {

@@ -1,7 +1,7 @@
 #pragma once
 #include <memory>
-#include <Vector3D.h>
-#include "Vector4D.h"
+#include <Math/Vector3D.h>
+#include <Math/Vector4D.h>
 
 class Matrix4x4
 {

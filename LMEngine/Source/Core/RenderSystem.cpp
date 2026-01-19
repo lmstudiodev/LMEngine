@@ -1,12 +1,12 @@
 #include <stdafx.h>
-#include <RenderSystem.h>
-#include <SwapChain.h>
-#include <DeviceContext.h>
-#include <VertexBuffer.h>
-#include <IndexBuffer.h>
-#include <ConstantBuffer.h>
-#include <VertexShader.h>
-#include <PixelShader.h>
+#include <Core/RenderSystem.h>
+#include <Core/SwapChain.h>
+#include <Core/DeviceContext.h>
+#include <Core/VertexBuffer.h>
+#include <Core/IndexBuffer.h>
+#include <Core/ConstantBuffer.h>
+#include <Core/VertexShader.h>
+#include <Core/PixelShader.h>
 
 RenderSystem::RenderSystem() : m_d3d_device(nullptr),
 m_deviceContext(nullptr),

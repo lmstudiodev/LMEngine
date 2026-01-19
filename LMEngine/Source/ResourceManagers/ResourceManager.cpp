@@ -1,8 +1,8 @@
 #include <stdafx.h>
-#include <ResourceManager.h>
-#include <Mesh.h>
-#include <Texture.h>
-#include <Material.h>
+#include <ResourceManagers/ResourceManager.h>
+#include <ResourceManagers/Mesh.h>
+#include <ResourceManagers/Texture.h>
+#include <ResourceManagers/Material.h>
 
 ResourceManager::ResourceManager(Game* game) : m_game(game)
 {

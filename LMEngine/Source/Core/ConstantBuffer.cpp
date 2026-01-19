@@ -1,7 +1,7 @@
 #include <stdafx.h>
-#include <ConstantBuffer.h>
-#include <RenderSystem.h>
-#include <DeviceContext.h>
+#include <Core/ConstantBuffer.h>
+#include <Core/RenderSystem.h>
+#include <Core/DeviceContext.h>
 
 ConstantBuffer::ConstantBuffer(void* buffer, UINT size_buffer, RenderSystem* system) : m_buffer(nullptr), m_system(system)
 {

@@ -1,13 +1,13 @@
 #include <stdafx.h>
-#include <Mesh.h>
+#include <ResourceManagers/Mesh.h>
 
 #define TINYOBJLOADER_IMPLEMENTATION
 #include <tiny_obj_loader.h>
-#include <GraphicEngine.h>
-#include <ResourceManager.h>
-#include <VertexMesh.h>
-#include <Game.h>
-#include <RenderSystem.h>
+#include <Core/GraphicEngine.h>
+#include <ResourceManagers/ResourceManager.h>
+#include <Math/VertexMesh.h>
+#include <Game/Game.h>
+#include <Core/RenderSystem.h>
 
 Mesh::Mesh(const wchar_t* full_path, ResourceManager* resource_manager) : Resource(full_path, resource_manager), m_vertex_buffer(nullptr), m_index_buffer(nullptr)
 {

@@ -1,9 +1,9 @@
 #include <stdafx.h>
-#include <Texture.h>
-#include <GraphicEngine.h>
-#include <ResourceManager.h>
-#include <Game.h>
-#include <RenderSystem.h>
+#include <ResourceManagers/Texture.h>
+#include <Core/GraphicEngine.h>
+#include <ResourceManagers/ResourceManager.h>
+#include <Game/Game.h>
+#include <Core/RenderSystem.h>
 
 Texture::Texture(const wchar_t* full_path, ResourceManager* resource_manager) : Resource(full_path, resource_manager)
 {

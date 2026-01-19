@@ -1,13 +1,13 @@
 #include <stdafx.h>
-#include <Material.h>
-#include <Game.h>
-#include <RenderSystem.h>
-#include <GraphicEngine.h>
-#include <ResourceManager.h>
-#include <VertexShader.h>
-#include <PixelShader.h>
-#include <ConstantBuffer.h>
-#include <Texture.h>
+#include <ResourceManagers/Material.h>
+#include <Game/Game.h>
+#include <Core/RenderSystem.h>
+#include <Core/GraphicEngine.h>
+#include <ResourceManagers/ResourceManager.h>
+#include <Core/VertexShader.h>
+#include <Core/PixelShader.h>
+#include <Core/ConstantBuffer.h>
+#include <ResourceManagers/Texture.h>
 
 Material::Material(const wchar_t* path, ResourceManager* manager) : Resource(path, manager),  m_cull_mode(CULL_MODE_BACK)
 {

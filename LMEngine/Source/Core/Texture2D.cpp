@@ -1,7 +1,7 @@
 #include <stdafx.h>
-#include <Texture2D.h>
-#include <GraphicEngine.h>
-#include <RenderSystem.h>
+#include <Core/Texture2D.h>
+#include <Core/GraphicEngine.h>
+#include <Core/RenderSystem.h>
 
 Texture2D::Texture2D(const wchar_t* full_path, RenderSystem* renderSystem) :
 m_texture(nullptr), 

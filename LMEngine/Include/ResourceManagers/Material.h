@@ -1,5 +1,5 @@
 #pragma once
-#include <Resource.h>
+#include <ResourceManagers/Resource.h>
 
 enum CULL_MODE
 {

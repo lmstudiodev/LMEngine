@@ -1,6 +1,6 @@
 #pragma once
 #include <Prerequisites.h>
-#include <Rect.h>
+#include <Math/Rect.h>
 
 class Texture2D
 {

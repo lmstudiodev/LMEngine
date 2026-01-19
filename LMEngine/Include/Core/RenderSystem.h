@@ -1,6 +1,6 @@
 #pragma once
 #include <Prerequisites.h>
-#include <Texture2D.h>
+#include <Core/Texture2D.h>
 
 class RenderSystem
 {
