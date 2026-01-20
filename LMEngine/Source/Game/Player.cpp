@@ -13,9 +13,10 @@ void Player::onCreate()
 {
 	Entity::onCreate();
 
-	createComponent<CameraComponent>();
+	auto cam = createComponent<CameraComponent>();
+	cam->setFarPlane(2000.0f);
 
-	getTransformComponent()->setPosition(Vector3D(0.0f, 0.0f, -10.0f));
+	getTransformComponent()->setPosition(Vector3D(0.0f, 1.0f, -10.0f));
 }
 
 void Player::onUpdate(f32 deltaTime)

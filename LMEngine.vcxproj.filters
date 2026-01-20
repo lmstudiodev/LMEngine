@@ -212,5 +212,6 @@
     <FxCompile Include="Resources\Shader\PostProcessVS.hlsl" />
     <FxCompile Include="Resources\Shader\DistortionEffect.hlsl" />
     <FxCompile Include="Resources\Shader\MyMaterial.hlsl" />
+    <FxCompile Include="Resources\Shader\SkyBox.hlsl" />
   </ItemGroup>
 </Project>

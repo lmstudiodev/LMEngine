@@ -88,7 +88,7 @@ void InputSystem::lockMouseCursor(bool lock)
 void InputSystem::setLockArea(const Rect& area)
 {
 	m_lock_area = area;
-	m_lock_area_center = Vector2D((float)area.left + ((float)area.width / 2.0f), (float)area.top + ((float)area.height / 2.0f));
+	m_lock_area_center = Vector2D(floor((float)area.left + (float)area.width / 2.0f), floor((float)area.top + (float)area.height / 2.0f));
 }
 
 Vector2D InputSystem::getDeltaMousePosition()
