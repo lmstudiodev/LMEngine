@@ -23,11 +23,11 @@ public:
 	Texture2DPtr createTexture(const Rect& size, Texture2D::Type type);
 
 public:
-	void setRasterizerState(bool cull_front);
+	void setCullMode(const CullMode& cullmode);
 
 private:
 	void compilePrivateShaders();
-	void initRasterizerState();
+	void initRasterizerStates();
 
 private:
 	DeviceContextPtr m_deviceContext;
@@ -44,6 +44,7 @@ private:
 
 	Microsoft::WRL::ComPtr<ID3D11RasterizerState> m_cull_front_state;
 	Microsoft::WRL::ComPtr<ID3D11RasterizerState> m_cull_back_state;
+	Microsoft::WRL::ComPtr<ID3D11RasterizerState> m_cull_none_state;
 
 	Microsoft::WRL::ComPtr<ID3DBlob> m_vsblob;
 	Microsoft::WRL::ComPtr<ID3DBlob> m_psblob;

@@ -14,5 +14,7 @@ protected:
 private:
 	Entity* m_entity = nullptr;
 	f32 m_rotation = 0.0f;
+
+	bool m_locked = true;
 };
 

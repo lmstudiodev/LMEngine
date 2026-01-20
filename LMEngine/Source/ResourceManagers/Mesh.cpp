@@ -94,7 +94,7 @@ Mesh::Mesh(const wchar_t* full_path, ResourceManager* resource_manager) : Resour
 
 						tinyobj::real_t vx = attributes.vertices[index.vertex_index * 3 + 0];
 						tinyobj::real_t vy = attributes.vertices[index.vertex_index * 3 + 1];
-						tinyobj::real_t vz = attributes.vertices[index.vertex_index * 3 + 2];
+						tinyobj::real_t vz = -attributes.vertices[index.vertex_index * 3 + 2];
 
 						tinyobj::real_t tx = 0;
 						tinyobj::real_t ty = 0;
@@ -102,7 +102,7 @@ Mesh::Mesh(const wchar_t* full_path, ResourceManager* resource_manager) : Resour
 						if (attributes.texcoords.size())
 						{
 							tx = attributes.texcoords[index.texcoord_index * 2 + 0];
-							ty = attributes.texcoords[index.texcoord_index * 2 + 1];
+							ty = 1.0f - attributes.texcoords[index.texcoord_index * 2 + 1];
 						}
 
 						vertices_face[v] = Vector3D(vx, vy, vz);
@@ -126,7 +126,7 @@ Mesh::Mesh(const wchar_t* full_path, ResourceManager* resource_manager) : Resour
 
 						tinyobj::real_t vx = attributes.vertices[index.vertex_index * 3 + 0];
 						tinyobj::real_t vy = attributes.vertices[index.vertex_index * 3 + 1];
-						tinyobj::real_t vz = attributes.vertices[index.vertex_index * 3 + 2];
+						tinyobj::real_t vz = -attributes.vertices[index.vertex_index * 3 + 2];
 
 						tinyobj::real_t tx = 0;
 						tinyobj::real_t ty = 0;
@@ -134,7 +134,7 @@ Mesh::Mesh(const wchar_t* full_path, ResourceManager* resource_manager) : Resour
 						if (attributes.texcoords.size())
 						{
 							tx = attributes.texcoords[index.texcoord_index * 2 + 0];
-							ty = attributes.texcoords[index.texcoord_index * 2 + 1];
+							ty = 1.0f - attributes.texcoords[index.texcoord_index * 2 + 1];
 						}
 
 						tinyobj::real_t nx = 0;
@@ -145,7 +145,7 @@ Mesh::Mesh(const wchar_t* full_path, ResourceManager* resource_manager) : Resour
 						{
 							nx = attributes.normals[index.normal_index * 3 + 0];
 							ny = attributes.normals[index.normal_index * 3 + 1];
-							nz = attributes.normals[index.normal_index * 3 + 2];
+							nz = -attributes.normals[index.normal_index * 3 + 2];
 						}
 
 						Vector3D v_tangent, v_binormal;

@@ -13,6 +13,7 @@
 #include <Entity/Entity.h>
 #include <Entity/TransformComponent.h>
 #include <Entity/MeshComponent.h>
+#include <Entity/CameraComponent.h>
 
 __declspec(align(16))
 struct ConstantData
@@ -37,7 +38,7 @@ void GraphicEngine::update()
 
 	auto context = m_render_system->getDeviceContext();
 
-	context->clearRenderTarget(swapchain, { 1.0f, 0.0f, 0.0f, 1.0f });
+	context->clearRenderTarget(swapchain, { 0.0f, 0.0f, 0.0f, 1.0f });
 
 	auto winSize = m_game->m_display->getClientSize();
 
@@ -51,10 +52,12 @@ void GraphicEngine::update()
 	constData.m_viewMatrix.SetIdentity();
 	constData.m_projectionMatrix.SetIdentity();
 
-	constData.m_viewMatrix.SetTranslation(Vector3D(0.0f, 0.0f, -10.0f));
-	constData.m_viewMatrix.inverse();
-
-	constData.m_projectionMatrix.SetPerspectiveFovLH(1.5f, (float)winSize.width / (float)winSize.height, 0.01f, 1000.0f);
+	for (auto c : m_cameras)
+	{
+		c->setScreenArea(winSize);
+		c->getViewmatrix(constData.m_viewMatrix);
+		c->getProjectionMatrix(constData.m_projectionMatrix);
+	}
 
 	for (auto m : m_meshes)
 	{
@@ -73,6 +76,8 @@ void GraphicEngine::update()
 				break;
 
 			auto mat = materials[i].get();
+
+			m_render_system->setCullMode(mat->GetCullMode());
 			
 			mat->SetData(&constData, sizeof(ConstantData));
 
@@ -99,13 +104,22 @@ RenderSystem* GraphicEngine::getRenderSystem()
 
 void GraphicEngine::addComponent(Component* component)
 {
-	if (auto c = dynamic_cast<MeshComponent*>(component))
-		m_meshes.emplace(c);
+	if (auto m = dynamic_cast<MeshComponent*>(component))
+		m_meshes.emplace(m);
+
+	if (auto c = dynamic_cast<CameraComponent*>(component))
+	{
+		if(!m_cameras.size())
+			m_cameras.emplace(c);
+	}
 }
 
 void GraphicEngine::removeComponent(Component* component)
 {
-	if (auto c = dynamic_cast<MeshComponent*>(component))
-		m_meshes.erase(c);
+	if (auto m = dynamic_cast<MeshComponent*>(component))
+		m_meshes.erase(m);
+
+	if (auto c = dynamic_cast<CameraComponent*>(component))
+		m_cameras.erase(c);
 }
 
