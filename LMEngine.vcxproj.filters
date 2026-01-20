@@ -113,6 +113,7 @@
     <ClCompile Include="LMEngine\Source\Entity\TransformComponent.cpp" />
     <ClCompile Include="LMEngine\Source\Entity\MeshComponent.cpp" />
     <ClCompile Include="LMEngine\Source\Entity\CameraComponent.cpp" />
+    <ClCompile Include="LMEngine\Source\Entity\LightComponent.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="LMEngine\Include\WindowSystem\MainWindow.h">
@@ -196,6 +197,7 @@
     <ClInclude Include="LMEngine\Include\Entity\TransformComponent.h" />
     <ClInclude Include="LMEngine\Include\Entity\MeshComponent.h" />
     <ClInclude Include="LMEngine\Include\Entity\CameraComponent.h" />
+    <ClInclude Include="LMEngine\Include\Entity\LightComponent.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Resources\Shader\VertexShader.hlsl" />

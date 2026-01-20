@@ -10,10 +10,19 @@
 #include <Game/Game.h>
 #include <Game/Display.h>
 #include <Math/Matrix4x4.h>
+#include <Math/Vector4D.h>
 #include <Entity/Entity.h>
 #include <Entity/TransformComponent.h>
 #include <Entity/MeshComponent.h>
 #include <Entity/CameraComponent.h>
+#include <Entity/LightComponent.h>
+
+__declspec(align(16))
+struct LightData
+{
+	Vector4D color;
+	Vector4D direction;
+};
 
 __declspec(align(16))
 struct ConstantData
@@ -21,6 +30,8 @@ struct ConstantData
 	Matrix4x4 m_worldMatrix;
 	Matrix4x4 m_viewMatrix;
 	Matrix4x4 m_projectionMatrix;
+	Vector4D m_cameraPosition;
+	LightData m_lightData;
 };
 
 GraphicEngine::GraphicEngine(Game* game) : m_game(game), m_render_system(nullptr)
@@ -54,9 +65,23 @@ void GraphicEngine::update()
 
 	for (auto c : m_cameras)
 	{
+		auto t = c->getEntity()->getTransformComponent();
+		
+		constData.m_cameraPosition = t->getPosition();
 		c->setScreenArea(winSize);
 		c->getViewmatrix(constData.m_viewMatrix);
 		c->getProjectionMatrix(constData.m_projectionMatrix);
+	}
+
+	for (auto l : m_lights)
+	{
+		auto t = l->getEntity()->getTransformComponent();
+
+		Matrix4x4 w;
+		t->getWorldMatrix(w);
+		
+		constData.m_lightData.direction = w.GetZDirection();
+		constData.m_lightData.color = l->getColor();
 	}
 
 	for (auto m : m_meshes)
@@ -112,6 +137,12 @@ void GraphicEngine::addComponent(Component* component)
 		if(!m_cameras.size())
 			m_cameras.emplace(c);
 	}
+
+	if (auto l = dynamic_cast<LightComponent*>(component))
+	{
+		if (!m_lights.size())
+			m_lights.emplace(l);
+	}
 }
 
 void GraphicEngine::removeComponent(Component* component)
@@ -121,5 +152,8 @@ void GraphicEngine::removeComponent(Component* component)
 
 	if (auto c = dynamic_cast<CameraComponent*>(component))
 		m_cameras.erase(c);
+
+	if (auto l = dynamic_cast<LightComponent*>(component))
+		m_lights.erase(l);
 }
 

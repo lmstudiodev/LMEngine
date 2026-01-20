@@ -84,6 +84,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="LMEngine\Source\Entity\LightComponent.cpp" />
     <ClCompile Include="LMEngine\Source\Entity\CameraComponent.cpp" />
     <ClCompile Include="LMEngine\Source\Entity\Component.cpp" />
     <ClCompile Include="LMEngine\Source\Entity\Entity.cpp" />
@@ -118,6 +119,7 @@
     <ClCompile Include="LMEngine\Source\Entity\MeshComponent.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="LMEngine\Include\Entity\LightComponent.h" />
     <ClInclude Include="LMEngine\Include\Entity\CameraComponent.h" />
     <ClInclude Include="LMEngine\Include\Entity\Component.h" />
     <ClInclude Include="LMEngine\Include\All.h" />
