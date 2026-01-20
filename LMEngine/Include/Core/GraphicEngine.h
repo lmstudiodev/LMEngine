@@ -18,8 +18,10 @@ public:
 
 private:
 	std::unique_ptr<RenderSystem> m_render_system;
+
 	std::set<MeshComponent*> m_meshes;
 	std::set<CameraComponent*> m_cameras;
+	std::set<LightComponent*> m_lights;
 
 	Game* m_game = nullptr;
 };

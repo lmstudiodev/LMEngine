@@ -17,7 +17,7 @@ void MyGame::onUpdate(f32 deltaTime)
 
 	m_rotation += 1.57f * deltaTime;
 
-	//m_entity->getTransformComponent()->setRotation(Vector3D(0.0f, m_rotation, 0.0f));
+	m_entity->getTransformComponent()->setRotation(Vector3D(-0.707f, m_rotation, 0.0f));
 
 	if (getInputSystem()->isKeyUp(Key::Escape))
 	{
@@ -141,6 +141,16 @@ void MyGame::onCreate()
 			transform->setRotation(Vector3D(0.0f, (rand() % 628) / 100.0f, 0.0f));
 			transform->setScale(Vector3D(1.0f, 1.0f, 1.0f));
 		}
+	}
+
+	//LIGHT
+	{
+		m_entity = getWorld()->createEntity<Entity>();
+		auto lightComponent = m_entity->createComponent<LightComponent>();
+
+		lightComponent->setColor(Vector4D(1.0f, 1.0f, 1.0f, 1.0f));
+
+		m_entity->getTransformComponent()->setRotation(Vector3D(-0.707f, 0.707, 0));
 	}
 
 	getWorld()->createEntity<Player>();

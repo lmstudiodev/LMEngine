@@ -5,6 +5,7 @@
 #include <Entity/TransformComponent.h>
 #include <Entity/MeshComponent.h>
 #include <Entity/CameraComponent.h>
+#include <Entity/LightComponent.h>
 
 #include <ResourceManagers/ResourceManager.h>
 #include <ResourceManagers/Mesh.h>
