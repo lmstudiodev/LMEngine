@@ -51,6 +51,8 @@ m_renderSystem(renderSystem)
 
 	if (FAILED(hr))
 		Dx3DError("Create shader resource view failed.");
+
+	m_size = Rect(0, 0, (i32)imageData.GetMetadata().width, (i32)imageData.GetMetadata().height);
 }
 
 Texture2D::Texture2D(const Rect& size, Texture2D::Type type, RenderSystem* renderSystem) :

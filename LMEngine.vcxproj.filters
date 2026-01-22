@@ -114,6 +114,7 @@
     <ClCompile Include="LMEngine\Source\Entity\MeshComponent.cpp" />
     <ClCompile Include="LMEngine\Source\Entity\CameraComponent.cpp" />
     <ClCompile Include="LMEngine\Source\Entity\LightComponent.cpp" />
+    <ClCompile Include="LMEngine\Source\Entity\TerrainComponent.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="LMEngine\Include\WindowSystem\MainWindow.h">
@@ -198,6 +199,7 @@
     <ClInclude Include="LMEngine\Include\Entity\MeshComponent.h" />
     <ClInclude Include="LMEngine\Include\Entity\CameraComponent.h" />
     <ClInclude Include="LMEngine\Include\Entity\LightComponent.h" />
+    <ClInclude Include="LMEngine\Include\Entity\TerrainComponent.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Resources\Shader\VertexShader.hlsl" />
@@ -215,5 +217,6 @@
     <FxCompile Include="Resources\Shader\DistortionEffect.hlsl" />
     <FxCompile Include="Resources\Shader\MyMaterial.hlsl" />
     <FxCompile Include="Resources\Shader\SkyBox.hlsl" />
+    <FxCompile Include="Resources\Shader\Terrain.hlsl" />
   </ItemGroup>
 </Project>

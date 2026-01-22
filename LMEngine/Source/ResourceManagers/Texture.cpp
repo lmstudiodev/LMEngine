@@ -9,3 +9,8 @@ Texture::Texture(const wchar_t* full_path, ResourceManager* resource_manager) : 
 {
 	m_texture = resource_manager->getGame()->getGraphicEngine()->getRenderSystem()->createTexture(full_path);
 }
+
+const Texture2DPtr& Texture::getTexture()
+{
+	return m_texture;
+}

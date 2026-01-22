@@ -117,6 +117,7 @@
     <ClCompile Include="LMEngine\Source\Game\Player.cpp" />
     <ClCompile Include="LMEngine\Source\Entity\TransformComponent.cpp" />
     <ClCompile Include="LMEngine\Source\Entity\MeshComponent.cpp" />
+    <ClCompile Include="LMEngine\Source\Entity\TerrainComponent.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="LMEngine\Include\Entity\LightComponent.h" />
@@ -161,6 +162,7 @@
     <ClInclude Include="LMEngine\Include\Game\Player.h" />
     <ClInclude Include="LMEngine\Include\Entity\TransformComponent.h" />
     <ClInclude Include="LMEngine\Include\Entity\MeshComponent.h" />
+    <ClInclude Include="LMEngine\Include\Entity\TerrainComponent.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Resources\Shader\DirectionalLightPixelShader.hlsl">
@@ -242,6 +244,11 @@
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </FxCompile>
+    <FxCompile Include="Resources\Shader\Terrain.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
     </FxCompile>
     <FxCompile Include="Resources\Shader\VertexMeshLayoutShader.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>

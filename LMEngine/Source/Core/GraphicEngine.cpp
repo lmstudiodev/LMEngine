@@ -16,12 +16,20 @@
 #include <Entity/MeshComponent.h>
 #include <Entity/CameraComponent.h>
 #include <Entity/LightComponent.h>
+#include <Entity/TerrainComponent.h>
 
 __declspec(align(16))
 struct LightData
 {
 	Vector4D color;
 	Vector4D direction;
+};
+
+__declspec(align(16))
+struct TerrainData
+{
+	Vector4D size;
+	f32 heightMapSize = 0.0f;
 };
 
 __declspec(align(16))
@@ -32,6 +40,7 @@ struct ConstantData
 	Matrix4x4 m_projectionMatrix;
 	Vector4D m_cameraPosition;
 	LightData m_lightData;
+	TerrainData m_terrainData;
 };
 
 GraphicEngine::GraphicEngine(Game* game) : m_game(game), m_render_system(nullptr)
@@ -82,6 +91,34 @@ void GraphicEngine::update()
 		
 		constData.m_lightData.direction = w.GetZDirection();
 		constData.m_lightData.color = l->getColor();
+	}
+
+	for (auto t : m_terrains)
+	{
+		auto transform = t->getEntity()->getTransformComponent();
+		transform->getWorldMatrix(constData.m_worldMatrix);
+
+		constData.m_terrainData.size = t->getSize();
+		constData.m_terrainData.heightMapSize = t->getHeightMap()->getTexture()->getSize().width;
+
+		context->setVertexBuffer(t->m_meshVB);
+		context->setIndexBuffer(t->m_meshIB);
+
+		m_render_system->setCullMode(CullMode::Back);
+
+		t->updateData(&constData, sizeof(constData));
+
+		context->setConstantBuffer(t->m_cb);
+
+		context->setVertexShader(t->m_vs);
+		context->setPixelShader(t->m_ps);
+
+		Texture2DPtr terrainTexture[1];
+		terrainTexture[0] = t->getHeightMap()->getTexture();
+
+		context->setTexture(terrainTexture, 1);
+
+		context->drawIndexedTriangleList((ui32)t->m_meshIB->getSizeIndexList(), 0 ,0);
 	}
 
 	for (auto m : m_meshes)
@@ -143,6 +180,12 @@ void GraphicEngine::addComponent(Component* component)
 		if (!m_lights.size())
 			m_lights.emplace(l);
 	}
+
+	if (auto t = dynamic_cast<TerrainComponent*>(component))
+	{
+		if (!m_terrains.size())
+			m_terrains.emplace(t);
+	}
 }
 
 void GraphicEngine::removeComponent(Component* component)
@@ -155,5 +198,8 @@ void GraphicEngine::removeComponent(Component* component)
 
 	if (auto l = dynamic_cast<LightComponent*>(component))
 		m_lights.erase(l);
+
+	if (auto t = dynamic_cast<TerrainComponent*>(component))
+		m_terrains.erase(t);
 }
 

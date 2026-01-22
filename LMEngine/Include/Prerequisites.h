@@ -31,6 +31,7 @@ class TransformComponent;
 class MeshComponent;
 class CameraComponent;
 class LightComponent;
+class TerrainComponent;
 
 typedef std::shared_ptr<SwapChain> SwapChainPtr;
 typedef std::shared_ptr<DeviceContext> DeviceContextPtr;
